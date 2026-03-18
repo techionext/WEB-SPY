@@ -1,45 +1,70 @@
 export type ISpyOffer = {
-  type: string;
-  page: [
-    {
-      id: string;
-      url: string;
-      adQuantity: number;
-    },
-  ];
-  category: {
-    id: string;
-    title: string;
-  };
+  isFavorite: boolean;
   id: string;
   title: string;
-  createdAt: string;
-  updatedAt: string;
   description: string;
   trafficNetwork: string;
   structure: string;
   language: string;
-  funnel: string[];
+  funnel: string;
   typeProduct: string;
   isClimbing: boolean;
   isCloaker: boolean;
-  isFavorite: boolean;
-  isPopular: boolean;
+  filter: string;
+  image: {
+    id: string;
+    createdAt: string;
+    updatedAt: string;
+    categoryId: string;
+    url: string;
+    urlOriginal: string;
+    size: number;
+    originalName: string;
+    mimeType: string;
+    key: string;
+    keys: string[];
+    userId: string;
+    offerId: string;
+    creativeId: string;
+    vslId: string;
+    transcriptionVslId: string;
+    processStatus: string;
+    pageFileId: string;
+    pageImageId: string;
+  };
+  category: {
+    id: string;
+    title: string;
+    icon: string;
+    image: {
+      id: string;
+      createdAt: string;
+      updatedAt: string;
+      categoryId: string;
+      url: string;
+      urlOriginal: string;
+      size: number;
+      originalName: string;
+      mimeType: string;
+      key: string;
+      keys: string[];
+      userId: string;
+      offerId: string;
+      creativeId: string;
+      vslId: string;
+      transcriptionVslId: string;
+      processStatus: string;
+      pageFileId: string;
+      pageImageId: string;
+    };
+    createdAt: string;
+    updatedAt: string;
+  };
   adQuantity: number;
   viewsQuantity: number;
   pitch: string;
-  image: {
-    id: string;
-    url: string;
-    mimeType: string;
-  };
-  creative: [
-    {
-      id: string;
-      title: string;
-      viewsQuantity: number;
-    },
-  ];
+  createdAt: string;
+  updatedAt: string;
 };
 
 export type ISpyOfferById = {
@@ -113,22 +138,9 @@ export type ISpyOfferById = {
 
 export namespace ISpyOffersDTO {
   export type Args = {
-    trafficNetwork?: string[];
-    structure?: string[];
-    language?: string[];
-    typeProduct?: string[];
-    categoryTitles?: string[];
-    isClimbing?: boolean;
-    isCloaker?: boolean;
-    startDate?: string;
-    endDate?: string;
-    hasVideo?: boolean;
-    orderByType?: string;
-    orderBy?: string;
     page?: number;
     pageSize?: number;
     filter?: string;
-    isFavorite?: boolean;
   };
   export type Result = {
     data: ISpyOffer[];
@@ -266,5 +278,28 @@ export namespace ISpyOfferUpdateDTO {
   export type Result = {
     codeIntern: string;
     message: string;
+  };
+}
+
+export namespace ISpyOfferCreateDTO {
+  export type Args = {
+    title: string;
+    description?: string;
+    trafficNetwork: string;
+    structure: string;
+    language: string;
+    typeProduct: string;
+    isClimbing: boolean;
+    isCloaker: boolean;
+    filter?: string;
+    image?: File;
+    categoryId: string;
+    pitch?: string;
+  };
+  export type Result = {
+    codeIntern: string;
+    message: string;
+    id: string;
+    code: string;
   };
 }

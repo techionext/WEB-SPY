@@ -1,6 +1,7 @@
 import { api } from "@/libs/api";
 import {
   ISpyOfferByIdHistoryDTO,
+  ISpyOfferCreateDTO,
   ISpyOfferDTOById,
   ISpyOfferFavoriteDTO,
   ISpyOffersDTO,
@@ -11,6 +12,14 @@ const prefix = "offer";
 
 export const spyOffersServices = api.injectEndpoints({
   endpoints: (builder) => ({
+    createSpyOffer: builder.mutation<ISpyOfferCreateDTO.Result, ISpyOfferCreateDTO.Args>({
+      query: (args) => ({
+        url: `${prefix}`,
+        method: "POST",
+        body: args,
+      }),
+      invalidatesTags: [{ type: "spyOffers", id: "list" }],
+    }),
     getSpyOffers: builder.query<ISpyOffersDTO.Result, ISpyOffersDTO.Args>({
       query: (args) => ({
         url: `${prefix}`,
@@ -18,6 +27,13 @@ export const spyOffersServices = api.injectEndpoints({
         params: args,
       }),
       providesTags: [{ type: "spyOffers", id: "list" }],
+    }),
+    removeSpyOffer: builder.mutation<{ codeIntern: string; message: string }, { id: string }>({
+      query: ({ id }) => ({
+        url: `${prefix}/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: [{ type: "spyOffers", id: "list" }],
     }),
     getSpyOfferById: builder.query<ISpyOfferDTOById.Result, ISpyOfferDTOById.Args>({
       query: (args) => ({
