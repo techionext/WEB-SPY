@@ -82,21 +82,23 @@ export const OffersCard = ({ data }: OffersCardProps) => {
         <Image
           removeWrapper
           className="w-full h-54 object-cover"
-          src={data.image.url ?? "https://placehold.co/54x54"}
-          alt={data.title ?? "Spy"}
+          src={data?.image?.url ?? "https://placehold.co/54x54"}
+          alt={data?.title ?? "Spy"}
         />
         <div className="flex items-center justify-between p-1 gap-3">
           <div className="min-w-0 flex-1">
-            <Tooltip content={data.title}>
-              <p className="text-sm font-medium truncate">{data.title}</p>
+            <Tooltip content={data?.title}>
+              <p className="text-sm font-medium truncate">{data?.title}</p>
             </Tooltip>
-            <Tooltip content={data.category.title}>
-              <p className="text-xs text-gray-500 truncate max-w-[100px]">{data.category.title}</p>
+            <Tooltip content={data?.category?.title}>
+              <p className="text-xs text-gray-500 truncate max-w-[100px]">
+                {data?.category?.title}
+              </p>
             </Tooltip>
           </div>
           <div className="flex items-center gap-1 flex-shrink-0">
-            <Icon icon={`circle-flags:${data.language.toLowerCase()}`} />
-            <Icon icon={`simple-icons:${data.trafficNetwork.toLowerCase()}`} />
+            <Icon icon={`circle-flags:${data?.language?.toLowerCase()}`} />
+            <Icon icon={`simple-icons:${data?.trafficNetwork?.toLowerCase()}`} />
           </div>
         </div>
       </CardBody>
