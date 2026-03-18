@@ -1,5 +1,16 @@
-import { TrafficNetwork } from "../labs/offer/labs-offer.type";
 import { PlatformType } from "../platforms/platforms.type";
+
+export enum TrafficNetwork {
+  FACEBOOK = "FACEBOOK",
+  YOUTUBE = "YOUTUBE",
+  TIKTOK = "TIKTOK",
+  INSTAGRAM = "INSTAGRAM",
+  GOOGLE = "GOOGLE",
+  KWAI = "KWAI",
+  OUTBRAIN = "OUTBRAIN",
+  TABOOLA = "TABOOLA",
+  SNAPCHAT = "SNAPCHAT",
+}
 
 export type IOffer = {
   hasAccess: boolean;
