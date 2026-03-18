@@ -1,11 +1,14 @@
 "use client";
 
 import { AccordionSettings } from "./accordion-settings";
-import { useFormContext } from "react-hook-form";
+import { Controller, useFormContext } from "react-hook-form";
 import { TSchemaSettingsOutput } from "./schemaSettings";
+import { formatPhone } from "@/utils/formatPhone";
+import { Icon } from "@iconify/react";
+import { Input, Accordion, AccordionItem } from "@heroui/react";
 
 const useSettingsHandlers = () => {
-  const { setValue, watch } = useFormContext<TSchemaSettingsOutput>();
+  const { setValue, watch, control } = useFormContext<TSchemaSettingsOutput>();
   const formValues = watch();
 
   const handleAdd = (key: keyof TSchemaSettingsOutput, value: string) => {
@@ -22,32 +25,32 @@ const useSettingsHandlers = () => {
     if (Array.isArray(currentValues)) {
       setValue(
         key,
-        currentValues.filter((item) => item !== value),
+        currentValues.filter((v: string) => v !== value),
         { shouldDirty: true },
       );
     }
   };
 
-  return { formValues, handleAdd, handleRemove };
+  return { handleAdd, handleRemove, formValues, setValue, control };
 };
 
 export const SettingsRoot = () => {
-  const { formValues, handleAdd, handleRemove } = useSettingsHandlers();
+  const { formValues, handleAdd, handleRemove, control } = useSettingsHandlers();
 
   const sections = [
-    {
-      title: "Tipo de Produto",
-      subtitle: `${formValues.typeProduct?.length || 0} itens configurados`,
-      icon: "solar:box-bold-duotone",
-      values: formValues.typeProduct || [],
-      key: "typeProduct" as keyof TSchemaSettingsOutput,
-    },
     {
       title: "Estrutura",
       subtitle: `${formValues.structure?.length || 0} itens configurados`,
       icon: "solar:folder-bold-duotone",
       values: formValues.structure || [],
       key: "structure" as keyof TSchemaSettingsOutput,
+    },
+    {
+      title: "Tipo de Produto",
+      subtitle: `${formValues.typeProduct?.length || 0} itens configurados`,
+      icon: "solar:box-bold-duotone",
+      values: formValues.typeProduct || [],
+      key: "typeProduct" as keyof TSchemaSettingsOutput,
     },
     {
       title: "Tipo de Página",
@@ -57,11 +60,18 @@ export const SettingsRoot = () => {
       key: "typePages" as keyof TSchemaSettingsOutput,
     },
     {
-      title: "Emails Padrão",
-      subtitle: `${formValues.email?.length || 0} itens configurados`,
-      icon: "solar:letter-bold-duotone",
-      values: formValues.email || [],
-      key: "email" as keyof TSchemaSettingsOutput,
+      title: "Ângulo de Venda",
+      subtitle: `${formValues.salesAngle?.length || 0} itens configurados`,
+      icon: "solar:videocamera-record-bold-duotone",
+      values: formValues.salesAngle || [],
+      key: "salesAngle" as keyof TSchemaSettingsOutput,
+    },
+    {
+      title: "Páginas Excluídas",
+      subtitle: `${formValues.excludedPages?.length || 0} itens configurados`,
+      icon: "solar:document-bold-duotone",
+      values: formValues.excludedPages || [],
+      key: "excludedPages" as keyof TSchemaSettingsOutput,
     },
     {
       title: "Produtos Excluídos",
@@ -69,6 +79,13 @@ export const SettingsRoot = () => {
       icon: "solar:close-circle-bold-duotone",
       values: formValues.excludedProducts || [],
       key: "excludedProducts" as keyof TSchemaSettingsOutput,
+    },
+    {
+      title: "Emails Padrão",
+      subtitle: `${formValues.email?.length || 0} itens configurados`,
+      icon: "solar:letter-bold-duotone",
+      values: formValues.email || [],
+      key: "email" as keyof TSchemaSettingsOutput,
     },
   ];
 
@@ -86,22 +103,48 @@ export const SettingsRoot = () => {
           onRemove={(value) => handleRemove(section.key, value)}
         />
       ))}
+
+      <div id="accordion-supportPhone" className="-mx-2">
+        <Accordion
+          selectionMode="multiple"
+          itemClasses={{
+            base: " rounded-lg bg-default-50",
+            title: "text-sm font-medium text-foreground",
+            trigger: "px-4 py-3",
+            content: "px-4 pb-4",
+          }}
+        >
+          <AccordionItem
+            key="supportPhone"
+            title="Telefone de Suporte"
+            subtitle={formatPhone(formValues.supportPhone)}
+            startContent={
+              <Icon icon="solar:phone-bold-duotone" className="text-primary" fontSize={24} />
+            }
+          >
+            <Controller
+              control={control}
+              name="supportPhone"
+              render={({ field: { onChange, value }, fieldState: { error } }) => (
+                <Input
+                  value={formatPhone(value)}
+                  isInvalid={!!error}
+                  errorMessage={error?.message}
+                  onChange={(e) => {
+                    const rawValue = e.target.value;
+                    let cleaned = rawValue.replace(/\D/g, "");
+
+                    cleaned = "55" + cleaned.replace(/^55?/, "");
+
+                    onChange(cleaned);
+                  }}
+                  placeholder="Digite o telefone (ex: 11 99999-9999)"
+                />
+              )}
+            />
+          </AccordionItem>
+        </Accordion>
+      </div>
     </div>
-  );
-};
-
-export const VideoCategorySettings = () => {
-  const { formValues, handleAdd, handleRemove } = useSettingsHandlers();
-
-  return (
-    <AccordionSettings
-      uniqueKey="videoCategory"
-      title="Categorias de Vídeo"
-      subtitle={`${formValues.videoCategory?.length || 0} itens configurados`}
-      icon="solar:videocamera-record-bold-duotone"
-      values={formValues.videoCategory || []}
-      onAdd={(value) => handleAdd("videoCategory", value)}
-      onRemove={(value) => handleRemove("videoCategory", value)}
-    />
   );
 };

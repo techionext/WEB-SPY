@@ -1,8 +1,8 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { HeaderSettings } from "./components/header-settings";
-import { SettingsRoot, VideoCategorySettings } from "./components/settings";
+import { SettingsRoot } from "./components/settings";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   schemaSettings,
@@ -10,31 +10,28 @@ import {
   TSchemaSettingsOutput,
 } from "./components/schemaSettings";
 import {
-  useGetPlataformSettingsQuery,
-  useUpdatePlataformSettingsMutation,
-} from "@/services/settings/platform-settings.service";
-import { AccordionCategory } from "./components/categories/accordion-category";
-import { AccordionSeason } from "./components/seasons/accordion-season";
+  useGetSettingsQuery,
+  useUpdateSettingsMutation,
+} from "@/services/settings/settings.service";
 import { FastNavigation } from "./components/fast-navigation";
 import { AccordionNavigationProvider } from "./components/accordion-navigation-context";
-import { AccordionCommunityArea } from "./components/academy/community-areas/accordion-community-areas";
-import { AccordionProducer } from "./components/academy/producers/accordion-producer";
+import { AccordionCategory } from "./components/categories/accordion-category";
 
 export const ScreenRootSettings = () => {
-  const { data: settings } = useGetPlataformSettingsQuery({});
-  const [updatePlataformSettings, { isLoading }] = useUpdatePlataformSettingsMutation();
+  const { data: settings } = useGetSettingsQuery({});
+  const [updateSettings, { isLoading }] = useUpdateSettingsMutation();
 
   const form = useForm<TSchemaSettingsInput, any, TSchemaSettingsOutput>({
     resolver: zodResolver(schemaSettings),
     defaultValues: {
       structure: [],
-      funnel: [],
       typeProduct: [],
       typePages: [],
-      videoCategory: [],
       email: [],
       excludedProducts: [],
       excludedPages: [],
+      salesAngle: [],
+      supportPhone: "55",
     },
   });
 
@@ -44,22 +41,20 @@ export const ScreenRootSettings = () => {
     if (settings) {
       reset({
         structure: settings.structure || [],
-        funnel: settings.funnel || [],
         typeProduct: settings.typeProduct || [],
         typePages: settings.typePages || [],
-        videoCategory: settings.videoCategory || [],
         email: settings.email || [],
         excludedProducts: settings.excludedProducts || [],
         excludedPages: settings.excludedPages || [],
+        salesAngle: settings.salesAngle || [],
+        supportPhone: settings.supportPhone || "55",
       });
     }
   }, [settings, reset]);
 
   const onSubmit = (data: TSchemaSettingsOutput) => {
-    updatePlataformSettings(data).unwrap();
+    updateSettings(data).unwrap();
   };
-
-  const [navigationType, setNavigationType] = useState<"academy" | "settings">("settings");
 
   return (
     <AccordionNavigationProvider>
@@ -68,26 +63,10 @@ export const ScreenRootSettings = () => {
           <HeaderSettings onSubmit={onSubmit} isLoading={isLoading} />
           <div className="flex gap-6">
             <div className="flex-1 flex flex-col gap-4">
-              {navigationType === "settings" ? (
-                <>
-                  <AccordionCategory />
-                  <AccordionSeason />
-                  <SettingsRoot />
-                </>
-              ) : (
-                <>
-                  <AccordionCommunityArea />
-                  <AccordionProducer />
-                  <VideoCategorySettings />
-                </>
-              )}
+              <AccordionCategory />
+              <SettingsRoot />
             </div>
-            <FastNavigation
-              onSubmit={onSubmit}
-              isLoading={isLoading}
-              navigationType={navigationType}
-              onNavigate={setNavigationType}
-            />
+            <FastNavigation onSubmit={onSubmit} isLoading={isLoading} />
           </div>
         </FormProvider>
       </div>

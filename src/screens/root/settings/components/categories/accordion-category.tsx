@@ -2,9 +2,9 @@
 
 import { ModalRemove } from "@/components/modal-remove/modal-remove";
 import {
-  useDeleteLabsCategoryMutation,
-  useGetLabsCategoryQuery,
-} from "@/services/labs/category/labs-category.service";
+  useDeleteCategoryMutation,
+  useGetCategoryQuery,
+} from "@/services/category/category.service";
 import dayjs from "@/utils/dayjs-config";
 import { Accordion, AccordionItem, Button, Image } from "@heroui/react";
 import { Icon } from "@iconify/react";
@@ -19,11 +19,11 @@ import { useAccordionNavigation } from "../accordion-navigation-context";
 export const AccordionCategory = () => {
   const queryParams = useSearchParams();
   const params = Object.fromEntries(queryParams.entries());
-  const { data: categories } = useGetLabsCategoryQuery({
+  const { data: categories } = useGetCategoryQuery({
     pageSize: params.pageSize ? Number(params.pageSize) : 8,
     ...params,
   });
-  const [removeCategory, { isLoading }] = useDeleteLabsCategoryMutation();
+  const [removeCategory, { isLoading }] = useDeleteCategoryMutation();
   const [categoryId, setCategoryId] = useState<string>("");
   const [selectedCategory, setSelectedCategory] = useState<ILabsCategory | null>(null);
   const { expandedKeys, setExpandedKeys } = useAccordionNavigation();

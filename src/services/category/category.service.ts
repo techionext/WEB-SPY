@@ -9,10 +9,10 @@ import {
 import { convertToFormData } from "@/utils/converteToFormData";
 import { buildQueryString } from "@/utils/generateUrlWithParams";
 
-const prefix = "labs/category";
-export const labsCategoryServices = api.injectEndpoints({
+const prefix = "/category";
+export const categoryServices = api.injectEndpoints({
   endpoints: (builder) => ({
-    getLabsCategory: builder.query<ILabsCategoryDTO.Result, ILabsCategoryDTO.Args>({
+    getCategory: builder.query<ILabsCategoryDTO.Result, ILabsCategoryDTO.Args>({
       query: (args) => ({
         url: buildQueryString({ args, endpoint: prefix }),
         method: "GET",
@@ -20,57 +20,51 @@ export const labsCategoryServices = api.injectEndpoints({
       providesTags: (result) =>
         result?.data
           ? [
-              { type: "labsCategory" as const, id: "LIST" },
+              { type: "category" as const, id: "LIST" },
               ...result.data.map((category) => ({
-                type: "labsCategory" as const,
+                type: "category" as const,
                 id: category.id,
               })),
             ]
-          : [{ type: "labsCategory" as const, id: "LIST" }],
+          : [{ type: "category" as const, id: "LIST" }],
     }),
-    createLabsCategory: builder.mutation<
-      ICreateLabsCategoryDTO.Result,
-      ICreateLabsCategoryDTO.Args
-    >({
+    createCategory: builder.mutation<ICreateLabsCategoryDTO.Result, ICreateLabsCategoryDTO.Args>({
       query: (args) => ({
         url: prefix,
         method: "POST",
         body: convertToFormData(args),
       }),
-      invalidatesTags: [{ type: "labsCategory", id: "LIST" }],
+      invalidatesTags: [{ type: "category", id: "LIST" }],
     }),
-    updateLabsCategory: builder.mutation<
-      IUpdateLabsCategoryDTO.Result,
-      IUpdateLabsCategoryDTO.Args
-    >({
+    updateCategory: builder.mutation<IUpdateLabsCategoryDTO.Result, IUpdateLabsCategoryDTO.Args>({
       query: (args) => ({
         url: `${prefix}/${args.id}`,
         method: "PUT",
         body: convertToFormData(args),
       }),
       invalidatesTags: [
-        { type: "labsCategory", id: "LIST" },
-        { type: "labsCategory", id: "RANKING" },
+        { type: "category", id: "LIST" },
+        { type: "category", id: "RANKING" },
       ],
     }),
-    deleteLabsCategory: builder.mutation<{ codeIntern: string; message: string }, { id: string }>({
+    deleteCategory: builder.mutation<{ codeIntern: string; message: string }, { id: string }>({
       query: ({ id }) => ({
         url: `${prefix}/${id}`,
         method: "DELETE",
       }),
       invalidatesTags: [
-        { type: "labsCategory", id: "LIST" },
-        { type: "labsCategory", id: "RANKING" },
+        { type: "category", id: "LIST" },
+        { type: "category", id: "RANKING" },
       ],
     }),
-    getLabsCategoryById: builder.query<ILabsCategory, { id: string }>({
+    getCategoryById: builder.query<ILabsCategory, { id: string }>({
       query: ({ id }) => ({
         url: `${prefix}/${id}`,
         method: "GET",
       }),
-      providesTags: (result) => (result ? [{ type: "labsCategory", id: result.id }] : []),
+      providesTags: (result) => (result ? [{ type: "category", id: result.id }] : []),
     }),
-    getLabsCategoryRanking: builder.query<
+    getCategoryRanking: builder.query<
       IGetLabsCategoryRankingDTO.Result,
       IGetLabsCategoryRankingDTO.Args
     >({
@@ -79,17 +73,17 @@ export const labsCategoryServices = api.injectEndpoints({
         method: "GET",
         params: args,
       }),
-      providesTags: [{ type: "labsCategory" as const, id: "RANKING" }],
+      providesTags: [{ type: "category" as const, id: "RANKING" }],
     }),
   }),
   overrideExisting: true,
 });
 
 export const {
-  useGetLabsCategoryQuery,
-  useCreateLabsCategoryMutation,
-  useUpdateLabsCategoryMutation,
-  useDeleteLabsCategoryMutation,
-  useGetLabsCategoryRankingQuery,
-  useGetLabsCategoryByIdQuery,
-} = labsCategoryServices;
+  useGetCategoryQuery,
+  useCreateCategoryMutation,
+  useUpdateCategoryMutation,
+  useDeleteCategoryMutation,
+  useGetCategoryRankingQuery,
+  useGetCategoryByIdQuery,
+} = categoryServices;

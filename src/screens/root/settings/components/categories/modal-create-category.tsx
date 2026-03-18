@@ -18,11 +18,11 @@ import {
   Link,
 } from "@heroui/react";
 import { useForm, Controller } from "react-hook-form";
-import { useCreateLabsCategoryMutation } from "@/services/labs/category/labs-category.service";
+import { useCreateCategoryMutation } from "@/services/category/category.service";
 
 export const ModalCreateCategory = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const [createCategory, { isLoading }] = useCreateLabsCategoryMutation();
+  const [createCategory, { isLoading }] = useCreateCategoryMutation();
   const {
     handleSubmit,
     control,

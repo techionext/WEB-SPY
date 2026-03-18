@@ -2,12 +2,9 @@
 
 import { Icon } from "@iconify/react";
 import { useFormContext } from "react-hook-form";
+import { formatPhone } from "@/utils/formatPhone";
 import { TSchemaSettingsOutput } from "./schemaSettings";
-import { useGetLabsCategoryQuery } from "@/services/labs/category/labs-category.service";
-import { useGetProducersQuery } from "@/services/community/settings/producer.service";
-import { useGetCommunityAreaQuery } from "@/services/community/settings/community-area.service";
-import { useGetSeasonQuery } from "@/services/session/season.service";
-import { useSession } from "@/providers/session-provider";
+import { useGetCategoryQuery } from "@/services/category/category.service";
 import { Button, Card, cn } from "@heroui/react";
 import { useState, useEffect } from "react";
 
@@ -16,21 +13,15 @@ interface NavigationItem {
   title: string;
   icon: string;
   count: number;
+  subtitle?: string;
 }
 
 interface FastNavigationProps {
   onSubmit: (data: TSchemaSettingsOutput) => void;
   isLoading?: boolean;
-  navigationType: "academy" | "settings";
-  onNavigate: (type: "academy" | "settings") => void;
 }
 
-export const FastNavigation = ({
-  onSubmit,
-  isLoading = false,
-  navigationType,
-  onNavigate,
-}: FastNavigationProps) => {
+export const FastNavigation = ({ onSubmit, isLoading = false }: FastNavigationProps) => {
   const {
     watch,
     handleSubmit,
@@ -48,11 +39,7 @@ export const FastNavigation = ({
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-  const { user } = useSession();
-  const { data: categories } = useGetLabsCategoryQuery({});
-  const { data: areas } = useGetCommunityAreaQuery({});
-  const { data: producers } = useGetProducersQuery({});
-  const { data: seasons } = useGetSeasonQuery({ id: user?.id || "" }, { skip: !user?.id });
+  const { data: categories } = useGetCategoryQuery({});
   const formValues = watch();
 
   const navigationItems: NavigationItem[] = [
@@ -80,12 +67,17 @@ export const FastNavigation = ({
       icon: "solar:document-bold-duotone",
       count: formValues.typePages?.length || 0,
     },
-
     {
-      id: "email",
-      title: "Emails Padrão",
-      icon: "solar:letter-bold-duotone",
-      count: formValues.email?.length || 0,
+      id: "salesAngle",
+      title: "Ângulo de Venda",
+      icon: "solar:videocamera-record-bold-duotone",
+      count: formValues.salesAngle?.length || 0,
+    },
+    {
+      id: "excludedPages",
+      title: "Páginas Excluídas",
+      icon: "solar:document-bold-duotone",
+      count: formValues.excludedPages?.length || 0,
     },
     {
       id: "excludedProducts",
@@ -94,45 +86,29 @@ export const FastNavigation = ({
       count: formValues.excludedProducts?.length || 0,
     },
     {
-      id: "seasons",
-      title: "Temporadas",
-      icon: "solar:ranking-bold-duotone",
-      count: seasons?.meta.total || 0,
+      id: "email",
+      title: "Emails Padrão",
+      icon: "solar:letter-bold-duotone",
+      count: formValues.email?.length || 0,
+    },
+    {
+      id: "supportPhone",
+      title: "Telefone de Suporte",
+      icon: "solar:phone-bold-duotone",
+      count: formValues.supportPhone ? 1 : 0,
+      subtitle: formatPhone(formValues.supportPhone),
     },
   ];
 
-  const academyItems: NavigationItem[] = [
-    {
-      id: "community-areas",
-      title: "Áreas da Comunidade",
-      icon: "solar:diploma-bold-duotone",
-      count: areas?.meta.total || 0,
-    },
-    {
-      id: "producers",
-      title: "Produtores",
-      icon: "solar:user-circle-bold",
-      count: producers?.meta.total || 0,
-    },
-    {
-      id: "videoCategory",
-      title: "Categorias de Vídeo",
-      icon: "solar:videocamera-record-bold-duotone",
-      count: formValues.videoCategory?.length || 0,
-    },
-  ];
-
-  const handleNavigate = (id: string, type: "settings" | "academy") => {
+  const handleNavigate = (id: string) => {
     setActiveItem((prev) => {
-      if (type !== navigationType) return [id];
       if (prev.includes(id)) {
         return prev.filter((item) => item !== id);
       }
       return [...prev, id];
     });
-    onNavigate(type);
 
-    const delay = type === navigationType ? 0 : 300;
+    const delay = 0;
     setTimeout(() => {
       const element = document.getElementById(`accordion-${id}`);
       if (element) {
@@ -176,12 +152,7 @@ export const FastNavigation = ({
       </div>
       <div className="flex flex-col gap-6">
         <div>
-          <h4
-            className={cn(
-              "text-xs font-medium text-default-500 mb-2 uppercase ml-2",
-              navigationType === "settings" ? "text-primary" : "text-default-500",
-            )}
-          >
+          <h4 className="text-xs font-medium text-default-500 mb-2 uppercase ml-2">
             Configurações Gerais
           </h4>
           <div className="flex flex-col gap-1">
@@ -189,44 +160,7 @@ export const FastNavigation = ({
               <button
                 key={item.id}
                 onClick={() => {
-                  handleNavigate(item.id, "settings");
-                }}
-                className="flex items-center gap-3 p-2 rounded-lg hover:bg-default-100 transition-colors text-left w-full group"
-              >
-                <Icon
-                  icon={item.icon}
-                  width={20}
-                  className={cn(
-                    "text-default-500 group-hover:text-foreground",
-                    activeItem.includes(item.id) ? "text-primary" : "text-default-500",
-                  )}
-                />
-                <span className="flex-1 text-sm text-foreground group-hover:text-primary">
-                  {item.title}
-                </span>
-                <span className="px-2 py-0.5 rounded-full bg-default-200 text-xs font-medium text-default-600">
-                  {item.count}
-                </span>
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div>
-          <h4
-            className={cn(
-              "text-xs font-medium text-default-500 mb-2 uppercase ml-2",
-              navigationType === "academy" ? "text-primary" : "text-default-500",
-            )}
-          >
-            Academy
-          </h4>
-          <div className="flex flex-col gap-1">
-            {academyItems.map((item) => (
-              <button
-                key={item.id}
-                onClick={() => {
-                  handleNavigate(item.id, "academy");
+                  handleNavigate(item.id);
                 }}
                 className="flex items-center gap-3 p-2 rounded-lg hover:bg-default-100 transition-colors text-left w-full group"
               >

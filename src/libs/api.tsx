@@ -23,6 +23,7 @@ export const api = createApi({
   endpoints: () => ({}),
   tagTypes: [
     "session",
+    "category",
     "spyOffers",
     "spyCategories",
     "spyCreatives",
@@ -34,7 +35,6 @@ export const api = createApi({
     "community-video",
     "community-video-comment",
     "settings",
-    "labsCategory",
     "plans",
     "creatives",
     "pages",

@@ -18,7 +18,7 @@ import {
 } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { useForm, Controller } from "react-hook-form";
-import { useUpdateLabsCategoryMutation } from "@/services/labs/category/labs-category.service";
+import { useUpdateCategoryMutation } from "@/services/category/category.service";
 import { ILabsCategory } from "@/types/labs/category/labs-category.type";
 import { useEffect } from "react";
 interface ModalEditCategoryProps extends Omit<ModalProps, "children"> {
@@ -31,7 +31,7 @@ export const ModalEditCategory = ({
   category,
   ...rest
 }: ModalEditCategoryProps) => {
-  const [updateCategory, { isLoading }] = useUpdateLabsCategoryMutation();
+  const [updateCategory, { isLoading }] = useUpdateCategoryMutation();
   const {
     handleSubmit,
     control,
