@@ -3,7 +3,6 @@
 import { Tab, Tabs } from "@heroui/react";
 import { SpyCommunity } from "./components/spy-community";
 import { Header } from "@/components/header";
-import { OffersTab } from "./offers/offers-tab";
 import { CreativesTab } from "./creatives/creatives-tab";
 import { useFilterByUnique } from "@/hooks/useFilterByUnique";
 
@@ -13,7 +12,6 @@ export const ScreenSpy = () => {
     resetPaginationOnChange: true,
   });
   const content = {
-    offers: <OffersTab />,
     creatives: <CreativesTab />,
   };
 

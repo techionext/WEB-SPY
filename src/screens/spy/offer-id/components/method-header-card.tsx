@@ -2,7 +2,7 @@
 
 import { ISpyOfferById } from "@/types/spy/spy-offers.type";
 import { getFlagCode, getLanguageName } from "@/utils/languageUtils";
-import { Button, Card, CardBody, Chip, Image, Tooltip } from "@heroui/react";
+import { Button, Card, CardBody, Image, Tooltip } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
@@ -49,14 +49,8 @@ export const MethodHeaderCard = ({ data }: MethodHeaderCardProps) => {
             <div className="space-y-1.5 min-w-0">
               <div className="flex items-center gap-3 flex-wrap">
                 <h2 className="text-xl font-semibold truncate">{data?.title}</h2>
-                <Chip size="sm" color={data?.status ? "success" : "danger"} variant="flat">
-                  {data?.status ? "Ativa" : "Pausada"}
-                </Chip>
               </div>
               <div className="flex items-center gap-2 flex-wrap text-sm text-default-500">
-                <Chip size="sm" variant="flat">
-                  {data?.code ?? "-"}
-                </Chip>
                 <span className="text-default-400">·</span>
                 <span>{data?.category?.title}</span>
                 <span className="text-default-400">·</span>
@@ -112,7 +106,6 @@ export const MethodHeaderCard = ({ data }: MethodHeaderCardProps) => {
           />
           <Info label="Nicho" value={data?.category?.title ?? "-"} />
           <Info label="Tráfego" value={data?.trafficNetwork ?? "-"} />
-          <Info label="Status" value={data?.status ? "Ativa" : "Pausada"} />
         </div>
       </CardBody>
     </Card>

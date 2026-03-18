@@ -43,41 +43,72 @@ export type ISpyOffer = {
 };
 
 export type ISpyOfferById = {
+  isFavorite: boolean;
   id: string;
-  code: string;
-  url: string;
-  type: string;
-  status: boolean;
   title: string;
   description: string;
-  isClimbing: boolean;
-  isCloaker: boolean;
   trafficNetwork: string;
   structure: string;
   language: string;
+  funnel: string;
   typeProduct: string;
-  funnel: string[];
-  totalClicks: number;
-  adQuantity: number;
-  createdAt: string;
-  updatedAt: string;
-  viewsQuantity: number;
-  disabledStatus: string;
-  analysisTime: string;
-  pitch: string;
+  isClimbing: boolean;
+  isCloaker: boolean;
+  filter: string;
+  image: {
+    id: string;
+    createdAt: string;
+    updatedAt: string;
+    categoryId: string;
+    url: string;
+    urlOriginal: string;
+    size: number;
+    originalName: string;
+    mimeType: string;
+    key: string;
+    keys: string[];
+    userId: string;
+    offerId: string;
+    creativeId: string;
+    vslId: string;
+    transcriptionVslId: string;
+    processStatus: string;
+    pageFileId: string;
+    pageImageId: string;
+  };
   category: {
     id: string;
     title: string;
+    icon: string;
+    image: {
+      id: string;
+      createdAt: string;
+      updatedAt: string;
+      categoryId: string;
+      url: string;
+      urlOriginal: string;
+      size: number;
+      originalName: string;
+      mimeType: string;
+      key: string;
+      keys: string[];
+      userId: string;
+      offerId: string;
+      creativeId: string;
+      vslId: string;
+      transcriptionVslId: string;
+      processStatus: string;
+      pageFileId: string;
+      pageImageId: string;
+    };
+    createdAt: string;
+    updatedAt: string;
   };
-  todayQuantity: number;
-  amountCreative: number;
-  amountPages: number;
-  amountVsl: number;
-  image: {
-    id: string;
-    url: string;
-    mimeType: string;
-  };
+  adQuantity: number;
+  viewsQuantity: number;
+  pitch: string;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export namespace ISpyOffersDTO {
@@ -169,13 +200,13 @@ export namespace ISpyOfferDTOById {
 export namespace ISpyOfferByIdHistoryDTO {
   export type Args = {
     id: string;
-    startDate?: string;
-    endDate?: string;
+    day?: string;
+    quantity?: number;
   };
-  export type Result = Array<{
-    date: string;
-    quantity: number;
-  }>;
+  export type Result = {
+    codeIntern: string;
+    message: string;
+  };
 }
 
 export type ISpyVSL = {
@@ -213,37 +244,27 @@ export namespace ISpyVSLSDTO {
   };
 }
 
-export namespace ISpyVSLDownloadDTO {
+export namespace ISpyOfferUpdateDTO {
   export type Args = {
     id: string;
+    title?: string;
+    description?: string;
+    trafficNetwork?: string;
+    structure?: string;
+    language?: string;
+    funnel?: string[];
+    typeProduct?: string;
+    isClimbing?: boolean;
+    isCloaker?: boolean;
+    filter?: string;
+    image?: File;
+    categoryId?: string;
+    adQuantity?: number;
+    viewsQuantity?: number;
+    pitch?: string;
   };
   export type Result = {
-    url: string;
+    codeIntern: string;
+    message: string;
   };
-}
-
-export type ISpyQuizStep = {
-  image: {
-    url: string;
-  };
-  id: string;
-  index: number;
-};
-
-export type ISpyQuiz = {
-  video: {
-    url: string;
-  };
-  steps: ISpyQuizStep[];
-  id: string;
-  url: string;
-  urlIsActive: boolean;
-  createdAt: string;
-};
-
-export namespace ISpyQuizDTO {
-  export type Args = {
-    id: string;
-  };
-  export type Result = ISpyQuiz;
 }

@@ -4,16 +4,11 @@ import { Header } from "@/components/header";
 import { useParams } from "next/navigation";
 import { MethodHeaderCard } from "./components/method-header-card";
 import { ActiveAdsCard } from "./components/active-ads-card";
-import { MetricCard } from "./components/metric-card";
-import { GraphCard } from "./components/graph-card";
 import { useGetSpyOfferByIdQuery } from "@/services/spy/spy-offers.service";
 import { Spinner, Tab, Tabs } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { useState } from "react";
 import { CreativesTabOffer } from "./components/creative-offer-tabs/creatives-tab-offer";
-import { OffersVSL } from "./components/vsls-offers-tabs/offers-VSL";
-import { OfferQuiz } from "./components/offer-quiz/offer-quiz";
-import { formatCompactNumber } from "@/utils/formatNumber";
 
 export const ScreenSpyOfferId = () => {
   const { id } = useParams();
@@ -38,18 +33,6 @@ export const ScreenSpyOfferId = () => {
       icon: "fluent:image-24-regular",
       content: <CreativesTabOffer />,
     },
-    {
-      key: "vsls",
-      label: "VSLs",
-      icon: "fluent:video-24-regular",
-      content: <OffersVSL />,
-    },
-    {
-      key: "quiz",
-      label: "Quiz",
-      icon: "solar:question-circle-outline",
-      content: <OfferQuiz />,
-    },
   ];
 
   return (
@@ -69,23 +52,6 @@ export const ScreenSpyOfferId = () => {
           description={data?.description ?? "Descrição não disponível."}
         />
       </div>
-
-      <div className="grid grid-cols-4 gap-4">
-        <MetricCard
-          title="Criativos"
-          value={data?.amountCreative ?? 0}
-          icon="solar:gallery-outline"
-        />
-        <MetricCard title="VSLs" value={data?.amountVsl ?? 0} icon="solar:chat-round-video-bold" />
-        <MetricCard title="Páginas" value={data?.amountPages ?? 0} icon="solar:document-outline" />
-        <MetricCard
-          title="Acessos"
-          value={formatCompactNumber(data?.totalClicks ?? 0)}
-          icon="solar:round-arrow-right-up-linear"
-        />
-      </div>
-
-      <GraphCard />
 
       <div className="flex flex-col gap-1 min-w-0 overflow-hidden w-full">
         <Tabs
