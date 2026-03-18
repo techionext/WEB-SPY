@@ -2,12 +2,10 @@ import { configureStore, createAction } from "@reduxjs/toolkit";
 import { api } from "./api";
 import { logger } from "./logger";
 import useSessionSlice from "@/features/session.slice";
-import useUploadSlice from "@/features/upload.slice";
 export const makeStore = () => {
   return configureStore({
     reducer: {
       session: useSessionSlice,
-      upload: useUploadSlice,
       [api.reducerPath]: api.reducer,
     },
     devTools: true,

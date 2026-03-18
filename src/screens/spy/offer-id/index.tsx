@@ -12,7 +12,6 @@ import { Icon } from "@iconify/react";
 import { useState } from "react";
 import { CreativesTabOffer } from "./components/creative-offer-tabs/creatives-tab-offer";
 import { OffersVSL } from "./components/vsls-offers-tabs/offers-VSL";
-import { OfferPagesTab } from "./components/offers-page/pages-tab";
 import { OfferQuiz } from "./components/offer-quiz/offer-quiz";
 import { formatCompactNumber } from "@/utils/formatNumber";
 
@@ -44,12 +43,6 @@ export const ScreenSpyOfferId = () => {
       label: "VSLs",
       icon: "fluent:video-24-regular",
       content: <OffersVSL />,
-    },
-    {
-      key: "pages",
-      label: "Páginas",
-      icon: "fluent:document-24-regular",
-      content: <OfferPagesTab />,
     },
     {
       key: "quiz",

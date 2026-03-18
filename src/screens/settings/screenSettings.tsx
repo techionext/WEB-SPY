@@ -17,12 +17,6 @@ import {
   SelectItem,
   Spinner,
   Tab,
-  Table,
-  TableBody,
-  TableCell,
-  TableColumn,
-  TableHeader,
-  TableRow,
   Tabs,
 } from "@heroui/react";
 import { Icon } from "@iconify/react";
@@ -32,8 +26,6 @@ import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { schemaUser, TSchemaUserInput, TSchemaUserOutput } from "./schema-user";
 import { Field } from "@/components/field/field";
-import { useGetSubscriptionsQuery } from "@/services/subscription/subscription.service";
-import { useGetPlansQuery } from "@/services/plan/plan.service";
 import { DropzoneWrapper, FileTypes } from "@/components/dropzone-wrapper/dropzone-wrapper";
 
 export const ScreenSettings = () => {
@@ -41,8 +33,6 @@ export const ScreenSettings = () => {
   const [viewInvoices, setViewInvoices] = useState(false);
   const { user } = useSession();
   const [updateUser, { isLoading: isUpdatingUser }] = useUpdateUserMutation();
-  const { data: subscriptions } = useGetSubscriptionsQuery({});
-  const { data: plansData } = useGetPlansQuery({ pageSize: 999 });
 
   const { control, handleSubmit, reset } = useForm<TSchemaUserInput, any, TSchemaUserOutput>({
     resolver: zodResolver(schemaUser),
@@ -572,148 +562,12 @@ export const ScreenSettings = () => {
                   {!viewInvoices ? (
                     <div>
                       <h3 className="font-semibold text-lg mb-4">Mude seu plano</h3>
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        {(plansData?.data ?? []).map((plan) => {
-                          const isCurrentPlan = plan.id === user?.subscription?.plan?.id;
-                          const isHighlight = plan.isHighlight || isCurrentPlan;
-                          return (
-                            <div
-                              key={plan.id}
-                              className={`relative p-5 rounded-2xl border-2 transition-all flex flex-col justify-between ${
-                                isHighlight
-                                  ? "border-primary bg-primary/5 shadow-md shadow-primary/10 scale-[1.02]"
-                                  : "border-divider hover:border-default-400 bg-content1"
-                              }`}
-                            >
-                              {isCurrentPlan && (
-                                <Chip
-                                  color="primary"
-                                  size="sm"
-                                  className="absolute -top-3 left-1/2 -translate-x-1/2 font-semibold"
-                                >
-                                  Plano Atual
-                                </Chip>
-                              )}
-
-                              <div>
-                                <div className="flex justify-between items-start mb-1">
-                                  <p className="font-bold text-xl">{plan.title}</p>
-                                </div>
-                                <p className="text-xs text-default-500 mb-4">{plan.description}</p>
-
-                                <div className="mb-6">
-                                  {plan.isFree ? (
-                                    <p className="text-3xl font-bold">Grátis</p>
-                                  ) : plan.price > 0 ? (
-                                    <p className="text-3xl font-bold">
-                                      {formatCurrency(plan.price)}
-                                      <span className="text-sm text-default-400 font-normal">
-                                        /mês
-                                      </span>
-                                    </p>
-                                  ) : (
-                                    <p className="text-xl font-bold pt-2">Sob consulta</p>
-                                  )}
-                                </div>
-
-                                <Divider className="mb-4 opacity-50" />
-
-                                <ul className="space-y-3 mb-6">
-                                  {plan.features.map((feature, i) => (
-                                    <li
-                                      key={i}
-                                      className="flex items-center gap-2 text-sm text-default-600"
-                                    >
-                                      <Icon
-                                        icon="solar:check-read-linear"
-                                        width={18}
-                                        className={
-                                          isHighlight ? "text-primary" : "text-default-400"
-                                        }
-                                      />
-                                      {feature}
-                                    </li>
-                                  ))}
-                                </ul>
-                              </div>
-
-                              <Button
-                                fullWidth
-                                variant={isCurrentPlan ? "flat" : "solid"}
-                                color={isCurrentPlan ? "primary" : "default"}
-                                isDisabled={isCurrentPlan}
-                                className="font-semibold"
-                              >
-                                {isCurrentPlan ? "Ativo Atualmente" : "Selecionar Plano"}
-                              </Button>
-                            </div>
-                          );
-                        })}
-                      </div>
                     </div>
                   ) : (
                     <section className="space-y-6">
                       <div className="flex justify-between items-center">
                         <h3 className="font-semibold text-lg mb-2">Histórico de Faturas</h3>
                       </div>
-
-                      <Table aria-label="Tabela de faturas" removeWrapper>
-                        <TableHeader>
-                          <TableColumn>PLANO</TableColumn>
-                          <TableColumn>MÉTODO</TableColumn>
-                          <TableColumn>STATUS</TableColumn>
-                          <TableColumn align="end">VALOR</TableColumn>
-                          <TableColumn align="end">PARCELA</TableColumn>
-                          <TableColumn align="end">DATA</TableColumn>
-                        </TableHeader>
-                        <TableBody emptyContent="Nenhuma fatura encontrada">
-                          {(subscriptions?.data ?? []).map((subscription) => (
-                            <TableRow key={subscription.id}>
-                              <TableCell className="text-sm text-default-500">
-                                {subscription.planName ?? "-"}
-                              </TableCell>
-
-                              <TableCell className="text-sm text-default-500">
-                                {subscription.paymentMethod}
-                              </TableCell>
-
-                              <TableCell>
-                                <Chip
-                                  size="sm"
-                                  variant="flat"
-                                  color={
-                                    subscription.status === "PAID"
-                                      ? "success"
-                                      : subscription.status === "REFUNDED"
-                                        ? "danger"
-                                        : "warning"
-                                  }
-                                >
-                                  {
-                                    {
-                                      PAID: "Pago",
-                                      CHARGEBACK: "Estorno",
-                                      REFUNDED: "Reembolsado",
-                                    }[subscription.status]
-                                  }
-                                </Chip>
-                              </TableCell>
-
-                              <TableCell>{formatCurrency(subscription.value)}</TableCell>
-
-                              <TableCell className="text-sm text-default-500">
-                                {subscription.installments}
-                              </TableCell>
-
-                              <TableCell className="text-sm">
-                                {subscription.paidAt
-                                  ? dayjs(subscription.paidAt).format("DD/MM/YYYY")
-                                  : "-"}
-                              </TableCell>
-                            </TableRow>
-                          ))}
-                        </TableBody>
-                      </Table>
                     </section>
                   )}
                 </div>

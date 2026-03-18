@@ -5,7 +5,6 @@ import { SpyCommunity } from "./components/spy-community";
 import { Header } from "@/components/header";
 import { OffersTab } from "./offers/offers-tab";
 import { CreativesTab } from "./creatives/creatives-tab";
-import { PagesTab } from "./pages/pages-tab";
 import { useFilterByUnique } from "@/hooks/useFilterByUnique";
 
 export const ScreenSpy = () => {
@@ -16,7 +15,6 @@ export const ScreenSpy = () => {
   const content = {
     offers: <OffersTab />,
     creatives: <CreativesTab />,
-    pages: <PagesTab />,
   };
 
   const tab = value || "offers";
@@ -41,7 +39,6 @@ export const ScreenSpy = () => {
           >
             <Tab key="offers" title="Ofertas" />
             <Tab key="creatives" title="Criativos" />
-            <Tab key="pages" title="Paginas" />
           </Tabs>
           {content[tab as keyof typeof content]}
         </div>

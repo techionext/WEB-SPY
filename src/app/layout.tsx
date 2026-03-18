@@ -4,7 +4,6 @@ import "@/styles/globals.css";
 // Import Swiper styles
 import "swiper/css";
 import { Providers } from "@/providers/proviers";
-import { PopoverUploading } from "@/components/popover-uploading/popover-uploading";
 
 const geistSans = Poppins({
   variable: "--font-poppins",
@@ -34,11 +33,7 @@ export default function RootLayout({
         suppressHydrationWarning
         className={`${geistSans.variable} ${geistMono.variable} antialiased  text-foreground relative`}
       >
-        <Providers>
-          <PopoverUploading />
-
-          {children}
-        </Providers>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
