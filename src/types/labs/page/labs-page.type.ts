@@ -13,6 +13,7 @@ export type ILabsPage = {
   url: string;
   type: string;
   title: string;
+  description: string;
   createdAt: string;
   updatedAt: string;
   offerId: string;
@@ -22,7 +23,10 @@ export namespace ICreateLabsPageDTO {
   export type Args = {
     type: string;
     url?: string;
+    description?: string;
     file?: File;
+    image?: File;
+    makeScraper?: boolean;
     title?: string;
     offerId: string;
   };

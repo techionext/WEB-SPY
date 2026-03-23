@@ -316,6 +316,7 @@ export type ILabsPages = {
   url: string;
   type: string;
   title: string;
+  description: string;
   createdAt: string;
   updatedAt: string;
   offerId: string;
@@ -342,10 +343,12 @@ export namespace IUpdateLabsPageDTO {
   export type Args = {
     id: string;
     url?: string;
+    description?: string;
     type: string;
     file?: File;
     title?: string;
     image?: File;
+    makeScraper?: boolean;
     offerId: string;
   };
   export type Result = {

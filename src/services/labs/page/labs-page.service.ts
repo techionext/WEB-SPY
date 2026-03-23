@@ -4,7 +4,7 @@ import { ILabsPagesDTO, IUpdateLabsPageDTO } from "@/types/offer/offer.type";
 import { convertToFormData } from "@/utils/converteToFormData";
 import { buildQueryString } from "@/utils/generateUrlWithParams";
 
-const prefix = "labs/page";
+const prefix = "page";
 
 export const labsPageServices = api.injectEndpoints({
   endpoints: (builder) => ({
