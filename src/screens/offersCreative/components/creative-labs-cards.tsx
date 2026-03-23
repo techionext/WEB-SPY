@@ -1,5 +1,5 @@
 import { ModalRemove } from "@/components/modal-remove/modal-remove";
-import { useDeleteLabsCreativeMutation } from "@/services/labs/creative/labs-creative.service";
+import { useDeleteLabsCreativeMutation } from "@/services/creative/creative.service";
 import { ILabsCreative } from "@/types/labs/creative/labs-creative.type";
 import { Button, Card, CardBody, CardFooter, Image } from "@heroui/react";
 import { Icon } from "@iconify/react";

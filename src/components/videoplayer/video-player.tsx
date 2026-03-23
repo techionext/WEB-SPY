@@ -5,7 +5,6 @@ import { useEffect, useRef } from "react";
 import Hls from "hls.js";
 
 import "react-video-seek-slider/styles.css";
-import { ReactPlayerProps } from "react-player/types";
 import { Image } from "@heroui/react";
 
 export function VideoPlayer({
@@ -13,13 +12,32 @@ export function VideoPlayer({
   type = "video",
   poster,
   autoPlay = false,
+  className = "",
+  videoClassName = "",
+  controls = true,
+  muted = false,
+  playing = false,
 }: {
   url: string;
   type?: string;
   poster?: string;
   autoPlay?: boolean;
-} & ReactPlayerProps) {
+  className?: string;
+  videoClassName?: string;
+  controls?: boolean;
+  muted?: boolean;
+  playing?: boolean;
+}) {
   const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    if (!videoRef.current) return;
+    if (playing) {
+      videoRef.current.play().catch(() => {});
+    } else {
+      videoRef.current.pause();
+    }
+  }, [playing]);
 
   useEffect(() => {
     if (!videoRef.current) return;
@@ -53,14 +71,16 @@ export function VideoPlayer({
 
   if (type?.startsWith("video")) {
     return (
-      <div className="aspect-video overflow-hidden rounded-lg bg-[#111111]">
+      <div className={`aspect-video overflow-hidden rounded-lg bg-[#111111] ${className}`}>
         <video
           poster={poster}
           ref={videoRef}
-          controls
+          controls={controls}
           autoPlay={autoPlay}
-          className="size-full"
+          muted={muted}
+          className={`size-full ${videoClassName}`}
           crossOrigin="anonymous"
+          playsInline
         />
       </div>
     );
@@ -68,12 +88,12 @@ export function VideoPlayer({
 
   if (type?.startsWith("image")) {
     return (
-      <div className="flex aspect-video h-full items-center justify-center">
+      <div className={`flex aspect-video h-full items-center justify-center ${className}`}>
         <Image
           removeWrapper
           src={url}
           alt="Imagem"
-          className="aspect-video max-h-full max-w-full rounded-lg"
+          className={`aspect-video max-h-full max-w-full rounded-lg ${videoClassName}`}
         />
       </div>
     );

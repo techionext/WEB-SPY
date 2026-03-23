@@ -88,7 +88,7 @@ export const CardOfferLabs = ({ data, onFavorite, onRemove }: Props) => {
       as="div"
       isPressable
       className="card transition-all hover:scale-[1.01]"
-      onPress={() => router.push(`/offers/${data.id}`)}
+      onPress={() => router.push(`/offers/${data.id}/edit`)}
     >
       <CardHeader className="p-0 relative">
         <Image
@@ -204,7 +204,7 @@ export const CardOfferLabs = ({ data, onFavorite, onRemove }: Props) => {
           size="sm"
           variant="solid"
           radius="full"
-          onPress={() => router.push(`/offers/${data.id}`)}
+          onPress={() => router.push(`/offers/${data.id}/edit`)}
           className="w-full bg-linear-to-r from-primary to-primary/50"
         >
           Ver oferta

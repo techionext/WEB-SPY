@@ -37,8 +37,8 @@ export const Aside = () => {
       key: "creatives",
       icon: "solar:gallery-minimalistic-bold",
       label: "Criativos",
-      href: "/spy?tab=creatives",
-      isActive: onlyPathname === "/spy" && searchParams.get("tab") === "creatives",
+      href: "/creatives",
+      isActive: onlyPathname === "/creatives",
       endContent: undefined,
     },
     {

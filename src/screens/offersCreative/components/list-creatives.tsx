@@ -1,5 +1,5 @@
 import { Empty } from "@/components/empty/empty";
-import { useGetLabsCreativeQuery } from "@/services/labs/creative/labs-creative.service";
+import { useGetLabsCreativeQuery } from "@/services/creative/creative.service";
 import { useParams, useSearchParams } from "next/navigation";
 import { CreativeLabsCards } from "./creative-labs-cards";
 import { Pagination } from "@/components/pagination";

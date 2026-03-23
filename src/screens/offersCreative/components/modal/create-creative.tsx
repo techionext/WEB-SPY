@@ -21,7 +21,7 @@ import { Icon } from "@iconify/react";
 import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { SchemaCreativeInput, SchemaCreativeOutput, schemaCreative } from "./schemaCreative";
-import { useCreateLabsCreativeMutation } from "@/services/labs/creative/labs-creative.service";
+import { useCreateLabsCreativeMutation } from "@/services/creative/creative.service";
 import { useParams } from "next/navigation";
 import { VideoPlayer } from "@/components/videoplayer/video-player";
 import { TrafficNetwork, trafficNetworkValues } from "@/types/offer/offer.type";

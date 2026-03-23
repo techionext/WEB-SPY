@@ -14,6 +14,9 @@ export type TTrafficNetwork =
 type TrafficNetworkConfig = {
   label: string;
   icon: string;
+  color: string;
+  bgColor: string;
+  borderColor: string;
 };
 
 export enum TrafficNetwork {
@@ -32,38 +35,65 @@ export const trafficNetworkValues: Record<TrafficNetwork, TrafficNetworkConfig> 
   [TrafficNetwork.FACEBOOK]: {
     label: "Facebook",
     icon: "logos:facebook",
+    color: "text-[#3b82f6]",
+    bgColor: "bg-[#182a4d]/80",
+    borderColor: "border-[#3b82f6]/30",
   },
   [TrafficNetwork.YOUTUBE]: {
     label: "YouTube",
     icon: "logos:youtube-icon",
+    color: "text-[#ef4444]",
+    bgColor: "bg-[#4d1818]/80",
+    borderColor: "border-[#ef4444]/30",
   },
   [TrafficNetwork.TIKTOK]: {
     label: "TikTok",
     icon: "logos:tiktok-icon",
+    color: "text-[#ffffff]",
+    bgColor: "bg-[#1c1c1e]/80",
+    borderColor: "border-[#ffffff]/30",
   },
   [TrafficNetwork.INSTAGRAM]: {
     label: "Instagram",
     icon: "skill-icons:instagram",
+    color: "text-[#e1306c]",
+    bgColor: "bg-[#4d1836]/80",
+    borderColor: "border-[#e1306c]/30",
   },
   [TrafficNetwork.GOOGLE]: {
     label: "Google",
     icon: "logos:google-icon",
+    color: "text-[#34a853]",
+    bgColor: "bg-[#18364d]/80",
+    borderColor: "border-[#34a853]/30",
   },
   [TrafficNetwork.KWAI]: {
     label: "Kwai",
     icon: "solar:global-bold-duotone",
+    color: "text-[#ff8c00]",
+    bgColor: "bg-[#4d3618]/80",
+    borderColor: "border-[#ff8c00]/30",
   },
   [TrafficNetwork.OUTBRAIN]: {
     label: "Outbrain",
     icon: "solar:global-bold-duotone",
+    color: "text-[#ffffff]",
+    bgColor: "bg-[#1c1c1e]/80",
+    borderColor: "border-[#ffffff]/30",
   },
   [TrafficNetwork.TABOOLA]: {
     label: "Taboola",
     icon: "solar:global-bold-duotone",
+    color: "text-[#ffffff]",
+    bgColor: "bg-[#1c1c1e]/80",
+    borderColor: "border-[#ffffff]/30",
   },
   [TrafficNetwork.SNAPCHAT]: {
     label: "Snapchat",
     icon: "ic:baseline-snapchat",
+    color: "text-[#fffc00]",
+    bgColor: "bg-[#4d4d18]/80",
+    borderColor: "border-[#fffc00]/30",
   },
 };
 

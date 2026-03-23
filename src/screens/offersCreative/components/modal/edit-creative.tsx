@@ -23,7 +23,7 @@ import {
   schemaEditCreative,
 } from "./schemaCreative";
 import { useParams } from "next/navigation";
-import { useUpdateLabsCreativeMutation } from "@/services/labs/creative/labs-creative.service";
+import { useUpdateLabsCreativeMutation } from "@/services/creative/creative.service";
 import { useEffect } from "react";
 import { ILabsCreative } from "@/types/labs/creative/labs-creative.type";
 import { VideoPlayer } from "@/components/videoplayer/video-player";
