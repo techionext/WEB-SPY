@@ -9,51 +9,44 @@ import { Fragment } from "react/jsx-runtime";
 import { UserPopover } from "./user-popover";
 import { AppsPopover } from "./apps-popover";
 
+interface MenuItem {
+  key: string;
+  icon: string;
+  label: string;
+  href?: string;
+  isActive: boolean;
+  endContent?: React.ReactNode;
+  items?: MenuItem[];
+}
+
 export const Aside = () => {
   const searchParams = useSearchParams();
   const { user } = useSession();
   const pathname = usePathname();
   const onlyPathname = pathname.split("?")[0];
-  const menuItems = [
-    {
-      key: "spy",
-      icon: "solar:filters-bold",
-      label: "Spy center",
-      endContent: <Icon icon="solar:alt-arrow-down-line-duotone" />,
-      isActive: false,
-      items: [
-        {
-          key: "offers",
-          icon: "solar:folder-favourite-star-bold",
-          label: "Ofertas",
-          href: "/spy?tab=offers",
-          isActive: onlyPathname === "/spy" && searchParams.get("tab") === "offers",
-          endContent: undefined,
-        },
-        {
-          key: "creatives",
-          icon: "solar:gallery-minimalistic-bold",
-          label: "Criativos",
-          href: "/spy?tab=creatives",
-          isActive: onlyPathname === "/spy" && searchParams.get("tab") === "creatives",
-          endContent: undefined,
-        },
-        {
-          key: "pages",
-          icon: "solar:file-bold",
-          label: "Páginas",
-          href: "/spy?tab=pages",
-          isActive: onlyPathname === "/spy" && searchParams.get("tab") === "pages",
-          endContent: undefined,
-        },
-      ],
-    },
+  const menuItems: MenuItem[] = [
     {
       key: "offers",
       icon: "solar:hamburger-menu-bold",
       label: "Ofertas",
       href: "/offers",
       isActive: onlyPathname === "/offers",
+      endContent: undefined,
+    },
+    {
+      key: "creatives",
+      icon: "solar:gallery-minimalistic-bold",
+      label: "Criativos",
+      href: "/spy?tab=creatives",
+      isActive: onlyPathname === "/spy" && searchParams.get("tab") === "creatives",
+      endContent: undefined,
+    },
+    {
+      key: "pages",
+      icon: "solar:file-bold",
+      label: "Páginas",
+      href: "/spy?tab=pages",
+      isActive: onlyPathname === "/spy" && searchParams.get("tab") === "pages",
       endContent: undefined,
     },
   ];

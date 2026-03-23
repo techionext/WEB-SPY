@@ -9,6 +9,7 @@ import { Spinner, Tab, Tabs } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { useState } from "react";
 import { CreativesTabOffer } from "./components/creative-offer-tabs/creatives-tab-offer";
+import { OfferPagesTab } from "./components/offers-page/pages-tab";
 
 export const ScreenSpyOfferId = () => {
   const { id } = useParams();
@@ -32,6 +33,12 @@ export const ScreenSpyOfferId = () => {
       label: "Criativos",
       icon: "fluent:image-24-regular",
       content: <CreativesTabOffer />,
+    },
+    {
+      key: "pages",
+      label: "Páginas",
+      icon: "fluent:document-24-regular",
+      content: <OfferPagesTab />,
     },
   ];
 
