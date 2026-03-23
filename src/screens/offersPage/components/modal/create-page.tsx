@@ -8,7 +8,6 @@ import {
   ModalHeader,
   Select,
   SelectItem,
-  Switch,
   Textarea,
   useDisclosure,
 } from "@heroui/react";
@@ -21,6 +20,7 @@ import { useParams } from "next/navigation";
 import { useCreateLabsPageMutation } from "@/services/labs/page/labs-page.service";
 import { DropzoneWrapper, FileTypes } from "@/components/dropzone-wrapper/dropzone-wrapper";
 import { useGetSettingsQuery } from "@/services/settings/settings.service";
+import { SwitchForm } from "@/components/switch-forms/switch-forms";
 
 export const CreatePage = () => {
   const { id } = useParams<{ id: string }>();
@@ -150,10 +150,12 @@ export const CreatePage = () => {
                   control={control}
                   name="makeScraper"
                   render={({ field }) => (
-                    <div className="flex flex-col gap-2">
-                      <p className="text-sm">Realizar scrapper</p>
-                      <Switch isSelected={field.value} onValueChange={field.onChange} />
-                    </div>
+                    <SwitchForm
+                      label="Realizar scraper?"
+                      description="Extrair dados da página"
+                      isSelected={field.value}
+                      onValueChange={field.onChange}
+                    />
                   )}
                 />
 

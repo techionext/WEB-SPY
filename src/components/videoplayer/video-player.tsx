@@ -54,7 +54,14 @@ export function VideoPlayer({
   if (type?.startsWith("video")) {
     return (
       <div className="aspect-video overflow-hidden rounded-lg bg-[#111111]">
-        <video poster={poster} ref={videoRef} controls autoPlay={autoPlay} className="size-full" />
+        <video
+          poster={poster}
+          ref={videoRef}
+          controls
+          autoPlay={autoPlay}
+          className="size-full"
+          crossOrigin="anonymous"
+        />
       </div>
     );
   }

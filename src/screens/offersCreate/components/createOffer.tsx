@@ -10,7 +10,6 @@ import {
   Image,
   Select,
   SelectItem,
-  Switch,
   Textarea,
   TimeInput,
 } from "@heroui/react";
@@ -30,6 +29,7 @@ import { Icon } from "@iconify/react";
 import { useCreateSpyOfferMutation } from "@/services/spy/spy-offers.service";
 import { useRouter } from "next/navigation";
 import { parseTime } from "@internationalized/date";
+import { SwitchForm } from "@/components/switch-forms/switch-forms";
 
 export const CreateOffer = () => {
   const router = useRouter();
@@ -40,7 +40,6 @@ export const CreateOffer = () => {
     defaultValues: {
       isClimbing: false,
       isCloaker: false,
-      filter: "",
     },
   });
 
@@ -252,38 +251,27 @@ export const CreateOffer = () => {
                 control={control}
                 name="isClimbing"
                 render={({ field }) => (
-                  <div className="flex flex-col gap-2">
-                    <p className="text-sm">Em escala?</p>
-                    <Switch isSelected={field.value} onValueChange={field.onChange} />
-                  </div>
+                  <SwitchForm
+                    label="Em escala?"
+                    description="Escalar automaticamente"
+                    isSelected={field.value}
+                    onValueChange={field.onChange}
+                  />
                 )}
               />
               <Controller
                 control={control}
                 name="isCloaker"
                 render={({ field }) => (
-                  <div className="flex flex-col gap-2">
-                    <p className="text-sm">Usa Cloaker?</p>
-                    <Switch isSelected={field.value} onValueChange={field.onChange} />
-                  </div>
+                  <SwitchForm
+                    label="Usa Cloaker?"
+                    description="Filtrar tráfego"
+                    isSelected={field.value}
+                    onValueChange={field.onChange}
+                  />
                 )}
               />
             </div>
-
-            <Controller
-              control={control}
-              name="filter"
-              render={({ field, fieldState: { invalid, error } }) => (
-                <Field
-                  {...field}
-                  label="Filtro (opcional)"
-                  placeholder="Digite o filtro da oferta"
-                  labelPlacement="outside"
-                  isInvalid={invalid}
-                  errorMessage={error?.message}
-                />
-              )}
-            />
 
             <Controller
               control={control}

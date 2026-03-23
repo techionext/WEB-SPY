@@ -98,6 +98,54 @@ export const CreateVSL = () => {
 
                 <Controller
                   control={control}
+                  name="video"
+                  render={({ field }) => {
+                    const file = field.value as File | undefined;
+
+                    return (
+                      <div className="flex flex-col gap-2">
+                        <label className="text-sm font-medium text-foreground">Vídeo</label>
+
+                        <DropzoneWrapper
+                          acceptedTypes={FileTypes.VIDEO}
+                          onUploadSuccess={(files) => field.onChange(files[0])}
+                        >
+                          {() => (
+                            <div className="group bg-content1 relative aspect-video w-full cursor-pointer rounded-xl overflow-hidden border-2 border-dashed border-divider hover:border-primary transition-all">
+                              {file ? (
+                                <>
+                                  <video
+                                    src={URL.createObjectURL(file)}
+                                    className="h-full w-full object-cover"
+                                  />
+                                  <div className="absolute inset-0 z-5 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                                    <Icon
+                                      icon="solar:videocamera-add-bold-duotone"
+                                      className="text-white text-3xl"
+                                    />
+                                  </div>
+                                </>
+                              ) : (
+                                <div className="flex flex-col items-center justify-center h-full gap-2 p-4">
+                                  <Icon
+                                    icon="solar:videocamera-add-bold-duotone"
+                                    className="text-default-400 text-3xl group-hover:text-primary transition-colors"
+                                  />
+                                  <span className="text-xs text-default-500 font-medium uppercase tracking-wider">
+                                    Clique para selecionar o vídeo
+                                  </span>
+                                </div>
+                              )}
+                            </div>
+                          )}
+                        </DropzoneWrapper>
+                      </div>
+                    );
+                  }}
+                />
+
+                <Controller
+                  control={control}
                   name="transcription"
                   render={({ field }) => {
                     const file = field.value as File | undefined;

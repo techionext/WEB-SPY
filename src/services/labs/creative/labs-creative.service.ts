@@ -19,7 +19,7 @@ export const labsCreativeServices = api.injectEndpoints({
       query: (args) => ({
         url: prefix,
         method: "POST",
-        body: convertToFormData(args),
+        body: convertToFormData({ ...args, video: undefined }),
       }),
       invalidatesTags: [{ type: "creatives", id: "LIST" }],
     }),

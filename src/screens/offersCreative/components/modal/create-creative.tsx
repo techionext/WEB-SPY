@@ -13,7 +13,6 @@ import {
   ModalHeader,
   Select,
   SelectItem,
-  Switch,
   Textarea,
   useDisclosure,
 } from "@heroui/react";
@@ -28,6 +27,7 @@ import { VideoPlayer } from "@/components/videoplayer/video-player";
 import { TrafficNetwork, trafficNetworkValues } from "@/types/offer/offer.type";
 import { languages } from "@/components/select-language/countries";
 import { useGetLabsPagesQuery } from "@/services/labs/page/labs-page.service";
+import { SwitchForm } from "@/components/switch-forms/switch-forms";
 
 export const CreateCreative = () => {
   const { id } = useParams<{ id: string }>();
@@ -230,18 +230,24 @@ export const CreateCreative = () => {
                     control={control}
                     name="isClimbing"
                     render={({ field }) => (
-                      <Switch isSelected={field.value} onValueChange={field.onChange}>
-                        Em escala?
-                      </Switch>
+                      <SwitchForm
+                        label="Em escala?"
+                        description="Escalar automaticamente"
+                        isSelected={field.value}
+                        onValueChange={field.onChange}
+                      />
                     )}
                   />
                   <Controller
                     control={control}
                     name="status"
                     render={({ field }) => (
-                      <Switch isSelected={field.value} onValueChange={field.onChange}>
-                        Status ativo?
-                      </Switch>
+                      <SwitchForm
+                        label="Status ativo?"
+                        description="Ativar ao criar"
+                        isSelected={field.value}
+                        onValueChange={field.onChange}
+                      />
                     )}
                   />
                 </div>
@@ -251,7 +257,7 @@ export const CreateCreative = () => {
                   name="image"
                   render={({ field, fieldState: { invalid, error } }) => (
                     <div className="flex flex-col gap-2">
-                      <label className="text-sm font-medium text-foreground">Imagem</label>
+                      <label className="text-sm font-medium text-foreground">Imagem/Vídeo</label>
                       <DropzoneWrapper
                         acceptedTypes={FileTypes.ANY}
                         onUploadSuccess={(v) => field.onChange(v[0])}
@@ -272,7 +278,7 @@ export const CreateCreative = () => {
                                 src={
                                   field.value
                                     ? URL.createObjectURL(field.value as File)
-                                    : "https://placehold.co/600x400?text=Sem+imagem"
+                                    : "https://placehold.co/600x400?text=Sem+conteúdo"
                                 }
                               />
                             )}

@@ -71,6 +71,7 @@ export namespace ICreateLabsVSLDTO {
   export type Args = {
     title: string;
     description?: string;
+    video?: File;
     transcription?: File | { id: string; text: string };
     offerId: string;
   };
@@ -104,6 +105,7 @@ export namespace IUpdateLabsVSLDTO {
     id: string;
     title: string;
     description?: string;
+    video?: File;
     transcription?: File | { id: string; text: string };
   };
   export type Result = {

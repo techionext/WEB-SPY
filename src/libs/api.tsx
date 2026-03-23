@@ -32,6 +32,10 @@ export const api = createApi({
     "spyOffers",
     "session",
     "users",
+    "community",
+    "community-video",
+    "community-video-comment",
+    "community-video-group",
   ],
 });
 

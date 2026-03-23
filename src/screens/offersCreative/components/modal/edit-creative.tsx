@@ -13,7 +13,6 @@ import {
   ModalHeader,
   Select,
   SelectItem,
-  Switch,
   Textarea,
 } from "@heroui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -32,6 +31,7 @@ import { Icon } from "@iconify/react";
 import { TrafficNetwork, trafficNetworkValues } from "@/types/offer/offer.type";
 import { languages } from "@/components/select-language/countries";
 import { useGetLabsPagesQuery } from "@/services/labs/page/labs-page.service";
+import { SwitchForm } from "@/components/switch-forms/switch-forms";
 
 type EditCreativeProps = {
   creative: ILabsCreative;
@@ -155,7 +155,7 @@ export const EditCreative = ({ creative, setEditCreative }: EditCreativeProps) =
                             >
                               {trafficNetworkValues[trafficNetwork].label}
                             </SelectItem>
-                          )
+                          ),
                         )}
                       </Select>
                     )}
@@ -180,7 +180,11 @@ export const EditCreative = ({ creative, setEditCreative }: EditCreativeProps) =
                             key={language.value}
                             textValue={language.label}
                             startContent={
-                              <Avatar alt={language.label} className="w-6 h-6" src={language.flag} />
+                              <Avatar
+                                alt={language.label}
+                                className="w-6 h-6"
+                                src={language.flag}
+                              />
                             }
                           >
                             {language.label}
@@ -234,52 +238,56 @@ export const EditCreative = ({ creative, setEditCreative }: EditCreativeProps) =
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <Controller
                     control={control}
-                    name="creationType"
-                    render={({ field, fieldState: { invalid, error } }) => (
-                      <Select
-                        {...field}
-                        label="Tipo de criação"
-                        placeholder="Selecione o tipo de criação"
-                        labelPlacement="outside"
-                        isInvalid={invalid}
-                        errorMessage={error?.message}
-                        selectedKeys={[field.value ?? ""]}
-                        onSelectionChange={(v) => field.onChange(v.currentKey)}
-                      >
-                        <SelectItem key="AUTOMATIC">AUTOMATIC</SelectItem>
-                        <SelectItem key="MANUAL">MANUAL</SelectItem>
-                      </Select>
-                    )}
-                  />
-                </div>
-
-                <div className="flex flex-row gap-4">
-                  <Controller
-                    control={control}
                     name="isClimbing"
                     render={({ field }) => (
-                      <Switch isSelected={field.value} onValueChange={field.onChange}>
-                        Em escala?
-                      </Switch>
+                      <SwitchForm
+                        label="Em escala?"
+                        description="Escalar automaticamente"
+                        isSelected={field.value}
+                        onValueChange={field.onChange}
+                      />
                     )}
                   />
                   <Controller
                     control={control}
                     name="status"
                     render={({ field }) => (
-                      <Switch isSelected={field.value} onValueChange={field.onChange}>
-                        Status ativo?
-                      </Switch>
+                      <SwitchForm
+                        label="Status ativo?"
+                        description="Ativo no momento"
+                        isSelected={field.value}
+                        onValueChange={field.onChange}
+                      />
                     )}
                   />
                 </div>
 
                 <Controller
                   control={control}
+                  name="creationType"
+                  render={({ field, fieldState: { invalid, error } }) => (
+                    <Select
+                      {...field}
+                      label="Tipo de criação"
+                      placeholder="Selecione o tipo de criação"
+                      labelPlacement="outside"
+                      isInvalid={invalid}
+                      errorMessage={error?.message}
+                      selectedKeys={[field.value ?? ""]}
+                      onSelectionChange={(v) => field.onChange(v.currentKey)}
+                    >
+                      <SelectItem key="AUTOMATIC">AUTOMATIC</SelectItem>
+                      <SelectItem key="MANUAL">MANUAL</SelectItem>
+                    </Select>
+                  )}
+                />
+
+                <Controller
+                  control={control}
                   name="image"
                   render={({ field }) => (
                     <div className="flex flex-col gap-2">
-                      <label className="text-sm font-medium text-foreground">Imagem</label>
+                      <label className="text-sm font-medium text-foreground">Imagem/Vídeo</label>
                       <DropzoneWrapper
                         acceptedTypes={FileTypes.ANY}
                         onUploadSuccess={(v) => field.onChange(v[0])}
@@ -315,16 +323,16 @@ export const EditCreative = ({ creative, setEditCreative }: EditCreativeProps) =
                                     src={creative.image.url}
                                   />
                                 );
-                                }
+                              }
 
-                                return (
-                                  <Image
-                                    removeWrapper
-                                    alt="Imagem do criativo"
-                                    className="z-0 aspect-square h-full w-full object-cover"
-                                    src="https://placehold.co/600x400?text=Sem+imagem"
-                                  />
-                                );
+                              return (
+                                <Image
+                                  removeWrapper
+                                  alt="Imagem do criativo"
+                                  className="z-0 aspect-square h-full w-full object-cover"
+                                  src="https://placehold.co/600x400?text=Sem+imagem"
+                                />
+                              );
                             })()}
 
                             <div className="absolute inset-0 z-5 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity" />

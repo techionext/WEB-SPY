@@ -9,7 +9,6 @@ import {
   ModalHeader,
   Select,
   SelectItem,
-  Switch,
   Textarea,
 } from "@heroui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -22,6 +21,7 @@ import { useUpdateLabsPageMutation } from "@/services/labs/page/labs-page.servic
 import { DropzoneWrapper, FileTypes } from "@/components/dropzone-wrapper/dropzone-wrapper";
 import { Icon } from "@iconify/react";
 import { useGetSettingsQuery } from "@/services/settings/settings.service";
+import { SwitchForm } from "@/components/switch-forms/switch-forms";
 
 type EditPageProps = {
   page: ILabsPage;
@@ -158,9 +158,12 @@ export const EditPage = ({ page, setEditPage }: EditPageProps) => {
                   control={control}
                   name="makeScraper"
                   render={({ field }) => (
-                    <Switch isSelected={field.value} onValueChange={field.onChange}>
-                      Criar Scraper?
-                    </Switch>
+                    <SwitchForm
+                      label="Criar Scraper?"
+                      description="Extrair dados da página"
+                      isSelected={field.value}
+                      onValueChange={field.onChange}
+                    />
                   )}
                 />
 

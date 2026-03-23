@@ -21,7 +21,6 @@ export const schemaEditOffer = z.object({
     .min(1, { message: "Categoria é obrigatório" }),
   isClimbing: z.boolean().default(false),
   isCloaker: z.boolean().default(false),
-  filter: z.string().optional(),
   image: z.instanceof(File).optional(),
   pitch: z.string().optional(),
 });

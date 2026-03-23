@@ -102,10 +102,10 @@ export const CardOfferLabs = ({ data, onFavorite, onRemove }: Props) => {
         <Chip
           size="sm"
           className="absolute text-xs z-50 top-2 left-2"
-          color={REQUEST_STATUS_LABELS[status].color}
+          color={REQUEST_STATUS_LABELS[status]?.color}
           variant="flat"
         >
-          {REQUEST_STATUS_LABELS[status].label}
+          {REQUEST_STATUS_LABELS[status]?.label}
         </Chip>
 
         <div className="absolute z-50 top-2 right-2">

@@ -5,6 +5,7 @@ export const schemaVSL = z.object({
     .string({ message: "Título é obrigatório" })
     .min(3, { message: "Título deve ter no mínimo 3 caracteres" }),
   description: z.string().optional(),
+  video: z.instanceof(File).optional(),
   transcription: z
     .union([z.instanceof(File), z.object({ id: z.string(), text: z.string() })])
     .optional(),

@@ -12,7 +12,6 @@ export type ISpyOffer = {
   typeProduct: string;
   isClimbing: boolean;
   isCloaker: boolean;
-  filter: string;
   image: {
     id: string;
     createdAt: string;
@@ -293,7 +292,6 @@ export namespace ISpyOfferCreateDTO {
     typeProduct: string;
     isClimbing: boolean;
     isCloaker: boolean;
-    filter?: string;
     image?: File;
     categoryId: string;
     pitch?: string;

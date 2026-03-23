@@ -10,7 +10,6 @@ import {
   Image,
   Select,
   SelectItem,
-  Switch,
   Textarea,
   TimeInput,
 } from "@heroui/react";
@@ -27,6 +26,7 @@ import { useParams } from "next/navigation";
 import { useEffect } from "react";
 import { schemaEditOffer, SchemaEditOfferOutput, SchemaEditOfferInput } from "./schemaEditOffer";
 import { parseTime } from "@internationalized/date";
+import { SwitchForm } from "@/components/switch-forms/switch-forms";
 import {
   useGetSpyOfferByIdQuery,
   useUpdateSpyOfferMutation,
@@ -42,7 +42,6 @@ export const EditOffer = () => {
     defaultValues: {
       isClimbing: false,
       isCloaker: false,
-      filter: "",
     },
   });
 
@@ -70,7 +69,6 @@ export const EditOffer = () => {
         pitch: offer.pitch,
         isClimbing: offer.isClimbing,
         isCloaker: offer.isCloaker,
-        filter: offer.filter,
       });
     }
   }, [offer, form]);
@@ -277,38 +275,27 @@ export const EditOffer = () => {
                 control={control}
                 name="isClimbing"
                 render={({ field }) => (
-                  <div className="flex flex-col gap-2">
-                    <p className="text-sm">Em escala?</p>
-                    <Switch isSelected={field.value} onValueChange={field.onChange} />
-                  </div>
+                  <SwitchForm
+                    label="Em escala?"
+                    description="Escalar automaticamente"
+                    isSelected={field.value}
+                    onValueChange={field.onChange}
+                  />
                 )}
               />
               <Controller
                 control={control}
                 name="isCloaker"
                 render={({ field }) => (
-                  <div className="flex flex-col gap-2">
-                    <p className="text-sm">Usa Cloaker?</p>
-                    <Switch isSelected={field.value} onValueChange={field.onChange} />
-                  </div>
+                  <SwitchForm
+                    label="Usa Cloaker?"
+                    description="Filtrar tráfego"
+                    isSelected={field.value}
+                    onValueChange={field.onChange}
+                  />
                 )}
               />
             </div>
-
-            <Controller
-              control={control}
-              name="filter"
-              render={({ field, fieldState: { invalid, error } }) => (
-                <Field
-                  {...field}
-                  label="Filtro (opcional)"
-                  placeholder="Digite o filtro da oferta"
-                  labelPlacement="outside"
-                  isInvalid={invalid}
-                  errorMessage={error?.message}
-                />
-              )}
-            />
 
             <Controller
               control={control}
