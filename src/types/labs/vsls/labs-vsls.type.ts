@@ -1,23 +1,22 @@
 export type ILabsVsl = {
-  transcriptionVsl: {
-    id: string;
-    text: string;
-    url: string;
-    key: string;
-  };
-  video: {
-    id: string;
-    url: string;
-    mimeType: string;
-    key: string;
-  };
-  processStatus: "UPLOADING" | "COMPLETED" | "PROCESSING";
   id: string;
   title: string;
   description: string;
   offerId: string;
   createdAt: string;
   updatedAt: string;
+  video: {
+    id: string;
+    url: string;
+    key: string;
+  };
+  processStatus: "UPLOADING" | "COMPLETED" | "PROCESSING";
+  transcriptionVsl: {
+    id: string;
+    text: string;
+    url: string;
+    key: string;
+  };
 };
 
 export type ILabsVslById = {
@@ -72,8 +71,7 @@ export namespace ICreateLabsVSLDTO {
   export type Args = {
     title: string;
     description?: string;
-    video?: File;
-    transcription?: File;
+    transcription?: File | { id: string; text: string };
     offerId: string;
   };
   export type Result = {
@@ -106,8 +104,7 @@ export namespace IUpdateLabsVSLDTO {
     id: string;
     title: string;
     description?: string;
-    video?: File;
-    transcription?: File;
+    transcription?: File | { id: string; text: string };
   };
   export type Result = {
     codeIntern: string;

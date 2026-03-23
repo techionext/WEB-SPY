@@ -13,44 +13,43 @@ import {
 } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { useRouter } from "next/navigation";
-import { formatCurrency } from "@/utils/formatCurrency";
-import { platformValues } from "@/types/offer/offer.type";
-import { ILabsOffer } from "@/types/labs/offer/labs-offer.type";
 import { useSession } from "@/providers/session-provider";
+import { ISpyOffer } from "@/types/spy/spy-offers.type";
 
 type OfferStatCard = {
   icon: string;
   label: string;
-  getValue: (data: ILabsOffer) => React.ReactNode;
+  getValue: (data: ISpyOffer) => React.ReactNode;
   valueClassName?: string;
 };
 
-const OFFER_STAT_CARDS: OfferStatCard[] = [
-  {
-    icon: "solar:gallery-outline",
-    label: "Criativos",
-    getValue: (d) => d.totalCreatives,
-  },
-  {
-    icon: "solar:videocamera-outline",
-    label: "VSL",
-    getValue: (d) => d.totalVsl,
-  },
-  {
-    icon: "solar:global-outline",
-    label: "Landing",
-    getValue: (d) => d.totalPages,
-  },
-  {
-    icon: "solar:graph-up-outline",
-    label: "Conversão",
-    getValue: (d) => formatCurrency(d.cpa, false, d.currency),
-    valueClassName: "text-success",
-  },
-];
+// TODO: Validar se vai remover ou adicionar outra coisa no lugar
+// const OFFER_STAT_CARDS: OfferStatCard[] = [
+//   {
+//     icon: "solar:gallery-outline",
+//     label: "Criativos",
+//     getValue: (d) => d.totalCreatives,
+//   },
+//   {
+//     icon: "solar:videocamera-outline",
+//     label: "VSL",
+//     getValue: (d) => d.totalVsl,
+//   },
+//   {
+//     icon: "solar:global-outline",
+//     label: "Landing",
+//     getValue: (d) => d.totalPages,
+//   },
+//   {
+//     icon: "solar:graph-up-outline",
+//     label: "Conversão",
+//     getValue: (d) => formatCurrency(d.cpa, false, d.currency),
+//     valueClassName: "text-success",
+//   },
+// ];
 
 type Props = {
-  data: ILabsOffer;
+  data: ISpyOffer;
   onFavorite: (id: string) => void;
   isFavoriting?: boolean;
   onRemove: (id: string) => void;
@@ -83,8 +82,6 @@ export const CardOfferLabs = ({ data, onFavorite, onRemove }: Props) => {
       className: "text-default-500",
     },
   };
-
-  const status = data?.request?.status ?? "NOT_AFFILIATED";
 
   return (
     <Card
@@ -175,13 +172,13 @@ export const CardOfferLabs = ({ data, onFavorite, onRemove }: Props) => {
           <Chip size="sm" variant="flat" color="primary">
             {data.typeProduct}
           </Chip>
-
-          <Chip size="sm" variant="flat" color="default">
+          {/* // TODO: Validar se vai remover ou adicionar outra coisa no lugar */}
+          {/* <Chip size="sm" variant="flat" color="default">
             {platformValues[data.platform]}
-          </Chip>
+          </Chip> */}
         </div>
-
-        <div className="grid grid-cols-2 gap-2">
+        {/* // TODO: Validar se vai remover ou adicionar outra coisa no lugar */}
+        {/* <div className="grid grid-cols-2 gap-2">
           {OFFER_STAT_CARDS.map((item) => (
             <div
               key={item.label}
@@ -200,7 +197,7 @@ export const CardOfferLabs = ({ data, onFavorite, onRemove }: Props) => {
               </div>
             </div>
           ))}
-        </div>
+        </div> */}
       </CardBody>
       <CardFooter>
         <Button

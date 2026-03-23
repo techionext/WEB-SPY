@@ -12,7 +12,7 @@ export const ListCreatives = () => {
   const { data, isLoading } = useGetLabsCreativeQuery(
     {
       offerId: id as string,
-      pageSize: params.pageSize || "6",
+      pageSize: Number(params.pageSize || "6"),
       ...params,
     },
     { skip: !id },

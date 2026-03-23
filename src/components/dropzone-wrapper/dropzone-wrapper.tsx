@@ -10,6 +10,7 @@ export enum FileTypes {
   ANY = "any",
   CSV = "csv",
   SHEETS = "sheets",
+  TEXT = "text",
 }
 
 const mimeTypes: { [key in FileTypes]: Accept } = {
@@ -30,6 +31,11 @@ const mimeTypes: { [key in FileTypes]: Accept } = {
     "text/csv": [], // Aceitar arquivos CSV
   },
   [FileTypes.SHEETS]: { "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [] },
+  [FileTypes.TEXT]: {
+    "text/plain": [".txt"],
+    "application/msword": [".doc"],
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document": [".docx"],
+  },
 };
 
 interface IDropzoneWrapper {

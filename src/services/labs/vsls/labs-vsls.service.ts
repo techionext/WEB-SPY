@@ -9,7 +9,7 @@ import {
 import { convertToFormData } from "@/utils/converteToFormData";
 import { buildQueryString } from "@/utils/generateUrlWithParams";
 
-const prefix = "labs/vsl";
+const prefix = "/vsl";
 
 export const labsVSLSservices = api.injectEndpoints({
   endpoints: (builder) => ({
@@ -17,7 +17,7 @@ export const labsVSLSservices = api.injectEndpoints({
       query: (args) => ({
         url: prefix,
         method: "POST",
-        body: convertToFormData({ ...args, video: undefined }),
+        body: convertToFormData(args),
       }),
       invalidatesTags: [{ type: "vsls", id: "LIST" }],
     }),
@@ -55,7 +55,7 @@ export const labsVSLSservices = api.injectEndpoints({
       query: (args) => ({
         url: `${prefix}/${args.id}`,
         method: "PUT",
-        body: convertToFormData({ ...args, video: undefined }),
+        body: convertToFormData(args),
       }),
       invalidatesTags: [{ type: "vsls", id: "LIST" }],
     }),
