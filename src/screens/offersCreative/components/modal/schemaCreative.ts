@@ -1,0 +1,26 @@
+import z from "zod";
+
+export const schemaCreative = z.object({
+  title: z
+    .string({ message: "Título é obrigatório" })
+    .min(3, { message: "Título deve ter no mínimo 3 caracteres" }),
+  description: z.string().optional(),
+  language: z.string({ message: "Idioma é obrigatório" }),
+  isClimbing: z.boolean().default(false),
+  trafficNetwork: z.string({ message: "Rede de tráfego é obrigatória" }),
+  salesAngle: z.string().optional(),
+  status: z.boolean().default(true),
+  pageId: z.string().optional(),
+  creationType: z.string().optional(),
+  image: z.instanceof(File, { message: "Imagem é obrigatória" }),
+});
+
+export const schemaEditCreative = schemaCreative.partial({
+  image: true,
+});
+
+export type SchemaCreativeInput = z.input<typeof schemaCreative>;
+export type SchemaCreativeOutput = z.output<typeof schemaCreative>;
+
+export type SchemaEditCreativeInput = z.input<typeof schemaEditCreative>;
+export type SchemaEditCreativeOutput = z.output<typeof schemaEditCreative>;

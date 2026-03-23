@@ -252,21 +252,38 @@ export const CreateOffer = () => {
                 control={control}
                 name="isClimbing"
                 render={({ field }) => (
-                  <Switch isSelected={field.value} onValueChange={field.onChange}>
-                    Em escala?
-                  </Switch>
+                  <div className="flex flex-col gap-2">
+                    <p className="text-sm">Em escala?</p>
+                    <Switch isSelected={field.value} onValueChange={field.onChange} />
+                  </div>
                 )}
               />
               <Controller
                 control={control}
                 name="isCloaker"
                 render={({ field }) => (
-                  <Switch isSelected={field.value} onValueChange={field.onChange}>
-                    Usa Cloaker?
-                  </Switch>
+                  <div className="flex flex-col gap-2">
+                    <p className="text-sm">Usa Cloaker?</p>
+                    <Switch isSelected={field.value} onValueChange={field.onChange} />
+                  </div>
                 )}
               />
             </div>
+
+            <Controller
+              control={control}
+              name="filter"
+              render={({ field, fieldState: { invalid, error } }) => (
+                <Field
+                  {...field}
+                  label="Filtro (opcional)"
+                  placeholder="Digite o filtro da oferta"
+                  labelPlacement="outside"
+                  isInvalid={invalid}
+                  errorMessage={error?.message}
+                />
+              )}
+            />
 
             <Controller
               control={control}

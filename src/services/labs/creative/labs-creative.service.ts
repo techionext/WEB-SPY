@@ -8,7 +8,7 @@ import {
 import { convertToFormData } from "@/utils/converteToFormData";
 import { buildQueryString } from "@/utils/generateUrlWithParams";
 
-const prefix = "labs/creative";
+const prefix = "creative";
 
 export const labsCreativeServices = api.injectEndpoints({
   endpoints: (builder) => ({

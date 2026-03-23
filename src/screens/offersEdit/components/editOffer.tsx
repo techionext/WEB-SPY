@@ -277,18 +277,20 @@ export const EditOffer = () => {
                 control={control}
                 name="isClimbing"
                 render={({ field }) => (
-                  <Switch isSelected={field.value} onValueChange={field.onChange}>
-                    Em escala?
-                  </Switch>
+                  <div className="flex flex-col gap-2">
+                    <p className="text-sm">Em escala?</p>
+                    <Switch isSelected={field.value} onValueChange={field.onChange} />
+                  </div>
                 )}
               />
               <Controller
                 control={control}
                 name="isCloaker"
                 render={({ field }) => (
-                  <Switch isSelected={field.value} onValueChange={field.onChange}>
-                    Usa Cloaker?
-                  </Switch>
+                  <div className="flex flex-col gap-2">
+                    <p className="text-sm">Usa Cloaker?</p>
+                    <Switch isSelected={field.value} onValueChange={field.onChange} />
+                  </div>
                 )}
               />
             </div>

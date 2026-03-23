@@ -7,7 +7,15 @@ export type ILabsCreative = {
   };
   id: string;
   title: string;
+  description: string;
+  language: string;
+  isClimbing: boolean;
+  trafficNetwork: string;
+  salesAngle: string;
+  creationType: string;
   offerId: string;
+  status: boolean;
+  pageId?: string;
   categoryId: string;
   createdAt: string;
   updatedAt: string;
@@ -16,8 +24,16 @@ export type ILabsCreative = {
 export namespace ICreateLabsCreativeDTO {
   export type Args = {
     title: string;
-    image?: File;
+    description: string;
+    language: string;
+    isClimbing: boolean;
+    trafficNetwork: string;
+    salesAngle: string;
     offerId: string;
+    status: boolean;
+    pageId?: string;
+    creationType?: string;
+    image?: File;
   };
   export type Result = {
     codeIntern: string;
@@ -47,8 +63,16 @@ export namespace ILabsCreativesDTO {
 export namespace IUpdateLabsCreativeDTO {
   export type Args = {
     id: string;
-    offerId: string;
     title: string;
+    description: string;
+    language: string;
+    isClimbing: boolean;
+    trafficNetwork: string;
+    salesAngle: string;
+    offerId: string;
+    status: boolean;
+    pageId?: string;
+    creationType?: string;
     image?: File;
   };
   export type Result = {
