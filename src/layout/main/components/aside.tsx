@@ -48,6 +48,14 @@ export const Aside = () => {
         },
       ],
     },
+    {
+      key: "offers",
+      icon: "solar:hamburger-menu-bold",
+      label: "Ofertas",
+      href: "/offers",
+      isActive: onlyPathname === "/offers",
+      endContent: undefined,
+    },
   ];
 
   const allowedRolesForUsers = ["ROOT", "ADMIN"] as const;
@@ -77,7 +85,7 @@ export const Aside = () => {
     <Card
       radius="none"
       shadow="none"
-      className="  max-h-[calc(100vh-0px)] bg-transparent   p-4  pr-0 pt-10  gap-6  sticky top-0  border-transparent    flex-1 max-w-[286px] w-full flex flex-col grow "
+      className="  max-h-[calc(100vh-0px)] bg-transparent   p-4  pt-10  gap-6  sticky top-0  border-transparent    flex-1 max-w-[286px] w-full flex flex-col grow "
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
@@ -128,7 +136,9 @@ export const Aside = () => {
             <Fragment key={`${item.key}-menu`}>
               <Button
                 key={item.key}
+                as={item.href ? Link : "button"}
                 disableAnimation
+                href={item.href}
                 radius="lg"
                 className={cn(
                   item.isActive ? "bg-content1/60" : "text-default-600 !bg-transparent",

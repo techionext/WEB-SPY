@@ -1,9 +1,11 @@
+import { TrafficNetwork } from "../offer/offer.type";
+
 export type ISpyOffer = {
   isFavorite: boolean;
   id: string;
   title: string;
   description: string;
-  trafficNetwork: string;
+  trafficNetwork: TrafficNetwork;
   structure: string;
   language: string;
   funnel: string;
@@ -72,7 +74,7 @@ export type ISpyOfferById = {
   id: string;
   title: string;
   description: string;
-  trafficNetwork: string;
+  trafficNetwork: TrafficNetwork;
   structure: string;
   language: string;
   funnel: string;
@@ -261,7 +263,7 @@ export namespace ISpyOfferUpdateDTO {
     id: string;
     title?: string;
     description?: string;
-    trafficNetwork?: string;
+    trafficNetwork?: TrafficNetwork;
     structure?: string;
     language?: string;
     funnel?: string[];
@@ -285,7 +287,7 @@ export namespace ISpyOfferCreateDTO {
   export type Args = {
     title: string;
     description?: string;
-    trafficNetwork: string;
+    trafficNetwork: TrafficNetwork;
     structure: string;
     language: string;
     typeProduct: string;

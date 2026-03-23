@@ -1,5 +1,21 @@
 import { PlatformType } from "../platforms/platforms.type";
 
+export type TTrafficNetwork =
+  | "FACEBOOK"
+  | "YOUTUBE"
+  | "TIKTOK"
+  | "INSTAGRAM"
+  | "GOOGLE"
+  | "KWAI"
+  | "OUTBRAIN"
+  | "TABOOLA"
+  | "SNAPCHAT";
+
+type TrafficNetworkConfig = {
+  label: string;
+  icon: string;
+};
+
 export enum TrafficNetwork {
   FACEBOOK = "FACEBOOK",
   YOUTUBE = "YOUTUBE",
@@ -11,6 +27,45 @@ export enum TrafficNetwork {
   TABOOLA = "TABOOLA",
   SNAPCHAT = "SNAPCHAT",
 }
+
+export const trafficNetworkValues: Record<TrafficNetwork, TrafficNetworkConfig> = {
+  [TrafficNetwork.FACEBOOK]: {
+    label: "Facebook",
+    icon: "logos:facebook",
+  },
+  [TrafficNetwork.YOUTUBE]: {
+    label: "YouTube",
+    icon: "logos:youtube-icon",
+  },
+  [TrafficNetwork.TIKTOK]: {
+    label: "TikTok",
+    icon: "logos:tiktok-icon",
+  },
+  [TrafficNetwork.INSTAGRAM]: {
+    label: "Instagram",
+    icon: "skill-icons:instagram",
+  },
+  [TrafficNetwork.GOOGLE]: {
+    label: "Google",
+    icon: "logos:google-icon",
+  },
+  [TrafficNetwork.KWAI]: {
+    label: "Kwai",
+    icon: "solar:global-bold-duotone",
+  },
+  [TrafficNetwork.OUTBRAIN]: {
+    label: "Outbrain",
+    icon: "solar:global-bold-duotone",
+  },
+  [TrafficNetwork.TABOOLA]: {
+    label: "Taboola",
+    icon: "solar:global-bold-duotone",
+  },
+  [TrafficNetwork.SNAPCHAT]: {
+    label: "Snapchat",
+    icon: "ic:baseline-snapchat",
+  },
+};
 
 export type IOffer = {
   hasAccess: boolean;

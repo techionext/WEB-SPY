@@ -5,7 +5,7 @@ import { SpyCommunity } from "./components/spy-community";
 import { Header } from "@/components/header";
 import { CreativesTab } from "./creatives/creatives-tab";
 import { useFilterByUnique } from "@/hooks/useFilterByUnique";
-import { OffersTab } from "../offers/offers-tab";
+import { OffersTab } from "../spy-offers/offers-tab";
 
 export const ScreenSpy = () => {
   const { onChangeValue, value } = useFilterByUnique({

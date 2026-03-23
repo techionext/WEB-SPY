@@ -7,6 +7,7 @@ import {
   ISpyOffersDTO,
   ISpyOfferUpdateDTO,
 } from "@/types/spy/spy-offers.type";
+import { convertToFormData } from "@/utils/converteToFormData";
 
 const prefix = "offer";
 
@@ -16,7 +17,7 @@ export const spyOffersServices = api.injectEndpoints({
       query: (args) => ({
         url: `${prefix}`,
         method: "POST",
-        body: args,
+        body: convertToFormData(args),
       }),
       invalidatesTags: [{ type: "spyOffers", id: "list" }],
     }),
@@ -43,10 +44,10 @@ export const spyOffersServices = api.injectEndpoints({
       providesTags: [{ type: "spyOffers", id: "list" }],
     }),
     updateSpyOffer: builder.mutation<ISpyOfferUpdateDTO.Result, ISpyOfferUpdateDTO.Args>({
-      query: (args) => ({
-        url: `${prefix}/${args.id}`,
+      query: ({ id, ...args }) => ({
+        url: `${prefix}/${id}`,
         method: "PUT",
-        body: args,
+        body: convertToFormData(args),
       }),
       invalidatesTags: [{ type: "spyOffers", id: "list" }],
     }),
@@ -71,8 +72,11 @@ export const spyOffersServices = api.injectEndpoints({
 });
 
 export const {
+  useCreateSpyOfferMutation,
   useGetSpyOffersQuery,
   usePostSpyOfferFavoriteMutation,
   useGetSpyOfferByIdQuery,
   useGetSpyOfferByIdHistoryQuery,
+  useRemoveSpyOfferMutation,
+  useUpdateSpyOfferMutation,
 } = spyOffersServices;
