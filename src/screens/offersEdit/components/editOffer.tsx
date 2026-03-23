@@ -7,10 +7,10 @@ import {
   Button,
   Card,
   CardBody,
-  Checkbox,
   Image,
   Select,
   SelectItem,
+  Switch,
   Textarea,
   TimeInput,
 } from "@heroui/react";
@@ -277,18 +277,18 @@ export const EditOffer = () => {
                 control={control}
                 name="isClimbing"
                 render={({ field }) => (
-                  <Checkbox isSelected={field.value} onValueChange={field.onChange}>
+                  <Switch isSelected={field.value} onValueChange={field.onChange}>
                     Em escala?
-                  </Checkbox>
+                  </Switch>
                 )}
               />
               <Controller
                 control={control}
                 name="isCloaker"
                 render={({ field }) => (
-                  <Checkbox isSelected={field.value} onValueChange={field.onChange}>
+                  <Switch isSelected={field.value} onValueChange={field.onChange}>
                     Usa Cloaker?
-                  </Checkbox>
+                  </Switch>
                 )}
               />
             </div>
