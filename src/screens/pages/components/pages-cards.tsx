@@ -27,6 +27,12 @@ interface PagesCardProps {
 }
 
 export const PagesCard = ({ page, onEdit, onArchive, onUnarchive, onDelete }: PagesCardProps) => {
+  const handleDownload = () => {
+    if (page.file?.url) {
+      window.open(page.file.url, "_blank");
+    }
+  };
+
   return (
     <Card
       className="card hover:border-primary/50 border-1 border-transparent transition-all duration-300 hover:scale-[1.01] cursor-pointer h-full"
@@ -199,6 +205,7 @@ export const PagesCard = ({ page, onEdit, onArchive, onUnarchive, onDelete }: Pa
             />
           }
           isDisabled={!page.file}
+          onPress={handleDownload}
         >
           {page.file ? "Baixar arquivo" : "Sem arquivo"}
         </Button>
