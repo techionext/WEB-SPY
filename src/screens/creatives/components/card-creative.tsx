@@ -90,7 +90,7 @@ export const CardCreative = ({ creative, onEdit, onDelete }: CardCreativeProps) 
                 isIconOnly
                 size="sm"
                 variant="flat"
-                className="bg-black/40 text-white hover:bg-black/60 min-w-8 w-8 h-8 rounded-full backdrop-blur-md"
+                className="bg-content2 hover:bg-content2/60 min-w-8 w-8 h-8 rounded-full backdrop-blur-md"
               >
                 <Icon icon="solar:menu-dots-bold" className="rotate-90" width={18} />
               </Button>

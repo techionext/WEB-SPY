@@ -4,7 +4,7 @@ import { useSession } from "@/providers/session-provider";
 import { Badge, Button, Card, cn, ScrollShadow } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { Fragment } from "react/jsx-runtime";
 import { UserPopover } from "./user-popover";
 import { AppsPopover } from "./apps-popover";
@@ -20,7 +20,6 @@ interface MenuItem {
 }
 
 export const Aside = () => {
-  const searchParams = useSearchParams();
   const { user } = useSession();
   const pathname = usePathname();
   const onlyPathname = pathname.split("?")[0];
@@ -45,8 +44,8 @@ export const Aside = () => {
       key: "pages",
       icon: "solar:file-bold",
       label: "Páginas",
-      href: "/spy?tab=pages",
-      isActive: onlyPathname === "/spy" && searchParams.get("tab") === "pages",
+      href: "/pages",
+      isActive: onlyPathname === "/pages",
       endContent: undefined,
     },
   ];
