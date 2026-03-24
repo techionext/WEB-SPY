@@ -1,4 +1,12 @@
-import { Modal, ModalContent, ModalBody, Button, ScrollShadow, Spinner, Image } from "@heroui/react";
+import {
+  Modal,
+  ModalContent,
+  ModalBody,
+  Button,
+  ScrollShadow,
+  Spinner,
+  Image,
+} from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { ILabsCreative } from "@/types/labs/creative/labs-creative.type";
 import { VideoPlayer } from "@/components/videoplayer/video-player";

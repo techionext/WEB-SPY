@@ -6,9 +6,7 @@ export const schemaEditVSL = z.object({
     .min(3, { message: "Título deve ter no mínimo 3 caracteres" }),
   description: z.string().optional(),
   video: z.instanceof(File).optional(),
-  transcription: z
-    .union([z.instanceof(File), z.any()])
-    .optional(),
+  transcription: z.union([z.instanceof(File), z.any()]).optional(),
 });
 
 export type SchemaEditVSLInput = z.input<typeof schemaEditVSL>;

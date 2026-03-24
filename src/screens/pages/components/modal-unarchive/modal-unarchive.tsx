@@ -1,7 +1,7 @@
 "use client";
 import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@heroui/react";
 import { ILabsPage } from "@/types/labs/page/labs-page.type";
-import { useArchivePageMutation } from "@/services/labs/page/labs-page.service";
+import { useUpdateLabsPageMutation } from "@/services/labs/page/labs-page.service";
 import { Icon } from "@iconify/react";
 
 type ModalUnarchiveProps = {
@@ -12,12 +12,15 @@ type ModalUnarchiveProps = {
 };
 
 export const ModalUnarchive = ({ page, isOpen, onOpenChange, onClose }: ModalUnarchiveProps) => {
-  const [archivePage, { isLoading }] = useArchivePageMutation();
+  const [updatePage, { isLoading }] = useUpdateLabsPageMutation();
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await archivePage({
+    await updatePage({
       id: page.id,
+      type: page.type,
+      offerId: page.offer,
+      archive: false,
     })
       .unwrap()
       .then(() => {

@@ -33,12 +33,12 @@ export const CardOfferLabs = ({ data, onFavorite, onRemove }: Props) => {
   const canEdit = user?.platformRole === "ROOT" || user?.platformRole === "ADMIN";
   const trafficConfig = trafficNetworkValues[data.trafficNetwork];
   const country = languages.find((l) => l.value === data.language.toLowerCase());
- 
+
   return (
     <Card
       isPressable
       as="div"
-      onPress={() => router.push(`/offers/${data.id}/edit`)}
+      onPress={() => router.push(`/offers/${data.id}`)}
       className="card hover:border-primary/50 border-1 border-transparent transition-all duration-300 hover:scale-[1.01] cursor-pointer"
       shadow="sm"
     >
