@@ -8,6 +8,8 @@ import { Pagination } from "@/components/pagination";
 import { useSearchParams } from "next/navigation";
 import { ModalRemove } from "@/components/modal-remove/modal-remove";
 import { useDeleteLabsCreativeMutation } from "@/services/creative/creative.service";
+import { EmptyContent } from "@/components/empty/empty-content";
+import { CreateModal } from "./create-modal/create-modal";
 
 export const ListCreatives = () => {
   const params = useSearchParams();
@@ -39,6 +41,17 @@ export const ListCreatives = () => {
                 onDelete={() => setRemoveCreativeId(item.id)}
               />
             ))}
+        {data?.data.length === 0 && !isLoading && (
+          <div className="col-span-full py-10">
+            <EmptyContent
+              title="Nenhum criativo encontrado"
+              description="Você ainda não possui criativos cadastrados nesta oferta. Comece criando o seu primeiro criativo."
+              actionLabel="Criar primeiro criativo"
+              icon="solar:gallery-minimalistic-bold"
+              onAction={<CreateModal />}
+            />
+          </div>
+        )}
       </div>
       <Pagination defaultPageSize={"6"} total={data?.meta.totalPages || 0} />
 

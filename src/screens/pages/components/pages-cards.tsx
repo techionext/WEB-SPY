@@ -177,12 +177,6 @@ export const PagesCard = ({ page, onEdit, onArchive, onUnarchive, onDelete }: Pa
             <Icon icon="solar:globus-outline" width={14} />
             <span className="text-xs font-medium whitespace-nowrap">{page.type}</span>
           </div>
-          {page.makeScraper && (
-            <div className="flex items-center gap-1.5 text-default-400">
-              <Icon icon="solar:mouse-circle-outline" width={14} />
-              <span className="text-xs font-medium whitespace-nowrap">Scraper</span>
-            </div>
-          )}
           <Link
             href={page.url}
             isExternal
