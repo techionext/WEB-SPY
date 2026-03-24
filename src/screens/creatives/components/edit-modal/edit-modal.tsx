@@ -17,7 +17,7 @@ import {
   Tab,
 } from "@heroui/react";
 import { Icon } from "@iconify/react";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
@@ -28,6 +28,7 @@ import { ILabsCreative } from "@/types/labs/creative/labs-creative.type";
 import { trafficNetworkValues, TrafficNetwork } from "@/types/offer/offer.type";
 import { languages } from "@/components/select-language/countries";
 import { useUpdateLabsCreativeMutation } from "@/services/creative/creative.service";
+import { useGetLabsPagesQuery } from "@/services/labs/page/labs-page.service";
 import {
   schemaEditCreative,
   SchemaEditCreativeInput,
@@ -61,6 +62,11 @@ export const EditModal = ({ creative, isOpen, onClose, initialTab = "edit" }: Ed
     resolver: zodResolver(schemaEditCreative),
   });
 
+  const trafficNetworkValue = useWatch({ control, name: "trafficNetwork" });
+  const { data: pages } = useGetLabsPagesQuery({
+    offerId: offerId as string,
+  });
+
   useEffect(() => {
     if (creative && isOpen) {
       reset({
@@ -70,9 +76,10 @@ export const EditModal = ({ creative, isOpen, onClose, initialTab = "edit" }: Ed
         isClimbing: creative.isClimbing,
         trafficNetwork: creative.trafficNetwork,
         salesAngle: creative.salesAngle || "",
+        pageId: creative.page?.id || "",
       });
     }
-  }, [creative, isOpen, reset]);
+  }, [creative, isOpen, reset, pages]);
 
   const onSubmit = async (data: SchemaEditCreativeOutput) => {
     await updateCreative({
@@ -247,27 +254,61 @@ export const EditModal = ({ creative, isOpen, onClose, initialTab = "edit" }: Ed
                   />
                 </div>
 
-                <Controller
-                  control={control}
-                  name="salesAngle"
-                  render={({ field, fieldState: { invalid, error } }) => (
-                    <Field
-                      {...field}
-                      label={
-                        <div className="flex items-center gap-2 text-default-400">
-                          <Icon icon="solar:target-linear" width={16} />
-                          <span className="text-xs font-bold tracking-widest uppercase">
-                            Ângulo de venda
-                          </span>
-                        </div>
-                      }
-                      labelPlacement="outside"
-                      placeholder="Digite o ângulo de venda"
-                      isInvalid={invalid}
-                      errorMessage={error?.message}
+                <div className="flex gap-4">
+                  <Controller
+                    control={control}
+                    name="salesAngle"
+                    render={({ field, fieldState: { invalid, error } }) => (
+                      <Field
+                        {...field}
+                        label={
+                          <div className="flex items-center gap-2 text-default-400">
+                            <Icon icon="solar:target-linear" width={16} />
+                            <span className="text-xs font-bold tracking-widest uppercase">
+                              Ângulo de venda
+                            </span>
+                          </div>
+                        }
+                        labelPlacement="outside"
+                        placeholder="Digite o ângulo de venda"
+                        isInvalid={invalid}
+                        errorMessage={error?.message}
+                      />
+                    )}
+                  />
+
+                  {trafficNetworkValue === TrafficNetwork.YOUTUBE && (
+                    <Controller
+                      control={control}
+                      name="pageId"
+                      render={({ field, fieldState: { invalid, error } }) => (
+                        <Select
+                          {...field}
+                          label={
+                            <div className="flex items-center gap-2 text-default-400">
+                              <Icon icon="solar:globus-linear" width={16} />
+                              <span className="text-xs font-bold tracking-widest uppercase">
+                                Página Relacionada
+                              </span>
+                            </div>
+                          }
+                          labelPlacement="outside"
+                          placeholder="Selecione a página"
+                          isInvalid={invalid}
+                          errorMessage={error?.message}
+                          selectedKeys={[field.value ?? ""]}
+                          onSelectionChange={(v) => field.onChange(v.currentKey)}
+                        >
+                          {(pages?.data || []).map((page: any) => (
+                            <SelectItem key={page.id} textValue={page.title}>
+                              {page.title}
+                            </SelectItem>
+                          ))}
+                        </Select>
+                      )}
                     />
                   )}
-                />
+                </div>
 
                 <Controller
                   control={control}

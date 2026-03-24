@@ -10,6 +10,7 @@ export const schemaEditCreative = z.object({
   trafficNetwork: z.string({ message: "Rede de tráfego é obrigatória" }),
   salesAngle: z.string().optional(),
   image: z.instanceof(File).optional(),
+  pageId: z.string().optional(),
 });
 
 export type SchemaEditCreativeInput = z.input<typeof schemaEditCreative>;
