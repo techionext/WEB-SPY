@@ -97,6 +97,19 @@ export const trafficNetworkValues: Record<TrafficNetwork, TrafficNetworkConfig> 
   },
 };
 
+/** Rótulos em pt-BR para exibição (evita mostrar chaves tipo `FACEBOOK`). */
+export const trafficNetworkLabelsPt: Record<TrafficNetwork, string> = {
+  [TrafficNetwork.FACEBOOK]: "Facebook",
+  [TrafficNetwork.YOUTUBE]: "YouTube",
+  [TrafficNetwork.TIKTOK]: "TikTok",
+  [TrafficNetwork.INSTAGRAM]: "Instagram",
+  [TrafficNetwork.GOOGLE]: "Google Ads",
+  [TrafficNetwork.KWAI]: "Kwai",
+  [TrafficNetwork.OUTBRAIN]: "Outbrain",
+  [TrafficNetwork.TABOOLA]: "Taboola",
+  [TrafficNetwork.SNAPCHAT]: "Snapchat",
+};
+
 export type IOffer = {
   hasAccess: boolean;
   totalVsl: number;

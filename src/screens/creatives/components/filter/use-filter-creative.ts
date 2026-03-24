@@ -1,6 +1,7 @@
 "use client";
 
 import { useGetSpyCreativeGroupedQuery } from "@/services/spy/spy-creative.service";
+import type { ISpyCreativeGrouped } from "@/types/spy/spy-creative.type";
 import { useState, useMemo } from "react";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 
@@ -29,8 +30,8 @@ export const useFilterCreative = () => {
   const searchParams = useSearchParams();
   const { data: rawGroupedData } = useGetSpyCreativeGroupedQuery({});
 
-  const groupedData = useMemo(() => {
-    return rawGroupedData || null;
+  const groupedData = useMemo<ISpyCreativeGrouped | null>(() => {
+    return rawGroupedData ?? null;
   }, [rawGroupedData]);
 
   const sections: FilterSection[] = [
