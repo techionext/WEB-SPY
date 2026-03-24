@@ -81,6 +81,19 @@ export const CardCreative = ({ creative, onEdit, onDelete }: CardCreativeProps) 
               <span className="font-bold text-[10px] tracking-wide">Escalando</span>
             </Chip>
           )}
+
+          {creative?.creationType && (
+            <Chip
+              size="sm"
+              variant="flat"
+              className="bg-secondary/20 text-secondary border-secondary/30 border-1 h-7 backdrop-blur-md"
+              startContent={<Icon icon="solar:settings-bold" className="ml-1.5" width={14} />}
+            >
+              <span className="font-bold text-[10px] tracking-wide">
+                {creative.creationType === "AUTOMATIC" ? "Automático" : "Manual"}
+              </span>
+            </Chip>
+          )}
         </div>
 
         <div className="absolute top-3 right-3 z-10">
@@ -156,12 +169,6 @@ export const CardCreative = ({ creative, onEdit, onDelete }: CardCreativeProps) 
           <div className="flex items-center gap-1.5 text-default-400">
             <Icon icon="solar:target-bold" width={14} />
             <span className="text-xs font-medium whitespace-nowrap">{creative.salesAngle}</span>
-          </div>
-          <div className="flex items-center gap-1.5 text-default-400">
-            <Icon icon="solar:settings-bold" width={14} />
-            <span className="text-xs font-medium whitespace-nowrap">
-              {creative.creationType === "AUTOMATIC" ? "Automático" : "Manual"}
-            </span>
           </div>
         </div>
 

@@ -11,7 +11,6 @@ export const schemaCreative = z.object({
   salesAngle: z.string().optional(),
   status: z.boolean().default(true),
   pageId: z.string().optional(),
-  creationType: z.string().optional(),
   image: z.instanceof(File, { message: "Imagem é obrigatória" }),
 });
 

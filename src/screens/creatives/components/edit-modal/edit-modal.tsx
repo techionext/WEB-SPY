@@ -70,7 +70,6 @@ export const EditModal = ({ creative, isOpen, onClose, initialTab = "edit" }: Ed
         isClimbing: creative.isClimbing,
         trafficNetwork: creative.trafficNetwork,
         salesAngle: creative.salesAngle || "",
-        creationType: creative.creationType,
       });
     }
   }, [creative, isOpen, reset]);
@@ -248,60 +247,27 @@ export const EditModal = ({ creative, isOpen, onClose, initialTab = "edit" }: Ed
                   />
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
-                  <Controller
-                    control={control}
-                    name="salesAngle"
-                    render={({ field, fieldState: { invalid, error } }) => (
-                      <Field
-                        {...field}
-                        label={
-                          <div className="flex items-center gap-2 text-default-400">
-                            <Icon icon="solar:target-linear" width={16} />
-                            <span className="text-xs font-bold tracking-widest uppercase">
-                              Ângulo de venda
-                            </span>
-                          </div>
-                        }
-                        labelPlacement="outside"
-                        placeholder="Digite o ângulo de venda"
-                        isInvalid={invalid}
-                        errorMessage={error?.message}
-                      />
-                    )}
-                  />
-
-                  <Controller
-                    control={control}
-                    name="creationType"
-                    render={({ field, fieldState: { invalid, error } }) => (
-                      <Select
-                        {...field}
-                        label={
-                          <div className="flex items-center gap-2 text-default-400">
-                            <Icon icon="solar:magic-stick-linear" width={16} />
-                            <span className="text-xs font-bold tracking-widest uppercase">
-                              Tipo de criação
-                            </span>
-                          </div>
-                        }
-                        labelPlacement="outside"
-                        placeholder="Selecione o tipo de criação"
-                        isInvalid={invalid}
-                        errorMessage={error?.message}
-                        selectedKeys={[field.value ?? ""]}
-                        onSelectionChange={(v) => field.onChange(v.currentKey)}
-                      >
-                        <SelectItem key="AUTOMATIC" textValue="Automático">
-                          <span className="text-sm font-medium">Automático</span>
-                        </SelectItem>
-                        <SelectItem key="MANUAL" textValue="Manual">
-                          <span className="text-sm font-medium">Manual</span>
-                        </SelectItem>
-                      </Select>
-                    )}
-                  />
-                </div>
+                <Controller
+                  control={control}
+                  name="salesAngle"
+                  render={({ field, fieldState: { invalid, error } }) => (
+                    <Field
+                      {...field}
+                      label={
+                        <div className="flex items-center gap-2 text-default-400">
+                          <Icon icon="solar:target-linear" width={16} />
+                          <span className="text-xs font-bold tracking-widest uppercase">
+                            Ângulo de venda
+                          </span>
+                        </div>
+                      }
+                      labelPlacement="outside"
+                      placeholder="Digite o ângulo de venda"
+                      isInvalid={invalid}
+                      errorMessage={error?.message}
+                    />
+                  )}
+                />
 
                 <Controller
                   control={control}
