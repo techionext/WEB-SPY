@@ -1,5 +1,4 @@
-import { useGetLabsCreativeQuery } from "@/services/creative/creative.service";
-import { useGetLabsPagesQuery } from "@/services/labs/page/labs-page.service";
+
 import { useGetSpyOfferByIdQuery } from "@/services/spy/spy-offers.service";
 import { TrafficNetwork, trafficNetworkLabelsPt } from "@/types/offer/offer.type";
 import { Avatar, Card, CardBody, CardHeader, Chip } from "@heroui/react";
