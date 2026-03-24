@@ -1,3 +1,4 @@
+"use client";
 import {
   Card,
   CardBody,
@@ -5,7 +6,6 @@ import {
   Chip,
   Button,
   Image,
-  CardFooter,
   DropdownMenu,
   Dropdown,
   DropdownItem,
@@ -15,39 +15,11 @@ import { Icon } from "@iconify/react";
 import { useRouter } from "next/navigation";
 import { useSession } from "@/providers/session-provider";
 import { ISpyOffer } from "@/types/spy/spy-offers.type";
+import { trafficNetworkValues } from "@/types/offer/offer.type";
+import dayjs from "@/utils/dayjs-config";
 
-type OfferStatCard = {
-  icon: string;
-  label: string;
-  getValue: (data: ISpyOffer) => React.ReactNode;
-  valueClassName?: string;
-};
-
-// TODO: Validar se vai remover ou adicionar outra coisa no lugar
-// const OFFER_STAT_CARDS: OfferStatCard[] = [
-//   {
-//     icon: "solar:gallery-outline",
-//     label: "Criativos",
-//     getValue: (d) => d.totalCreatives,
-//   },
-//   {
-//     icon: "solar:videocamera-outline",
-//     label: "VSL",
-//     getValue: (d) => d.totalVsl,
-//   },
-//   {
-//     icon: "solar:global-outline",
-//     label: "Landing",
-//     getValue: (d) => d.totalPages,
-//   },
-//   {
-//     icon: "solar:graph-up-outline",
-//     label: "Conversão",
-//     getValue: (d) => formatCurrency(d.cpa, false, d.currency),
-//     valueClassName: "text-success",
-//   },
-// ];
-
+import { languages } from "@/components/select-language/countries";
+ 
 type Props = {
   data: ISpyOffer;
   onFavorite: (id: string) => void;
@@ -59,157 +31,174 @@ export const CardOfferLabs = ({ data, onFavorite, onRemove }: Props) => {
   const router = useRouter();
   const { user } = useSession();
   const canEdit = user?.platformRole === "ROOT" || user?.platformRole === "ADMIN";
-
-  const REQUEST_STATUS_LABELS: Record<string, { label: string; color: any; className: string }> = {
-    PENDING: {
-      label: "Pendente",
-      color: "warning",
-      className: "text-warning",
-    },
-    APPROVED: {
-      label: "Aprovado",
-      color: "success",
-      className: "text-success",
-    },
-    REJECTED: {
-      label: "Rejeitado",
-      color: "danger",
-      className: "text-danger",
-    },
-    NOT_AFFILIATED: {
-      label: "Não afiliado",
-      color: "default",
-      className: "text-default-500",
-    },
-  };
-
+  const trafficConfig = trafficNetworkValues[data.trafficNetwork];
+  const country = languages.find((l) => l.value === data.language.toLowerCase());
+ 
   return (
     <Card
-      as="div"
       isPressable
-      className="card transition-all hover:scale-[1.01]"
+      as="div"
       onPress={() => router.push(`/offers/${data.id}/edit`)}
+      className="card hover:border-primary/50 border-1 border-transparent transition-all duration-300 hover:scale-[1.01] cursor-pointer"
+      shadow="sm"
     >
-      <CardHeader className="p-0 relative">
+      <CardHeader className="p-0 relative h-[200px] rounded-b-none overflow-hidden">
         <Image
           src={data?.image?.url ?? "https://placehold.co/600x400"}
           alt={data.title}
           radius="none"
-          className="w-full h-[220px] object-cover rounded-t-lg"
+          className="w-full h-full object-cover rounded-t-xl z-0"
           removeWrapper
         />
 
-        <Chip
-          size="sm"
-          className="absolute text-xs z-50 top-2 left-2"
-          color={REQUEST_STATUS_LABELS[status]?.color}
-          variant="flat"
-        >
-          {REQUEST_STATUS_LABELS[status]?.label}
-        </Chip>
+        <div className="absolute top-3 left-3 z-10 flex gap-2">
+          {trafficConfig && (
+            <Chip
+              size="sm"
+              variant="flat"
+              startContent={<Icon icon={trafficConfig.icon} width={14} className="ml-1.5" />}
+              className={`${trafficConfig.bgColor} ${trafficConfig.color} ${trafficConfig.borderColor} border-1 h-7 backdrop-blur-md gap-1`}
+            >
+              <span className="font-bold text-[10px] tracking-wide">{trafficConfig.label}</span>
+            </Chip>
+          )}
 
-        <div className="absolute z-50 top-2 right-2">
+          {data.isClimbing && (
+            <Chip
+              size="sm"
+              variant="flat"
+              className="bg-[#1c3a2f]/80 text-[#10b981] border-[#10b981]/30 border-1 h-7 backdrop-blur-md"
+              startContent={<Icon icon="solar:graph-up-bold" className="ml-1.5" width={14} />}
+            >
+              <span className="font-bold text-[10px] tracking-wide">Escalando</span>
+            </Chip>
+          )}
+        </div>
+
+        <div className="absolute top-3 right-3 z-10" onClick={(e) => e.stopPropagation()}>
           <Dropdown placement="bottom-end">
             <DropdownTrigger>
               <Button
                 isIconOnly
-                variant="light"
-                radius="full"
-                className="bg-gray-400/40 hover:bg-gray-400/60"
-                aria-label="Ações"
+                size="sm"
+                variant="flat"
+                className="bg-content2 hover:bg-content2/60 min-w-8 w-8 h-8 rounded-full backdrop-blur-md"
               >
-                <Icon
-                  icon="solar:menu-dots-bold"
-                  className="text-gray-100 rotate-90 hover:text-gray-200/80 transition-colors"
-                />
+                <Icon icon="solar:menu-dots-bold" className="rotate-90" width={18} />
               </Button>
             </DropdownTrigger>
             <DropdownMenu aria-label="Ações da oferta">
               <DropdownItem
                 key="favorite"
+                onPress={() => onFavorite(data.id)}
                 startContent={
                   <Icon
-                    icon={data?.isFavorite ? "solar:heart-bold" : "solar:heart-outline"}
-                    width={18}
-                    className={data?.isFavorite ? "text-red-500" : ""}
+                    icon={data.isFavorite ? "solar:heart-bold" : "solar:heart-linear"}
+                    className={data.isFavorite ? "text-danger" : ""}
                   />
                 }
-                onPress={() => onFavorite(data.id)}
               >
-                {data?.isFavorite ? "Remover dos favoritos" : "Favoritar"}
+                {data.isFavorite ? "Remover dos Favoritos" : "Adicionar aos Favoritos"}
               </DropdownItem>
               <DropdownItem
                 key="edit"
                 isDisabled={!canEdit}
-                startContent={<Icon icon="solar:pen-bold-duotone" width={18} />}
                 onPress={() => router.push(`/offers/${data.id}/edit`)}
+                startContent={<Icon icon="solar:pen-bold" />}
               >
                 Editar
               </DropdownItem>
               <DropdownItem
                 key="delete"
                 isDisabled={!canEdit}
-                className="text-danger"
                 color="danger"
-                startContent={<Icon icon="solar:trash-bin-trash-bold-duotone" width={18} />}
+                className="text-danger"
                 onPress={() => onRemove(data.id)}
+                startContent={<Icon icon="solar:trash-bin-trash-bold" />}
               >
                 Excluir
               </DropdownItem>
             </DropdownMenu>
           </Dropdown>
         </div>
+
+        <div className="absolute bottom-3 right-3 z-10">
+          {data.isCloaker && (
+            <Chip
+              size="sm"
+              variant="flat"
+              className="bg-content1/80 text-white/90 border-white/10 border-1 h-6 backdrop-blur-md"
+              startContent={<Icon icon="solar:shield-check-bold" className="ml-1" width={12} />}
+            >
+              <span className="font-bold text-[10px] tracking-wide">Cloaker</span>
+            </Chip>
+          )}
+        </div>
       </CardHeader>
 
-      <CardBody className="gap-2">
-        <h4 className="text-sm font-semibold line-clamp-1">{data.title}</h4>
-
-        <div className="flex flex-wrap gap-2">
-          <Chip size="sm" variant="flat" color="primary">
-            {data.category.title}
-          </Chip>
-
-          <Chip size="sm" variant="flat" color="primary">
-            {data.typeProduct}
-          </Chip>
-          {/* // TODO: Validar se vai remover ou adicionar outra coisa no lugar */}
-          {/* <Chip size="sm" variant="flat" color="default">
-            {platformValues[data.platform]}
-          </Chip> */}
+      <CardBody className="p-4 flex flex-col gap-4">
+        <div className="flex flex-col gap-1 min-h-[48px]">
+          <h3 className="text-lg font-bold text-foreground truncate">{data.title}</h3>
+          <p className="text-xs text-default-400 line-clamp-2">{data.description}</p>
         </div>
-        {/* // TODO: Validar se vai remover ou adicionar outra coisa no lugar */}
-        {/* <div className="grid grid-cols-2 gap-2">
-          {OFFER_STAT_CARDS.map((item) => (
-            <div
-              key={item.label}
-              className="flex items-center gap-2 px-3 py-1 rounded-lg bg-content2"
-            >
-              <div className="flex items-center text-xs text-default-400">
-                <Icon icon={item.icon} width={16} />
-              </div>
-              <div className="flex flex-col">
-                <span className="text-xs text-default-400">{item.label}</span>
-                <span
-                  className={`text-sm font-medium${item.valueClassName ? ` ${item.valueClassName}` : ""}`}
-                >
-                  {item.getValue(data)}
-                </span>
-              </div>
-            </div>
-          ))}
-        </div> */}
+
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+          <div className="flex items-center gap-1.5 text-default-400">
+            {country ? (
+              <Image
+                src={country.flag}
+                alt={country.label}
+                width={16}
+                height={12}
+                className="w-4 h-3 min-w-4 object-cover rounded-xs"
+                removeWrapper
+              />
+            ) : (
+              <Icon icon="solar:global-bold" width={14} />
+            )}
+            <span className="text-xs font-medium uppercase">{data.language}</span>
+          </div>
+          <div className="flex items-center gap-1.5 text-default-400">
+            <Icon icon="solar:tag-bold" width={14} />
+            <span className="text-xs font-medium truncate max-w-[100px]">
+              {data?.category?.title || "Sem Categoria"}
+            </span>
+          </div>
+          <div className="flex items-center gap-1.5 text-default-400 ml-auto">
+            <Icon icon="solar:calendar-linear" width={14} />
+            <span className="text-[10px] font-bold uppercase tracking-wider">
+              {dayjs(data.createdAt).format("DD [de] MMM. [de] YYYY")}
+            </span>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-3 gap-3">
+          <div className="flex flex-col items-center justify-center p-3 rounded-xl bg-[#1c1c1e] border-1 border-divider">
+            <span className="text-xl font-bold text-foreground leading-none">
+              {data.adQuantity || 0}
+            </span>
+            <span className="text-[9px] font-bold text-default-400 mt-1 uppercase tracking-wider">
+              Anúncios
+            </span>
+          </div>
+          <div className="flex flex-col items-center justify-center p-3 rounded-xl bg-[#1c1c1e] border-1 border-divider">
+            <span className="text-xl font-bold text-foreground leading-none">
+              {data.viewsQuantity || 0}
+            </span>
+            <span className="text-[9px] font-bold text-default-400 mt-1 uppercase tracking-wider">
+              Views
+            </span>
+          </div>
+          <div className="flex flex-col items-center justify-center p-3 rounded-xl bg-[#1c1c1e] border-1 border-divider">
+            <span className="text-sm font-bold text-foreground leading-none font-mono">
+              {data.pitch || "00:00:00"}
+            </span>
+            <span className="text-[9px] font-bold text-default-400 mt-1 uppercase tracking-wider">
+              Pitch
+            </span>
+          </div>
+        </div>
       </CardBody>
-      <CardFooter>
-        <Button
-          size="sm"
-          variant="solid"
-          radius="full"
-          onPress={() => router.push(`/offers/${data.id}/edit`)}
-          className="w-full bg-linear-to-r from-primary to-primary/50"
-        >
-          Ver oferta
-        </Button>
-      </CardFooter>
     </Card>
   );
 };
