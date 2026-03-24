@@ -22,10 +22,17 @@ interface PagesCardProps {
   page: ILabsPage;
   onEdit?: () => void;
   onArchive?: () => void;
+  onUnarchive?: () => void;
   onDelete?: () => void;
 }
 
-export const PagesCard = ({ page, onEdit, onArchive, onDelete }: PagesCardProps) => {
+export const PagesCard = ({
+  page,
+  onEdit,
+  onArchive,
+  onUnarchive,
+  onDelete,
+}: PagesCardProps) => {
   return (
     <Card
       className="card hover:border-primary/50 border-1 border-transparent transition-all duration-300 hover:scale-[1.01] cursor-pointer h-full"
@@ -55,6 +62,23 @@ export const PagesCard = ({ page, onEdit, onArchive, onDelete }: PagesCardProps)
             >
               <span className="font-bold text-[10px] tracking-wide uppercase">Ativa</span>
             </Chip>
+          )}
+
+          {page.archive && (
+            <Tooltip
+              content={page.archiveReason}
+              className="p-3 bg-content2 max-w-[400px]"
+              showArrow
+            >
+              <Chip
+                size="sm"
+                variant="flat"
+                className="bg-warning/20 text-warning border-warning/30 border-1 h-7 backdrop-blur-md cursor-help"
+                startContent={<Icon icon="solar:archive-bold" className="ml-1.5" width={14} />}
+              >
+                <span className="font-bold text-[10px] tracking-wide uppercase">Arquivada</span>
+              </Chip>
+            </Tooltip>
           )}
 
           {(page.typeAlert === "MISSING_INFORMATION" || page.typeAlert === "DEAD_PAGE") && (
@@ -101,7 +125,7 @@ export const PagesCard = ({ page, onEdit, onArchive, onDelete }: PagesCardProps)
               </DropdownItem>
               <DropdownItem
                 key="archive"
-                onPress={onArchive}
+                onPress={page.archive ? onUnarchive : onArchive}
                 startContent={<Icon icon="solar:archive-bold" />}
               >
                 {page.archive ? "Desarquivar" : "Arquivar"}
@@ -143,7 +167,7 @@ export const PagesCard = ({ page, onEdit, onArchive, onDelete }: PagesCardProps)
           </div>
           {page.makeScraper && (
             <div className="flex items-center gap-1.5 text-default-400">
-              <Icon icon="solar:robot-outline" width={14} />
+              <Icon icon="solar:mouse-circle-outline" width={14} />
               <span className="text-xs font-medium whitespace-nowrap">Scraper</span>
             </div>
           )}
@@ -162,7 +186,7 @@ export const PagesCard = ({ page, onEdit, onArchive, onDelete }: PagesCardProps)
           anchorIcon={<Icon icon="solar:link-outline" className="ml-1" />}
           className="text-xs font-medium text-primary hover:underline"
         >
-          {page.url}
+          <p className="truncate max-w-[300px]">{page.url}</p>
         </Link>
 
         <Button

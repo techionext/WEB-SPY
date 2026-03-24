@@ -1,7 +1,7 @@
 import { Header } from "@/components/header";
 import { SearchBar } from "@/components/searchbar";
-import { CreateModal } from "../creatives/components/create-modal/create-modal";
 import { ListPages } from "./components/list-pages";
+import { CreatePage } from "./components/modal-create/modal-create";
 
 export const ScreenPages = () => {
   return (
@@ -10,7 +10,7 @@ export const ScreenPages = () => {
         <Header title="Páginas" description="Veja as páginas que você está participando." />
         <div className="flex gap-2">
           <SearchBar className="w-[300px]" />
-          <CreateModal />
+          <CreatePage />
         </div>
       </div>
 

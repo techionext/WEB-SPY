@@ -1,8 +1,8 @@
 "use client";
 import { Header } from "@/components/header";
 import { OffersNavigation } from "@/components/offers-navigation/offers-navigation";
-import { CreatePage } from "./components/modal/create-page";
 import { ListPages } from "./components/list-pages";
+import { CreatePage } from "../pages/components/modal-create/modal-create";
 
 export const ScreenOffersPage = () => {
   return (

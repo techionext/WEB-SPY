@@ -134,6 +134,7 @@ export namespace ILabsCreativesDTO {
     pageSize?: number;
     filter?: string;
     offerId?: string;
+    trafficNetwork?: TrafficNetwork[];
   };
   export type Result = {
     data: ILabsCreative[];

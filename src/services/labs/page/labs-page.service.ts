@@ -54,6 +54,17 @@ export const labsPageServices = api.injectEndpoints({
       }),
       invalidatesTags: (result, error, args) => [{ type: "pages", id: args.id }],
     }),
+    archivePage: builder.mutation<
+      { codeIntern: string; message: string },
+      { id: string; archiveReason: string }
+    >({
+      query: ({ id, archiveReason }) => ({
+        url: `${prefix}/${id}/archive`,
+        method: "PATCH",
+        body: { archiveReason },
+      }),
+      invalidatesTags: (result, error, args) => [{ type: "pages", id: args.id }],
+    }),
   }),
   overrideExisting: true,
 });
@@ -64,4 +75,5 @@ export const {
   useGetLabsPageByIdQuery,
   useDeleteLabsPageMutation,
   useUpdateLabsPageMutation,
+  useArchivePageMutation,
 } = labsPageServices;

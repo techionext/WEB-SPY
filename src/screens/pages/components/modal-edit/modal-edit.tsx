@@ -13,11 +13,7 @@ import {
 } from "@heroui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
-import {
-  SchemaPageInput,
-  SchemaPageOutput,
-  schemaPage,
-} from "@/screens/pages/components/modal-edit/schema-edit";
+import { SchemaPageInput, SchemaPageOutput, schemaPage } from "./schema-edit";
 import { useParams } from "next/navigation";
 import { useEffect } from "react";
 import { ILabsPage } from "@/types/labs/page/labs-page.type";

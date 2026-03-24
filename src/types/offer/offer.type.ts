@@ -394,6 +394,8 @@ export namespace IUpdateLabsPageDTO {
     image?: File;
     makeScraper?: boolean;
     offerId: string;
+    creativeId?: string;
+    archive?: boolean;
   };
   export type Result = {
     codeIntern: string;

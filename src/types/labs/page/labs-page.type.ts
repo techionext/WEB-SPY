@@ -42,6 +42,7 @@ export namespace ICreateLabsPageDTO {
     makeScraper?: boolean;
     title?: string;
     offerId: string;
+    creativeId?: string;
   };
   export type Result = {
     id: string;
