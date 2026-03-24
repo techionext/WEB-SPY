@@ -17,6 +17,7 @@ import {
 import { Icon } from "@iconify/react";
 import { ILabsPages as ILabsPage } from "@/types/offer/offer.type";
 import dayjs from "@/utils/dayjs-config";
+import { formatViews } from "@/utils/formatViews";
 
 interface PagesCardProps {
   page: ILabsPage;
@@ -217,7 +218,7 @@ export const PagesCard = ({ page, onEdit, onArchive, onUnarchive, onDelete }: Pa
         <div className="grid grid-cols-2 gap-3 mt-auto">
           <div className="flex flex-col items-center justify-center p-3 rounded-xl bg-content2 border-1 border-divider">
             <span className="text-xl font-bold text-foreground leading-none">
-              {page.adQuantity}
+              {formatViews(page.adQuantity || 0)}
             </span>
             <span className="text-[9px] font-bold text-default-400 mt-1 uppercase tracking-wider">
               Anúncios
@@ -225,7 +226,7 @@ export const PagesCard = ({ page, onEdit, onArchive, onUnarchive, onDelete }: Pa
           </div>
           <div className="flex flex-col items-center justify-center p-3 rounded-xl bg-content2 border-1 border-divider">
             <span className="text-xl font-bold text-foreground leading-none">
-              {page.viewsQuantity}
+              {formatViews(page.viewsQuantity || 0)}
             </span>
             <span className="text-[9px] font-bold text-default-400 mt-1 uppercase tracking-wider">
               Visualizações

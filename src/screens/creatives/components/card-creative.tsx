@@ -18,6 +18,7 @@ import { trafficNetworkValues } from "@/types/offer/offer.type";
 import dayjs from "@/utils/dayjs-config";
 
 import { VideoPlayer } from "@/components/videoplayer/video-player";
+import { formatViews } from "@/utils/formatViews";
 
 interface CardCreativeProps {
   creative: ILabsCreative;
@@ -196,7 +197,7 @@ export const CardCreative = ({ creative, onEdit, onDelete, onView }: CardCreativ
         <div className="grid grid-cols-2 gap-3">
           <div className="flex flex-col items-center justify-center p-3 rounded-xl bg-[#1c1c1e] border-1 border-divider">
             <span className="text-xl font-bold text-foreground leading-none">
-              {creative.adQuantity}
+              {formatViews(creative.adQuantity || 0)}
             </span>
             <span className="text-[9px] font-bold text-default-400 mt-1 uppercase tracking-wider">
               Anúncios
@@ -204,7 +205,7 @@ export const CardCreative = ({ creative, onEdit, onDelete, onView }: CardCreativ
           </div>
           <div className="flex flex-col items-center justify-center p-3 rounded-xl bg-[#1c1c1e] border-1 border-divider">
             <span className="text-xl font-bold text-foreground leading-none">
-              {creative.viewsQuantity}
+              {formatViews(creative.viewsQuantity || 0)}
             </span>
             <span className="text-[9px] font-bold text-default-400 mt-1 uppercase tracking-wider">
               Visualizações
