@@ -48,6 +48,14 @@ export const Aside = () => {
       isActive: onlyPathname === "/pages",
       endContent: undefined,
     },
+    {
+      key: "vsl",
+      icon: "solar:clapperboard-play-bold",
+      label: "VSL",
+      href: "/vsl",
+      isActive: onlyPathname === "/vsl",
+      endContent: undefined,
+    },
   ];
 
   const allowedRolesForUsers = ["ROOT", "ADMIN"] as const;

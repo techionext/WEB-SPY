@@ -26,13 +26,7 @@ interface PagesCardProps {
   onDelete?: () => void;
 }
 
-export const PagesCard = ({
-  page,
-  onEdit,
-  onArchive,
-  onUnarchive,
-  onDelete,
-}: PagesCardProps) => {
+export const PagesCard = ({ page, onEdit, onArchive, onUnarchive, onDelete }: PagesCardProps) => {
   return (
     <Card
       className="card hover:border-primary/50 border-1 border-transparent transition-all duration-300 hover:scale-[1.01] cursor-pointer h-full"
@@ -156,7 +150,19 @@ export const PagesCard = ({
 
       <CardBody className="p-4 flex flex-col gap-4">
         <div className="flex flex-col gap-1 min-h-[48px]">
-          <h3 className="text-lg font-bold text-foreground truncate">{page.title}</h3>
+          <div className="flex items-center">
+            <h3 className="text-lg font-bold text-foreground truncate max-w-[250px]">
+              {page.title}
+            </h3>
+            <div className="flex items-center gap-3 ml-auto">
+              <div className="flex items-center gap-1.5 text-default-400 bg-content2 px-2 py-1 rounded-md">
+                <Icon icon="solar:calendar-linear" width={14} className="mb-0.5" />
+                <span className="text-[10px] font-bold uppercase tracking-wider">
+                  {dayjs(page.createdAt).format("DD [de] MMM. [de] YYYY")}
+                </span>
+              </div>
+            </div>
+          </div>
           <p className="text-xs text-default-400 line-clamp-2 min-h-[32px]">{page.description}</p>
         </div>
 
@@ -171,23 +177,16 @@ export const PagesCard = ({
               <span className="text-xs font-medium whitespace-nowrap">Scraper</span>
             </div>
           )}
-          <div className="flex items-center gap-1.5 text-default-400 ml-auto">
-            <Icon icon="solar:calendar-outline" width={14} />
-            <span className="text-xs font-medium whitespace-nowrap uppercase">
-              {dayjs(page.createdAt).format("DD [DE] MMM. [DE] YYYY")}
-            </span>
-          </div>
+          <Link
+            href={page.url}
+            isExternal
+            showAnchorIcon
+            anchorIcon={<Icon icon="solar:link-outline" className="ml-1" />}
+            className="text-xs font-medium text-primary hover:underline ml-auto"
+          >
+            <p className="truncate max-w-[300px]">{page.url}</p>
+          </Link>
         </div>
-
-        <Link
-          href={page.url}
-          isExternal
-          showAnchorIcon
-          anchorIcon={<Icon icon="solar:link-outline" className="ml-1" />}
-          className="text-xs font-medium text-primary hover:underline"
-        >
-          <p className="truncate max-w-[300px]">{page.url}</p>
-        </Link>
 
         <Button
           fullWidth

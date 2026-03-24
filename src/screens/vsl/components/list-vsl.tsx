@@ -4,23 +4,21 @@ import {
   useGetLabsVSLSQuery,
   useDeleteLabsVSLMutation,
 } from "@/services/labs/vsls/labs-vsls.service";
-import { useParams, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { Pagination } from "@/components/pagination";
 import { Empty } from "@/components/empty/empty";
-import { SkeletonVsl } from "@/screens/vsl/components/skeleton-vsl";
-import { VslCard } from "@/screens/vsl/components/vsl-card";
+import { SkeletonVsl } from "./skeleton-vsl";
+import { VslCard } from "./vsl-card";
 import { ILabsVsl } from "@/types/labs/vsls/labs-vsls.type";
-import { ModalPlayer } from "@/screens/vsl/components/modal-player";
+import { ModalPlayer } from "./modal-player";
 import { ModalRemove } from "@/components/modal-remove/modal-remove";
-import { EditVSL } from "@/screens/vsl/components/edit-modal/edit-modal";
+import { EditVSL } from "./edit-modal/edit-modal";
 
-export const ListVSL = () => {
+export const ListVsl = () => {
   const params = useSearchParams();
   const queryParams = Object.fromEntries(params.entries());
-  const { id: offerId } = useParams<{ id: string }>();
 
   const { data, isLoading } = useGetLabsVSLSQuery({
-    offerId: offerId as string,
     pageSize: Number(queryParams.pageSize) || 6,
     page: Number(queryParams.page) || 1,
     ...queryParams,
@@ -33,7 +31,7 @@ export const ListVSL = () => {
   const [deleteVsl, { isLoading: isDeleting }] = useDeleteLabsVSLMutation();
 
   return (
-    <div className="w-full flex flex-col gap-2 h-full justify-between">
+    <div className="flex flex-col gap-2 justify-between h-full">
       {isLoading ? (
         <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4">
           {Array.from({ length: 6 }).map((_, index) => (
@@ -44,7 +42,7 @@ export const ListVSL = () => {
         <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4">
           {data?.data.length === 0 ? (
             <div className="col-span-12">
-              <Empty description="Não existem VSLs para esta oferta" isLoading={isLoading} />
+              <Empty description="Não existem VSLs disponíveis" isLoading={isLoading} />
             </div>
           ) : (
             data?.data.map((vsl: ILabsVsl) => (

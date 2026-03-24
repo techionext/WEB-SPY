@@ -132,29 +132,35 @@ export const CardCreative = ({ creative, onEdit, onDelete }: CardCreativeProps) 
 
       <CardBody className="p-4 flex flex-col gap-4">
         <div className="flex flex-col gap-1 min-h-[48px]">
-          <h3 className="text-lg font-bold text-foreground truncate">{creative.title}</h3>
+          <div className="flex items-center">
+            <h3 className="text-lg font-bold text-foreground truncate max-w-[200px]">
+              {creative.title}
+            </h3>
+            <div className="flex items-center gap-3 ml-auto">
+              <div className="flex items-center gap-1.5 text-default-400 bg-content2 px-2 py-1 rounded-md">
+                <Icon icon="solar:calendar-linear" width={14} className="mb-0.5" />
+                <span className="text-[10px] font-bold uppercase tracking-wider">
+                  {dayjs(creative.createdAt).format("DD [de] MMM. [de] YYYY")}
+                </span>
+              </div>
+            </div>
+          </div>
           <p className="text-xs text-default-400 truncate">{creative.description}</p>
         </div>
 
         <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
           <div className="flex items-center gap-1.5 text-default-400">
-            <Icon icon="solar:global-outline" width={14} />
+            <Icon icon="solar:global-bold" width={14} />
             <span className="text-xs font-medium uppercase">{creative.language}</span>
           </div>
           <div className="flex items-center gap-1.5 text-default-400">
-            <Icon icon="solar:target-outline" width={14} />
+            <Icon icon="solar:target-bold" width={14} />
             <span className="text-xs font-medium whitespace-nowrap">{creative.salesAngle}</span>
           </div>
           <div className="flex items-center gap-1.5 text-default-400">
-            <Icon icon="solar:megaphone-outline" width={14} />
+            <Icon icon="solar:settings-bold" width={14} />
             <span className="text-xs font-medium whitespace-nowrap">
               {creative.creationType === "AUTOMATIC" ? "Automático" : "Manual"}
-            </span>
-          </div>
-          <div className="flex items-center gap-1.5 text-default-400 ml-auto">
-            <Icon icon="solar:calendar-outline" width={14} />
-            <span className="text-xs font-medium whitespace-nowrap uppercase">
-              {dayjs(creative.createdAt).format("DD [DE] MMM. [DE] YYYY")}
             </span>
           </div>
         </div>

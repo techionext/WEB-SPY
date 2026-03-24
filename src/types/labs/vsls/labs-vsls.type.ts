@@ -9,6 +9,8 @@ export type ILabsVsl = {
     id: string;
     url: string;
     key: string;
+    mimeType?: string;
+    processStatus?: "UPLOADING" | "COMPLETED" | "PROCESSING";
   };
   processStatus: "UPLOADING" | "COMPLETED" | "PROCESSING";
   transcriptionVsl: {
@@ -16,7 +18,7 @@ export type ILabsVsl = {
     text: string;
     url: string;
     key: string;
-  };
+  } | null;
 };
 
 export type ILabsVslById = {
