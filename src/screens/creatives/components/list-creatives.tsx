@@ -23,9 +23,7 @@ type ListCreativesProps = {
 };
 
 export const ListCreatives = ({ offerId: offerIdProp }: ListCreativesProps) => {
-  const { data, isLoading } = useCreativeList(
-    offerIdProp ? { offerId: offerIdProp } : undefined,
-  );
+  const { data, isLoading } = useCreativeList(offerIdProp ? { offerId: offerIdProp } : undefined);
   const [selectedCreative, setSelectedCreative] = useState<ILabsCreative | null>(null);
   const [selectedCreativeForView, setSelectedCreativeForView] = useState<ILabsCreative | null>(
     null,
@@ -46,9 +44,7 @@ export const ListCreatives = ({ offerId: offerIdProp }: ListCreativesProps) => {
   const listSection = (
     <div className={gridClassName}>
       {isLoading
-        ? Array.from({ length: skeletonCount }).map((_, index) => (
-            <SkeletonCreative key={index} />
-          ))
+        ? Array.from({ length: skeletonCount }).map((_, index) => <SkeletonCreative key={index} />)
         : creatives?.map((item) => {
             const cardProps: CardCreativeProps = {
               creative: item,
@@ -85,10 +81,7 @@ export const ListCreatives = ({ offerId: offerIdProp }: ListCreativesProps) => {
   );
 
   const pagination = (
-    <Pagination
-      defaultPageSize={String(fallbackPageSize)}
-      total={data?.meta.totalPages || 0}
-    />
+    <Pagination defaultPageSize={String(fallbackPageSize)} total={data?.meta.totalPages || 0} />
   );
 
   if (isOfferView) {

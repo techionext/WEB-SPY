@@ -26,8 +26,7 @@ export const ScreenOfferView = () => {
     }
   }, [typePages, pageTypeKey]);
 
-  const activePageType =
-    typePages.length === 0 ? undefined : pageTypeKey ?? typePages[0];
+  const activePageType = typePages.length === 0 ? undefined : (pageTypeKey ?? typePages[0]);
 
   return (
     <div className="flex flex-col gap-4">

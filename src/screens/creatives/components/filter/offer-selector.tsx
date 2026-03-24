@@ -48,7 +48,8 @@ export const OfferSelector = () => {
                 onValueChange={() => toggleFilter("offerId", offer.title)}
                 size="sm"
                 classNames={{
-                  label: "text-sm text-default-500 group-hover:text-foreground transition-colors truncate max-w-[180px]",
+                  label:
+                    "text-sm text-default-500 group-hover:text-foreground transition-colors truncate max-w-[180px]",
                 }}
               >
                 {offer.title}

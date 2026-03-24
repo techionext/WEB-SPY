@@ -33,7 +33,7 @@ export const CardOfferLabs = ({ data, onFavorite, onRemove }: Props) => {
   const canEdit = user?.platformRole === "ROOT" || user?.platformRole === "ADMIN";
   const trafficConfig = trafficNetworkValues[data.trafficNetwork];
   const country = languages.find((l) => l.value === data.language.toLowerCase());
- 
+
   return (
     <Card
       isPressable

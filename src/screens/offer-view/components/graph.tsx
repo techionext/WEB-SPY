@@ -145,8 +145,8 @@ export default function Graph() {
       <section className="flex min-w-0 flex-col">
         <div className="flex items-center justify-between px-5 pb-4 pt-5 ">
           <div className="flex flex-col">
-          <h3 className="text-xl font-semibold text-foreground">Histórico semanal</h3>
-          <p className="text-sm text-gray-500">Evolução semanal da quantidade registrada</p>
+            <h3 className="text-xl font-semibold text-foreground">Histórico semanal</h3>
+            <p className="text-sm text-gray-500">Evolução semanal da quantidade registrada</p>
           </div>
           <Tabs
             color="primary"

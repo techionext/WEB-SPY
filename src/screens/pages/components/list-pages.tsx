@@ -61,8 +61,7 @@ export const ListPages = ({ offerId: offerIdProp, type: typeProp, noEmpty }: Lis
 
   const rows = data?.data ?? [];
   const isListEmpty = !isLoading && rows.length === 0;
-  const showNoEmpty =
-    isListEmpty && noEmpty !== undefined && noEmpty !== false;
+  const showNoEmpty = isListEmpty && noEmpty !== undefined && noEmpty !== false;
 
   return (
     <div className="flex h-full flex-col justify-between gap-2">
@@ -109,10 +108,7 @@ export const ListPages = ({ offerId: offerIdProp, type: typeProp, noEmpty }: Lis
           ))}
         </div>
       )}
-      <Pagination
-        defaultPageSize={String(fallbackPageSize)}
-        total={data?.meta?.totalPages}
-      />
+      <Pagination defaultPageSize={String(fallbackPageSize)} total={data?.meta?.totalPages} />
       {editPage && <EditPage page={editPage} setEditPage={setEditPage} />}
 
       {!!archivePage && (

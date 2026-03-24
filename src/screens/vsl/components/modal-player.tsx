@@ -11,17 +11,17 @@ interface ModalPlayerProps {
   isOpen: boolean;
   onOpenChange: () => void;
 }
- 
+
 export const ModalPlayer = ({ vsl, isOpen, onOpenChange }: ModalPlayerProps) => {
   const isCompleted = vsl.processStatus === "COMPLETED";
   const [fileSignedUrl, { isLoading: isDownloading }] = useFileSignedUrlMutation();
- 
+
   const handleDownloadTranscription = () => {
     if (vsl.transcriptionVsl?.url) {
       window.open(vsl.transcriptionVsl.url, "_blank");
     }
   };
- 
+
   const handleDownloadVideo = async () => {
     if (vsl.video?.id) {
       await fileSignedUrl({ id: vsl.video.id })

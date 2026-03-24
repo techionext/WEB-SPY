@@ -56,9 +56,7 @@ export function VslPlayerContent({
             videoClassName="object-contain"
           />
         )}
-        {topRightSlot ? (
-          <div className="absolute right-4 top-4 z-50">{topRightSlot}</div>
-        ) : null}
+        {topRightSlot ? <div className="absolute right-4 top-4 z-50">{topRightSlot}</div> : null}
       </div>
 
       <ScrollShadow className="flex max-h-[400px] flex-col gap-6 p-6">
