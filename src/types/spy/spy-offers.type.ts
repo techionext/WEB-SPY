@@ -213,12 +213,34 @@ export namespace ISpyOfferDTOById {
 export namespace ISpyOfferByIdHistoryDTO {
   export type Args = {
     id: string;
-    day?: string;
-    quantity?: number;
+    startDate?: string;
+    endDate?: string;
+    type?: "GRAPH" | "TABLE";
   };
   export type Result = {
-    codeIntern: string;
-    message: string;
+    id: string;
+    day: string;
+    quantity: number;
+    offerId: string;
+    createdAt: string;
+    updatedAt: string;
+  };
+}
+
+/** GET `offer/:id/history` com `type=GRAPH`. */
+export namespace ISpyOfferByIdGraphDTO {
+  export type Args = {
+    id: string;
+    type: "GRAPH";
+    startDate?: string;
+    endDate?: string;
+  };
+  export type GraphDataPoint = {
+    date: string;
+    quantity: number;
+  };
+  export type Result = {
+    data: GraphDataPoint[];
   };
 }
 

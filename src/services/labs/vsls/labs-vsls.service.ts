@@ -73,6 +73,7 @@ export const labsVSLSservices = api.injectEndpoints({
 export const {
   useCreateLabsVSLMutation,
   useGetLabsVSLSQuery,
+  useLazyGetLabsVSLSQuery,
   useGetLabsVSLByIdQuery,
   useDeleteLabsVSLMutation,
   useUpdateLabsVSLMutation,

@@ -1,5 +1,6 @@
 import { api } from "@/libs/api";
 import {
+  ISpyOfferByIdGraphDTO,
   ISpyOfferByIdHistoryDTO,
   ISpyOfferCreateDTO,
   ISpyOfferDTOById,
@@ -67,6 +68,27 @@ export const spyOffersServices = api.injectEndpoints({
         method: "POST",
       }),
     }),
+    getSpyOfferByIdGraph: builder.query<ISpyOfferByIdGraphDTO.Result, ISpyOfferByIdGraphDTO.Args>({
+      query: ({ id, ...params }) => ({
+        url: `${prefix}/${id}/history`,
+        method: "GET",
+        params,
+      }),
+      transformResponse(response: unknown): ISpyOfferByIdGraphDTO.Result {
+        if (Array.isArray(response)) {
+          return { data: response as ISpyOfferByIdGraphDTO.GraphDataPoint[] };
+        }
+        if (
+          response &&
+          typeof response === "object" &&
+          "data" in response &&
+          Array.isArray((response as { data: unknown }).data)
+        ) {
+          return { data: (response as { data: ISpyOfferByIdGraphDTO.GraphDataPoint[] }).data };
+        }
+        return { data: [] };
+      },
+    }),
   }),
   overrideExisting: true,
 });
@@ -79,4 +101,5 @@ export const {
   useGetSpyOfferByIdHistoryQuery,
   useRemoveSpyOfferMutation,
   useUpdateSpyOfferMutation,
+  useGetSpyOfferByIdGraphQuery,
 } = spyOffersServices;

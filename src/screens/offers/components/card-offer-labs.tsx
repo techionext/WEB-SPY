@@ -204,7 +204,7 @@ export const CardOfferLabs = ({ data, onFavorite, onRemove }: Props) => {
           size="sm"
           variant="solid"
           radius="full"
-          onPress={() => router.push(`/offers/${data.id}/edit`)}
+          onPress={() => router.push(`/offers/${data.id}`)}
           className="w-full bg-linear-to-r from-primary to-primary/50"
         >
           Ver oferta
