@@ -9,6 +9,7 @@ import { trafficNetworkValues, TrafficNetwork } from "@/types/offer/offer.type";
 import { languages } from "@/components/select-language/countries";
 import { SearchBar } from "@/components/searchbar";
 import { formatViews } from "@/utils/formatViews";
+import { useCreativeList } from "../../use-creative-list";
 
 export const FilterCreative = () => {
   const {
@@ -26,6 +27,8 @@ export const FilterCreative = () => {
     capitalize,
     activeFiltersCount,
   } = useFilterCreative();
+
+  const { data: creativeData, isLoading: isLoadingCreatives } = useCreativeList();
 
   const renderSectionContent = (section: any) => {
     switch (section.type) {
@@ -140,7 +143,7 @@ export const FilterCreative = () => {
   };
 
   return (
-    <div className="flex flex-col gap-4 card p-4 rounded-2xl w-[330px]">
+    <div className="flex flex-col gap-4 card p-4 rounded-2xl w-[330px] sticky top-1">
       <div className="flex flex-col gap-1 px-2">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -161,6 +164,11 @@ export const FilterCreative = () => {
             Limpar
           </Button>
         </div>
+        {!isLoadingCreatives && (
+          <span className="text-[11px] text-default-400 font-medium">
+            {creativeData?.meta?.total || 0} criativos encontrados
+          </span>
+        )}
       </div>
 
       <SearchBar className="px-1" />

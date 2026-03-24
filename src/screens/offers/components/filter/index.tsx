@@ -152,7 +152,7 @@ export const Filter = () => {
   };
 
   return (
-    <div className="flex flex-col gap-4 card p-4 rounded-2xl w-[330px]">
+    <div className="flex flex-col gap-4 card p-4 rounded-2xl w-[330px] sticky top-1">
       <div className="flex flex-col gap-1 px-2">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
