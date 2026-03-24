@@ -19,7 +19,7 @@ import { trafficNetworkValues } from "@/types/offer/offer.type";
 import dayjs from "@/utils/dayjs-config";
 
 import { languages } from "@/components/select-language/countries";
- 
+import { formatViews } from "@/utils/formatViews";
 type Props = {
   data: ISpyOffer;
   onFavorite: (id: string) => void;
@@ -175,7 +175,7 @@ export const CardOfferLabs = ({ data, onFavorite, onRemove }: Props) => {
         <div className="grid grid-cols-3 gap-3">
           <div className="flex flex-col items-center justify-center p-3 rounded-xl bg-[#1c1c1e] border-1 border-divider">
             <span className="text-xl font-bold text-foreground leading-none">
-              {data.adQuantity || 0}
+              {formatViews(data.adQuantity || 0)}
             </span>
             <span className="text-[9px] font-bold text-default-400 mt-1 uppercase tracking-wider">
               Anúncios
@@ -183,7 +183,7 @@ export const CardOfferLabs = ({ data, onFavorite, onRemove }: Props) => {
           </div>
           <div className="flex flex-col items-center justify-center p-3 rounded-xl bg-[#1c1c1e] border-1 border-divider">
             <span className="text-xl font-bold text-foreground leading-none">
-              {data.viewsQuantity || 0}
+              {formatViews(data.viewsQuantity || 0)}
             </span>
             <span className="text-[9px] font-bold text-default-400 mt-1 uppercase tracking-wider">
               Views

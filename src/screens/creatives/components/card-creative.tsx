@@ -177,14 +177,20 @@ export const CardCreative = ({ creative, onEdit, onDelete, onView }: CardCreativ
             <Icon icon="solar:global-bold" width={14} />
             <span className="text-xs font-medium uppercase">{creative.language}</span>
           </div>
-          <div className="flex items-center gap-1.5 text-default-400">
-            <Icon icon="solar:target-bold" width={14} />
-            <span className="text-xs font-medium whitespace-nowrap">{creative.salesAngle}</span>
-          </div>
-          <div className="flex items-center gap-1.5 text-default-400">
-            <Icon icon="solar:document-text-bold" width={14} />
-            <span className="text-xs font-medium whitespace-nowrap">{creative.category.title}</span>
-          </div>
+          {creative.salesAngle && (
+            <div className="flex items-center gap-1.5 text-default-400">
+              <Icon icon="solar:target-bold" width={14} />
+              <span className="text-xs font-medium whitespace-nowrap">{creative.salesAngle}</span>
+            </div>
+          )}
+          {creative.category && (
+            <div className="flex items-center gap-1.5 text-default-400">
+              <Icon icon="solar:document-text-bold" width={14} />
+              <span className="text-xs font-medium whitespace-nowrap">
+                {creative.category.title}
+              </span>
+            </div>
+          )}
         </div>
 
         <div className="grid grid-cols-2 gap-3">

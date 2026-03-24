@@ -142,6 +142,18 @@ export namespace ISpyOffersDTO {
     page?: number;
     pageSize?: number;
     filter?: string;
+    trafficNetwork?: string[];
+    structure?: string[];
+    language?: string[];
+    typeProduct?: string[];
+    isClimbing?: boolean;
+    isCloaker?: boolean;
+    isFavorite?: boolean;
+    minAdQuantity?: number;
+    maxAdQuantity?: number;
+    minViewsQuantity?: number;
+    maxViewsQuantity?: number;
+    categories?: string[];
   };
   export type Result = {
     data: ISpyOffer[];
@@ -155,40 +167,15 @@ export namespace ISpyOffersDTO {
 }
 
 export type ISpyOfferGrouped = {
-  language: [
-    {
-      type: string;
-      quantity: number;
-    },
-  ];
-  trafficNetwork: [
-    {
-      type: string;
-      quantity: number;
-    },
-  ];
-  typeProduct: [
-    {
-      type: string;
-      quantity: number;
-    },
-  ];
-  categoryTitles: [
-    {
-      type: string;
-      quantity: number;
-    },
-  ];
-  structure: [
-    {
-      type: string;
-      quantity: number;
-    },
-  ];
+  language: Record<string, number>;
+  trafficNetwork: Record<string, number>;
+  typeProduct: Record<string, number>;
+  category: Record<string, number>;
+  structure: Record<string, number>;
 };
 export namespace ISpyOfferGroupedDTO {
   export type Args = {
-    categoryTitles?: string[];
+    categories?: string[];
   };
   export type Result = ISpyOfferGrouped;
 }
