@@ -23,16 +23,20 @@ interface CardCreativeProps {
   creative: ILabsCreative;
   onEdit: (tab?: "edit" | "history") => void;
   onDelete: () => void;
+  onView: () => void;
 }
 
-export const CardCreative = ({ creative, onEdit, onDelete }: CardCreativeProps) => {
+export const CardCreative = ({ creative, onEdit, onDelete, onView }: CardCreativeProps) => {
   const [playing, setPlaying] = useState(false);
   const trafficConfig = trafficNetworkValues[creative.trafficNetwork];
 
   return (
     <Card
+      isPressable
+      onPress={onView}
       className="card hover:border-primary/50 border-1 border-transparent transition-all duration-300 hover:scale-[1.01] cursor-pointer"
       shadow="sm"
+      as="div"
       onMouseEnter={() => setPlaying(true)}
       onMouseLeave={() => setPlaying(false)}
     >
@@ -96,7 +100,7 @@ export const CardCreative = ({ creative, onEdit, onDelete }: CardCreativeProps) 
           )}
         </div>
 
-        <div className="absolute top-3 right-3 z-10">
+        <div className="absolute top-3 right-3 z-10" onClick={(e) => e.stopPropagation()}>
           <Dropdown placement="bottom-end">
             <DropdownTrigger>
               <Button
@@ -111,6 +115,13 @@ export const CardCreative = ({ creative, onEdit, onDelete }: CardCreativeProps) 
             <DropdownMenu aria-label="Ações do criativo">
               <DropdownItem
                 key="view"
+                onPress={onView}
+                startContent={<Icon icon="solar:eye-bold" />}
+              >
+                Visualizar
+              </DropdownItem>
+              <DropdownItem
+                key="history"
                 onPress={() => onEdit("history")}
                 startContent={<Icon icon="solar:history-bold" />}
               >
@@ -195,15 +206,17 @@ export const CardCreative = ({ creative, onEdit, onDelete }: CardCreativeProps) 
           </div>
         </div>
 
-        <Button
-          fullWidth
-          variant="flat"
-          className="bg-content2 text-default-500 font-semibold h-11 rounded-xl"
-          startContent={<Icon icon="solar:history-bold" width={18} />}
-          onPress={() => onEdit("history")}
-        >
-          Visualizar Histórico
-        </Button>
+        <div onClick={(e) => e.stopPropagation()}>
+          <Button
+            fullWidth
+            variant="flat"
+            className="bg-content2 text-default-500 font-semibold h-11 rounded-xl"
+            startContent={<Icon icon="solar:history-bold" width={18} />}
+            onPress={() => onEdit("history")}
+          >
+            Visualizar Histórico
+          </Button>
+        </div>
       </CardBody>
     </Card>
   );
