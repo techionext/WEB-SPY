@@ -93,7 +93,7 @@ export const CardVSL = ({ data, user }: CardVSLProps) => {
                       variant="light"
                       radius="full"
                       onPress={() => {
-                        fileSignedUrl({ id: data.transcriptionVsl.id })
+                        fileSignedUrl({ id: data.transcriptionVsl!.id })
                           .unwrap()
                           .then((res) => {
                             window.open(res.url, "_blank");

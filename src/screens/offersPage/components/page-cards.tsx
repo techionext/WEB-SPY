@@ -46,14 +46,14 @@ export const PageCard = ({ data }: PageCardProps) => {
                 </Button>
               </Tooltip>
             )}
-            {data.file?.id && (
+            {data?.file?.id && (
               <Tooltip content="Download do arquivo">
                 <Button
                   isIconOnly
                   variant="light"
                   radius="full"
                   onPress={() => {
-                    fileSignedUrl({ id: data.file.id })
+                    fileSignedUrl({ id: data.file!.id })
                       .unwrap()
                       .then((res) => {
                         window.open(res.url, "_blank");

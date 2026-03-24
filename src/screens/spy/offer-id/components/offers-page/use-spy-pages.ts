@@ -1,4 +1,4 @@
-import { useGetSpyPagesQuery } from "@/services/spy/spy-pages.service";
+import { useGetLabsPagesQuery } from "@/services/labs/page/labs-page.service";
 import { useParams, useSearchParams } from "next/navigation";
 
 export const useSpyOfferPages = () => {
@@ -7,12 +7,12 @@ export const useSpyOfferPages = () => {
   const search = useSearchParams();
   const searchParams = Object.fromEntries(search.entries());
   const { id } = useParams();
-  const { data, isLoading } = useGetSpyPagesQuery(
+  const { data, isLoading } = useGetLabsPagesQuery(
     {
       offerId: id as string,
       ...searchParams,
-      page: searchParams.page || DEFAULT_PAGE,
-      pageSize: searchParams.pageSize || DEFAULT_PAGE_SIZE,
+      page: Number(searchParams.page) || DEFAULT_PAGE,
+      pageSize: Number(searchParams.pageSize) || DEFAULT_PAGE_SIZE,
     },
     { skip: !id },
   );

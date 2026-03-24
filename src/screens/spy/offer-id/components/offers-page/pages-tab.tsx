@@ -10,7 +10,7 @@ export const OfferPagesTab = () => {
       <div className="grid grid-cols-5 gap-4 h-fit">
         {isLoading
           ? Array.from({ length: 5 }).map((_, index) => <PageOfferCardLoading key={index} />)
-          : data?.data.map((item) => <PageOfferCard key={item.id} data={item} />)}
+          : data?.data.map((item) => <PageOfferCard key={item.id} data={item as any} />)}
       </div>
       {data?.meta?.totalPages && data?.meta?.totalPages > 0 && (
         <Pagination

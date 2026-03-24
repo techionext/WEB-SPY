@@ -45,7 +45,9 @@ export const EditVSL = ({ vsl, setEditVSL }: EditVSLProps) => {
       reset({
         title: vsl.title,
         description: vsl.description,
-        transcription: vsl.transcriptionVsl,
+        transcription: vsl.transcriptionVsl
+          ? { id: vsl.transcriptionVsl.id, text: vsl.transcriptionVsl.text }
+          : undefined,
       });
     }
   }, [vsl, reset]);
