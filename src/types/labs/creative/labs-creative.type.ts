@@ -11,6 +11,7 @@ export type ILabsCreative = {
   trafficNetwork: TrafficNetwork;
   salesAngle: string;
   creationType: "AUTOMATIC" | "MANUAL";
+  valueToday?: number;
   offer: {
     id: string;
     title: string;
@@ -108,15 +109,16 @@ export type ILabsCreative = {
 export namespace ICreateLabsCreativeDTO {
   export type Args = {
     title: string;
-    description: string;
+    description?: string;
     language: string;
     isClimbing: boolean;
     trafficNetwork: string;
-    salesAngle: string;
+    salesAngle?: string;
     offerId: string;
     status: boolean;
     pageId?: string;
     creationType?: string;
+    valueToday?: number;
     image?: File;
   };
   export type Result = {
@@ -147,17 +149,48 @@ export namespace ILabsCreativesDTO {
 export namespace IUpdateLabsCreativeDTO {
   export type Args = {
     id: string;
-    title: string;
-    description: string;
-    language: string;
-    isClimbing: boolean;
-    trafficNetwork: string;
-    salesAngle: string;
+    title?: string;
+    description?: string;
+    language?: string;
+    isClimbing?: boolean;
+    trafficNetwork?: string;
+    salesAngle?: string;
     offerId: string;
-    status: boolean;
+    status?: boolean;
     pageId?: string;
     creationType?: string;
+    valueToday?: number;
     image?: File;
+  };
+  export type Result = {
+    codeIntern: string;
+    message: string;
+  };
+}
+
+export namespace ILabsCreativeHistoryDTO {
+  export type Args = {
+    id: string;
+    startDate?: string;
+    endDate?: string;
+  };
+  export type Result = [
+    {
+      id: string;
+      day: string;
+      quantity: number;
+      creativeId: string;
+      createdAt: string;
+      updatedAt: string;
+    },
+  ];
+}
+
+export namespace ICreateLabsCreativeHistoryDTO {
+  export type Args = {
+    id: string;
+    day: string;
+    quantity: number;
   };
   export type Result = {
     codeIntern: string;

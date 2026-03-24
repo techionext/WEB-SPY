@@ -5,7 +5,7 @@ import { ThemeProvider as NextThemesProvider } from "next-themes";
 
 export function UIProvider({ children }: { children: React.ReactNode }) {
   return (
-    <HeroUIProvider>
+    <HeroUIProvider locale="pt-BR">
       <NextThemesProvider attribute="class" defaultTheme="dark">
         {children}
       </NextThemesProvider>

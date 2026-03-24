@@ -5,9 +5,9 @@ import { Button, Card, CardBody, CardFooter, Image } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import dayjs from "dayjs";
 import { useState } from "react";
-import { EditCreative } from "./modal/edit-creative";
 import { VideoPlayer } from "@/components/videoplayer/video-player";
 import { useFileSignedUrlMutation } from "@/services/file/file.service";
+import { EditModal } from "@/screens/creatives/components/edit-modal/edit-modal";
 
 type CreativeLabsCardsProps = {
   data: ILabsCreative;
@@ -104,7 +104,13 @@ export const CreativeLabsCards = ({ data }: CreativeLabsCardsProps) => {
           isLoading={isLoading}
         />
       )}
-      {editCreative && <EditCreative creative={editCreative} setEditCreative={setEditCreative} />}
+      {editCreative && (
+        <EditModal
+          creative={editCreative}
+          isOpen={!!editCreative}
+          onClose={() => setEditCreative(null)}
+        />
+      )}
     </>
   );
 };

@@ -36,6 +36,7 @@ export const api = createApi({
     "community-video",
     "community-video-comment",
     "community-video-group",
+    "creatives-history",
   ],
 });
 

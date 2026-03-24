@@ -21,9 +21,11 @@ import { VideoPlayer } from "@/components/videoplayer/video-player";
 
 interface CardCreativeProps {
   creative: ILabsCreative;
+  onEdit: (tab?: "edit" | "history") => void;
+  onDelete: () => void;
 }
 
-export const CardCreative = ({ creative }: CardCreativeProps) => {
+export const CardCreative = ({ creative, onEdit, onDelete }: CardCreativeProps) => {
   const [playing, setPlaying] = useState(false);
   const trafficConfig = trafficNetworkValues[creative.trafficNetwork];
 
@@ -93,14 +95,26 @@ export const CardCreative = ({ creative }: CardCreativeProps) => {
                 <Icon icon="solar:menu-dots-bold" className="rotate-90" width={18} />
               </Button>
             </DropdownTrigger>
-            <DropdownMenu>
-              <DropdownItem key="edit" startContent={<Icon icon="solar:pen-bold" />}>
+            <DropdownMenu aria-label="Ações do criativo">
+              <DropdownItem
+                key="view"
+                onPress={() => onEdit("history")}
+                startContent={<Icon icon="solar:history-bold" />}
+              >
+                Histórico
+              </DropdownItem>
+              <DropdownItem
+                key="edit"
+                onPress={() => onEdit("edit")}
+                startContent={<Icon icon="solar:pen-bold" />}
+              >
                 Editar
               </DropdownItem>
               <DropdownItem
                 key="delete"
                 color="danger"
                 className="text-danger"
+                onPress={onDelete}
                 startContent={<Icon icon="solar:trash-bin-trash-bold" />}
               >
                 Excluir
@@ -110,11 +124,7 @@ export const CardCreative = ({ creative }: CardCreativeProps) => {
         </div>
 
         <div className="absolute bottom-3 right-3 z-10">
-          <Chip
-            size="sm"
-            variant="flat"
-            className="bg-black/60 text-white border-white/20 border-1 h-6 text-[10px] uppercase font-bold backdrop-blur-sm"
-          >
+          <Chip size="sm" variant="flat">
             {creative.image.mimeType.split("/")[1]?.toUpperCase() || "FILE"}
           </Chip>
         </div>
@@ -168,14 +178,14 @@ export const CardCreative = ({ creative }: CardCreativeProps) => {
           </div>
         </div>
 
-        {/* Footer Action */}
         <Button
           fullWidth
           variant="flat"
           className="bg-content2 text-default-500 font-semibold h-11 rounded-xl"
           startContent={<Icon icon="solar:history-bold" width={18} />}
+          onPress={() => onEdit("history")}
         >
-          Ver histórico
+          Visualizar Histórico
         </Button>
       </CardBody>
     </Card>

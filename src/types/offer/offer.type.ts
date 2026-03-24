@@ -356,6 +356,7 @@ export namespace ILabsPagesDTO {
     offerId?: string;
     page?: number;
     pageSize?: number;
+    type?: string[];
     filter?: string;
   };
   export type Result = {

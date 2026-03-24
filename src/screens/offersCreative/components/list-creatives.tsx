@@ -1,11 +1,21 @@
 import { Empty } from "@/components/empty/empty";
 import { useGetLabsCreativeQuery } from "@/services/creative/creative.service";
 import { useParams, useSearchParams } from "next/navigation";
-import { CreativeLabsCards } from "./creative-labs-cards";
 import { Pagination } from "@/components/pagination";
 import { CreativeLabsCardsSkeleton } from "./creative-skeleton-cards";
+import { CardCreative } from "@/screens/creatives/components/card-creative";
+import { useState } from "react";
+import { ILabsCreative } from "@/types/labs/creative/labs-creative.type";
+import { EditModal } from "@/screens/creatives/components/edit-modal/edit-modal";
+import { useDeleteLabsCreativeMutation } from "@/services/creative/creative.service";
+import { ModalRemove } from "@/components/modal-remove/modal-remove";
 
 export const ListCreatives = () => {
+  const [selectedCreative, setSelectedCreative] = useState<ILabsCreative | null>(null);
+  const [selectedTab, setSelectedTab] = useState<"edit" | "history">("edit");
+  const [removeCreativeId, setRemoveCreativeId] = useState<string>("");
+
+  const [deleteCreative, { isLoading: isDeleting }] = useDeleteLabsCreativeMutation();
   const queryParams = useSearchParams();
   const params = Object.fromEntries(queryParams.entries());
   const { id } = useParams<{ id: string }>();
@@ -30,12 +40,44 @@ export const ListCreatives = () => {
         ) : (
           data?.data?.map((item) => (
             <div key={item.id}>
-              <CreativeLabsCards data={item} />
+              <CardCreative
+                creative={item}
+                onEdit={(tab) => {
+                  setSelectedCreative(item);
+                  if (tab) setSelectedTab(tab);
+                }}
+                onDelete={() => setRemoveCreativeId(item.id)}
+              />
             </div>
           ))
         )}
       </div>
       <Pagination total={data?.meta?.totalPages ?? 0} defaultPageSize={"9"} />
+      {selectedCreative && (
+        <EditModal
+          creative={selectedCreative}
+          isOpen={!!selectedCreative}
+          onClose={() => setSelectedCreative(null)}
+          initialTab={selectedTab}
+        />
+      )}
+
+      {!!removeCreativeId && (
+        <ModalRemove
+          isOpen={!!removeCreativeId}
+          onOpenChange={() => setRemoveCreativeId("")}
+          onRemove={() => {
+            deleteCreative({ id: removeCreativeId })
+              .unwrap()
+              .then(() => setRemoveCreativeId(""));
+          }}
+          title="Excluir criativo"
+          text="Tem certeza que deseja excluir o criativo?"
+          textButtonCancel="Cancelar"
+          textButtonConfirm="Excluir"
+          isLoading={isDeleting}
+        />
+      )}
     </div>
   );
 };

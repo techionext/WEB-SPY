@@ -1,7 +1,9 @@
 import { api } from "@/libs/api";
 import {
   ICreateLabsCreativeDTO,
+  ICreateLabsCreativeHistoryDTO,
   ILabsCreative,
+  ILabsCreativeHistoryDTO,
   ILabsCreativesDTO,
   IUpdateLabsCreativeDTO,
 } from "@/types/labs/creative/labs-creative.type";
@@ -61,6 +63,24 @@ export const labsCreativeServices = api.injectEndpoints({
       }),
       invalidatesTags: (result, error, { id }) => [{ type: "creatives", id: id }],
     }),
+    historyCreative: builder.query<ILabsCreativeHistoryDTO.Result, ILabsCreativeHistoryDTO.Args>({
+      query: ({ id }) => ({
+        url: `${prefix}/${id}/history`,
+        method: "GET",
+      }),
+      providesTags: () => [{ type: "creatives-history", id: "LIST" }],
+    }),
+    createHistoryCreative: builder.mutation<
+      ICreateLabsCreativeHistoryDTO.Result,
+      ICreateLabsCreativeHistoryDTO.Args
+    >({
+      query: ({ id, ...body }) => ({
+        url: `${prefix}/${id}/history`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: () => [{ type: "creatives-history", id: "LIST" }],
+    }),
   }),
   overrideExisting: true,
 });
@@ -71,4 +91,6 @@ export const {
   useGetLabsCreativeQuery,
   useUpdateLabsCreativeMutation,
   useDeleteLabsCreativeMutation,
+  useHistoryCreativeQuery,
+  useCreateHistoryCreativeMutation,
 } = labsCreativeServices;

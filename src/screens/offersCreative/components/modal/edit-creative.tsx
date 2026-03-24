@@ -71,8 +71,6 @@ export const EditCreative = ({ creative, setEditCreative }: EditCreativeProps) =
         isClimbing: creative.isClimbing,
         trafficNetwork: creative.trafficNetwork,
         salesAngle: creative.salesAngle,
-        status: creative.status,
-        pageId: creative.pageId,
         creationType: creative.creationType,
         image: undefined,
       });
