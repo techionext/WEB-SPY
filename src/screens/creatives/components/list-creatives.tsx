@@ -1,25 +1,19 @@
-import { useState } from "react";
-import { useGetLabsCreativeQuery } from "@/services/creative/creative.service";
+import { useCreativeList } from "../use-creative-list";
 import { CardCreative } from "./card-creative";
 import { SkeletonCreative } from "./skeleton-creative";
 import { EditModal } from "./edit-modal/edit-modal";
-import { ILabsCreative } from "@/types/labs/creative/labs-creative.type";
 import { Pagination } from "@/components/pagination";
-import { useSearchParams } from "next/navigation";
 import { ModalRemove } from "@/components/modal-remove/modal-remove";
 import { useDeleteLabsCreativeMutation } from "@/services/creative/creative.service";
 import { EmptyContent } from "@/components/empty/empty-content";
 import { CreateModal } from "./create-modal/create-modal";
 import { ModalView } from "./modal-view";
+import { useState } from "react";
+import { ILabsCreative } from "@/types/labs/creative/labs-creative.type";
+import { FilterCreative } from "./filter";
 
 export const ListCreatives = () => {
-  const params = useSearchParams();
-  const queryParams = Object.fromEntries(params.entries());
-  const { data, isLoading } = useGetLabsCreativeQuery({
-    pageSize: Number(queryParams.pageSize) || 6,
-    page: Number(queryParams.page) || 1,
-    ...queryParams,
-  });
+  const { data, isLoading } = useCreativeList();
   const [selectedCreative, setSelectedCreative] = useState<ILabsCreative | null>(null);
   const [selectedCreativeForView, setSelectedCreativeForView] = useState<ILabsCreative | null>(
     null,
@@ -29,36 +23,42 @@ export const ListCreatives = () => {
 
   const [deleteCreative, { isLoading: isDeleting }] = useDeleteLabsCreativeMutation();
 
+  const creatives = data?.data;
+
   return (
-    <div className="flex flex-col justify-between gap-2 h-full">
-      <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4">
-        {isLoading
-          ? Array.from({ length: 6 }).map((_, index) => <SkeletonCreative key={index} />)
-          : data?.data.map((item) => (
-              <CardCreative
-                key={item.id}
-                creative={item}
-                onEdit={(tab) => {
-                  setSelectedCreative(item);
-                  if (tab) setSelectedTab(tab);
-                }}
-                onDelete={() => setRemoveCreativeId(item.id)}
-                onView={() => setSelectedCreativeForView(item)}
+    <div className="flex flex-col md:flex-row gap-6 items-start">
+      <div className="flex-1 flex flex-col justify-between gap-4 h-full">
+        <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4">
+          {isLoading
+            ? Array.from({ length: 6 }).map((_, index) => <SkeletonCreative key={index} />)
+            : creatives?.map((item) => (
+                <CardCreative
+                  key={item.id}
+                  creative={item}
+                  onEdit={(tab) => {
+                    setSelectedCreative(item);
+                    if (tab) setSelectedTab(tab);
+                  }}
+                  onDelete={() => setRemoveCreativeId(item.id)}
+                  onView={() => setSelectedCreativeForView(item)}
+                />
+              ))}
+          {creatives?.length === 0 && !isLoading && (
+            <div className="col-span-full py-10">
+              <EmptyContent
+                title="Nenhum criativo encontrado"
+                description="Você ainda não possui criativos cadastrados nesta oferta. Comece criando o seu primeiro criativo."
+                actionLabel="Criar primeiro criativo"
+                icon="solar:gallery-minimalistic-bold"
+                onAction={<CreateModal />}
               />
-            ))}
-        {data?.data.length === 0 && !isLoading && (
-          <div className="col-span-full py-10">
-            <EmptyContent
-              title="Nenhum criativo encontrado"
-              description="Você ainda não possui criativos cadastrados nesta oferta. Comece criando o seu primeiro criativo."
-              actionLabel="Criar primeiro criativo"
-              icon="solar:gallery-minimalistic-bold"
-              onAction={<CreateModal />}
-            />
-          </div>
-        )}
+            </div>
+          )}
+        </div>
+        <Pagination defaultPageSize={"6"} total={data?.meta.totalPages || 0} />
       </div>
-      <Pagination defaultPageSize={"6"} total={data?.meta.totalPages || 0} />
+
+      <FilterCreative />
 
       {selectedCreative && (
         <EditModal

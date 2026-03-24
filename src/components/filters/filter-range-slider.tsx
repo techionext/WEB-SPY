@@ -64,11 +64,8 @@ export const FilterRangeSlider = React.forwardRef<HTMLDivElement, FilterRangeSli
     }, [value, minValue, maxValue]);
 
     const handleMinInputChange = (val: string) => {
-      // Allow numbers and decimal separators, then convert to float
       const cleaned = val.replace(/[^\d.,]/g, "").replace(",", ".");
       const num = parseFloat(cleaned) || 0;
-      // If it's a very small float like 1.5, and the range is large, 
-      // maybe they meant 1.5M? No, let's keep it simple: input is the actual value.
       onChange([clampValue(num, Number(minValue), value[1]), value[1]]);
     };
 

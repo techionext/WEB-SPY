@@ -1,16 +1,16 @@
 import { Accordion, AccordionItem, Button } from "@heroui/react";
 import { Icon } from "@iconify/react";
+import { useFilterCreative } from "./use-filter-creative";
 import { FilterItem } from "@/components/filters/filter-item";
-import { FilterSwitch } from "@/components/filters/filter-switch";
 import { FilterRangeSlider } from "@/components/filters/filter-range-slider";
-import { formatViews } from "@/utils/formatViews";
-import { useFilter, type FilterStatus, type FilterQuantity } from "./use-filter";
-import { type TrafficNetwork, trafficNetworkValues } from "@/types/offer/offer.type";
+import { FilterSwitch } from "@/components/filters/filter-switch";
+import { OfferSelector } from "./offer-selector";
+import { trafficNetworkValues, TrafficNetwork } from "@/types/offer/offer.type";
 import { languages } from "@/components/select-language/countries";
 import { SearchBar } from "@/components/searchbar";
-import { useOfferList } from "../../use-offer-list";
+import { formatViews } from "@/utils/formatViews";
 
-export const Filter = () => {
+export const FilterCreative = () => {
   const {
     sections,
     groupedData,
@@ -25,12 +25,14 @@ export const Filter = () => {
     isSelected,
     capitalize,
     activeFiltersCount,
-  } = useFilter();
-
-  const { data: offerData, isLoading: isLoadingOffers } = useOfferList();
+  } = useFilterCreative();
 
   const renderSectionContent = (section: any) => {
     switch (section.type) {
+      case "custom":
+        if (section.id === "offer") return <OfferSelector />;
+        return null;
+
       case "list": {
         const data = groupedData?.[section.dataKey as keyof typeof groupedData] || {};
         return (
@@ -69,61 +71,46 @@ export const Filter = () => {
                 );
               }
 
-              const paramKey = section.id === "category" ? "categories" : section.id;
               return (
                 <FilterItem
                   key={key}
                   label={capitalize(key)}
-                  value={key}
                   count={count as number}
-                  isSelected={isSelected(paramKey, key)}
-                  onSelect={() => toggleFilter(paramKey, key)}
+                  value={key}
+                  isSelected={isSelected(section.id, key)}
+                  onSelect={() => toggleFilter(section.id, key)}
                 />
               );
             })}
           </div>
         );
       }
+
       case "status":
         return (
           <div className="flex flex-col gap-1">
             <FilterSwitch
               label="Escalando"
               isSelected={status.isClimbing}
-              onSelect={(val: boolean) => {
-                setStatus((prev: FilterStatus) => ({ ...prev, isClimbing: val }));
+              onSelect={(val) => {
+                setStatus({ ...status, isClimbing: val });
                 updateParam("isClimbing", val);
-              }}
-            />
-            <FilterSwitch
-              label="Cloaker"
-              isSelected={status.isCloaker}
-              onSelect={(val: boolean) => {
-                setStatus((prev: FilterStatus) => ({ ...prev, isCloaker: val }));
-                updateParam("isCloaker", val);
-              }}
-            />
-            <FilterSwitch
-              label="Favoritos"
-              isSelected={status.isFavorite}
-              onSelect={(val: boolean) => {
-                setStatus((prev: FilterStatus) => ({ ...prev, isFavorite: val }));
-                updateParam("isFavorite", val);
               }}
             />
           </div>
         );
+
       case "quantity":
         return (
-          <div className="flex flex-col gap-1 px-1">
+          <div className="flex flex-col gap-2 px-1">
             <FilterRangeSlider
               label="Anúncios"
               value={quantity.ads}
               minValue={0}
               maxValue={100000}
               formatValue={formatViews}
-              onChange={(val: [number, number]) => {
-                setQuantity((prev: FilterQuantity) => ({ ...prev, ads: val }));
+              onChange={(val) => {
+                setQuantity((prev) => ({ ...prev, ads: val }));
                 updateParams({
                   minAdQuantity: val[0],
                   maxAdQuantity: val[1],
@@ -136,8 +123,8 @@ export const Filter = () => {
               minValue={0}
               maxValue={10000000}
               formatValue={formatViews}
-              onChange={(val: [number, number]) => {
-                setQuantity((prev: FilterQuantity) => ({ ...prev, views: val }));
+              onChange={(val) => {
+                setQuantity((prev) => ({ ...prev, views: val }));
                 updateParams({
                   minViewsQuantity: val[0],
                   maxViewsQuantity: val[1],
@@ -146,6 +133,7 @@ export const Filter = () => {
             />
           </div>
         );
+
       default:
         return null;
     }
@@ -173,11 +161,6 @@ export const Filter = () => {
             Limpar
           </Button>
         </div>
-        {!isLoadingOffers && (
-          <span className="text-[11px] text-default-400 font-medium">
-            {offerData?.meta?.total || 0} ofertas encontradas
-          </span>
-        )}
       </div>
 
       <SearchBar className="px-1" />
