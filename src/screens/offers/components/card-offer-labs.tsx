@@ -2,7 +2,6 @@
 import {
   Card,
   CardBody,
-  CardFooter,
   CardHeader,
   Chip,
   Button,
@@ -39,7 +38,7 @@ export const CardOfferLabs = ({ data, onFavorite, onRemove }: Props) => {
     <Card
       isPressable
       as="div"
-      onPress={() => router.push(`/offers/${data.id}/edit`)}
+      onPress={() => router.push(`/offers/${data.id}`)}
       className="card hover:border-primary/50 border-1 border-transparent transition-all duration-300 hover:scale-[1.01] cursor-pointer"
       shadow="sm"
     >
@@ -200,17 +199,6 @@ export const CardOfferLabs = ({ data, onFavorite, onRemove }: Props) => {
           </div>
         </div>
       </CardBody>
-      <CardFooter>
-        <Button
-          size="sm"
-          variant="solid"
-          radius="full"
-          onPress={() => router.push(`/offers/${data.id}`)}
-          className="w-full bg-linear-to-r from-primary to-primary/50"
-        >
-          Ver oferta
-        </Button>
-      </CardFooter>
     </Card>
   );
 };

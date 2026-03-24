@@ -5,10 +5,10 @@ import { Button, Card, CardBody, Chip, Skeleton, Spinner } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { VideoPlayer } from "@/components/videoplayer/video-player";
 import { useGetLabsVSLSQuery } from "@/services/labs/vsls/labs-vsls.service";
+import { useFileSignedUrlMutation } from "@/services/file/file.service";
 import { ILabsVsl } from "@/types/labs/vsls/labs-vsls.type";
 import dayjs from "@/utils/dayjs-config";
 import { useParams } from "next/navigation";
-import { div } from "framer-motion/client";
 
 const LIST_PAGE_SIZE = 100;
 
@@ -46,20 +46,27 @@ function statusChip(processStatus: ILabsVsl["processStatus"]) {
 
 function VslSlide({ vsl }: { vsl: ILabsVsl }) {
   const isCompleted = vsl.processStatus === "COMPLETED";
+  const [fileSignedUrl, { isLoading: isDownloading }] = useFileSignedUrlMutation();
 
-  const handleDownloadVideo = () => {
-    if (vsl.video?.url) window.open(vsl.video.url, "_blank", "noopener,noreferrer");
+  const handleDownloadVideo = async () => {
+    if (vsl.video?.id) {
+      await fileSignedUrl({ id: vsl.video.id })
+        .unwrap()
+        .then(({ url }) => {
+          window.open(url, "_blank");
+        });
+    }
   };
 
   const handleDownloadTranscription = () => {
     if (vsl.transcriptionVsl?.url) {
-      window.open(vsl.transcriptionVsl.url, "_blank", "noopener,noreferrer");
+      window.open(vsl.transcriptionVsl.url, "_blank");
     }
   };
 
   return (
-    <div className="flex min-h-[280px] flex-col lg:min-h-[360px] lg:flex-row">
-      <div className="relative aspect-video w-full shrink-0 bg-black lg:aspect-auto lg:w-[min(56%,720px)] lg:min-h-[360px]">
+    <div className="grid min-h-[280px] grid-cols-1 lg:min-h-[360px] lg:grid-cols-2">
+      <div className="relative aspect-video w-full bg-black lg:aspect-auto lg:min-h-[360px]">
         {!isCompleted || !vsl.video?.url ? (
           <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-4 bg-black">
             <Spinner color="primary" size="lg" />
@@ -84,7 +91,7 @@ function VslSlide({ vsl }: { vsl: ILabsVsl }) {
         )}
       </div>
 
-      <div className="flex min-w-0 flex-1 flex-col gap-5 p-5 lg:p-6">
+      <div className="flex min-h-[280px] min-w-0 flex-col gap-5 p-5 lg:min-h-[360px] lg:p-6">
         <div className="flex flex-col gap-2">
           <h2 className="text-xl font-bold leading-tight text-foreground lg:text-2xl">
             {vsl.title}
@@ -117,17 +124,18 @@ function VslSlide({ vsl }: { vsl: ILabsVsl }) {
         <div className="mt-auto flex flex-col gap-2 sm:flex-row sm:flex-wrap">
           <Button
             className="font-semibold"
-            startContent={<Icon icon="solar:download-bold" width={18} />}
+            startContent={<Icon icon="solar:videocamera-record-bold" width={18} />}
             variant="bordered"
+            isLoading={isDownloading}
             onPress={handleDownloadVideo}
-            isDisabled={!vsl.video?.url}
+            isDisabled={!vsl.video?.id || !isCompleted}
           >
             Baixar VSL
           </Button>
           <Button
             className="font-semibold"
             color="primary"
-            startContent={<Icon icon="solar:document-text-bold" width={18} />}
+            startContent={<Icon icon="solar:download-bold" width={18} />}
             variant="flat"
             onPress={handleDownloadTranscription}
             isDisabled={!vsl.transcriptionVsl?.url}
@@ -184,9 +192,9 @@ export const VslCard = ({ items: itemsProp, vsl }: VslCardProps) => {
           <Skeleton className="h-9 w-28" />
         </div>
         <CardBody className="gap-0 p-0">
-          <div className="flex flex-col lg:flex-row">
-            <Skeleton className="aspect-video w-full lg:aspect-auto lg:min-h-[360px] lg:w-1/2" />
-            <div className="flex flex-1 flex-col gap-4 p-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2">
+            <Skeleton className="aspect-video w-full lg:aspect-auto lg:min-h-[360px]" />
+            <div className="flex flex-col gap-4 p-6">
               <Skeleton className="h-8 w-3/4 rounded-md" />
               <Skeleton className="h-4 w-full rounded-md" />
               <Skeleton className="h-24 w-full rounded-xl" />

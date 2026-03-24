@@ -20,14 +20,15 @@ import dayjs from "@/utils/dayjs-config";
 import { VideoPlayer } from "@/components/videoplayer/video-player";
 import { formatViews } from "@/utils/formatViews";
 
-interface CardCreativeProps {
+export interface CardCreativeProps {
   creative: ILabsCreative;
   onEdit: (tab?: "edit" | "history") => void;
   onDelete: () => void;
+  /** Abre o modal de visualização (card press ou menu “Visualizar”). */
   onView: () => void;
 }
 
-export const CardCreative = ({ creative, onEdit, onDelete, onView }: CardCreativeProps) => {
+export function CardCreative({ creative, onEdit, onDelete, onView }: CardCreativeProps) {
   const [playing, setPlaying] = useState(false);
   const trafficConfig = trafficNetworkValues[creative.trafficNetwork];
 
@@ -184,11 +185,11 @@ export const CardCreative = ({ creative, onEdit, onDelete, onView }: CardCreativ
               <span className="text-xs font-medium whitespace-nowrap">{creative.salesAngle}</span>
             </div>
           )}
-          {creative.category && (
+          {creative.offer?.category && (
             <div className="flex items-center gap-1.5 text-default-400">
               <Icon icon="solar:document-text-bold" width={14} />
               <span className="text-xs font-medium whitespace-nowrap">
-                {creative.category.title}
+                {creative.offer.category.title}
               </span>
             </div>
           )}
@@ -227,4 +228,4 @@ export const CardCreative = ({ creative, onEdit, onDelete, onView }: CardCreativ
       </CardBody>
     </Card>
   );
-};
+}

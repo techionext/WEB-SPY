@@ -1,3 +1,5 @@
+import { useGetLabsCreativeQuery } from "@/services/creative/creative.service";
+import { useGetLabsPagesQuery } from "@/services/labs/page/labs-page.service";
 import { useGetSpyOfferByIdQuery } from "@/services/spy/spy-offers.service";
 import { TrafficNetwork, trafficNetworkLabelsPt } from "@/types/offer/offer.type";
 import { Avatar, Card, CardBody, CardHeader, Chip } from "@heroui/react";
@@ -31,8 +33,8 @@ export const CardOffer = () => {
   const data = useGetSpyOfferByIdQuery({ id: id as string }, { skip: !id });
 
   return (
-    <Card className="card p-4 ">
-      <CardHeader className="flex items-center gap-3">
+    <Card className="card flex h-full min-h-0 flex-col p-4">
+      <CardHeader className="flex shrink-0 items-center gap-3">
         <Avatar
           alt="Imagem da oferta"
           classNames={{
@@ -48,7 +50,7 @@ export const CardOffer = () => {
           <p className="text-sm text-gray-500 line-clamp-2">{data.data?.description}</p>
         </div>
       </CardHeader>
-      <CardBody className="flex flex-col gap-4">
+      <CardBody className="flex flex-1 flex-col gap-4">
         <div className="flex gap-2">
           <Chip size="sm" variant="flat" color="primary">
             {data.data?.category.title}
@@ -88,26 +90,26 @@ export const CardOffer = () => {
             <span className="text-xs text-gray-500">{labelEnumLikePt(data.data?.structure)}</span>
           </div>
         </div>
-        <div className="grid w-full grid-cols-5 gap-2">
+        <div className="mt-auto grid w-full grid-cols-5 gap-2">
           <div className="flex min-w-0 flex-col items-center gap-1 bg-content2 py-2 px-2 rounded-lg border-1 border-divider">
             <span className="text-xs font-bold">{data.data?.adQuantity}</span>
             <p className="text-center text-[10px] text-gray-500 uppercase">Anuncios:</p>
           </div>
           <div className="flex min-w-0 flex-col items-center gap-1 bg-content2 py-2 px-2 rounded-lg border-1 border-divider">
-            <span className="text-xs font-bold">{data.data?.adQuantity}</span>
+            <span className="text-xs font-bold">{data.data?.viewsQuantity}</span>
             <p className="text-center text-[10px] text-gray-500 uppercase">Visualizações:</p>
           </div>
           <div className="flex min-w-0 flex-col items-center gap-1 bg-content2 py-2 px-2 rounded-lg border-1 border-divider">
-            <span className="text-xs font-bold">{data.data?.adQuantity}</span>
-            <p className="text-center text-[10px] text-gray-500 uppercase">Estrutura:</p>
+            <span className="text-xs font-bold">{data.data?.totalCreative}</span>
+            <p className="text-center text-[10px] text-gray-500 uppercase">Criativos:</p>
           </div>
           <div className="flex min-w-0 flex-col items-center gap-1 bg-content2 py-2 px-2 rounded-lg border-1 border-divider">
-            <span className="text-xs font-bold">{data.data?.adQuantity}</span>
-            <p className="text-center text-[10px] text-gray-500 uppercase">Linguagem:</p>
+            <span className="text-xs font-bold">{data.data?.totalVsl}</span>
+            <p className="text-center text-[10px] text-gray-500 uppercase">VSLs:</p>
           </div>
           <div className="flex min-w-0 flex-col items-center gap-1 bg-content2 py-2 px-2 rounded-lg border-1 border-divider">
-            <span className="text-xs font-bold">{data.data?.adQuantity}</span>
-            <p className="text-center text-[10px] text-gray-500 uppercase">Funnel:</p>
+            <span className="text-xs font-bold">{data.data?.totalPage}</span>
+            <p className="text-center text-[10px] text-gray-500 uppercase">Páginas:</p>
           </div>
         </div>
       </CardBody>

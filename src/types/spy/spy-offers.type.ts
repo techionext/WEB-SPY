@@ -71,6 +71,9 @@ export type ISpyOffer = {
 export type ISpyOfferById = {
   isFavorite: boolean;
   id: string;
+  totalVsl: number;
+  totalCreative: number;
+  totalPage: number;
   title: string;
   description: string;
   trafficNetwork: TrafficNetwork;

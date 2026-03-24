@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useMemo, useState } from "react";
 import { Card, Skeleton, Tab, Tabs } from "@heroui/react";
 import {
   Area,
@@ -13,7 +13,38 @@ import {
 } from "recharts";
 
 import { useGetSpyOfferByIdGraphQuery } from "@/services/spy/spy-offers.service";
+import dayjs from "@/utils/dayjs-config";
 import { useParams } from "next/navigation";
+
+const GRAPH_RANGE_TABS = ["6-months", "3-months", "30-days", "7-days"] as const;
+type GraphRangeTab = (typeof GRAPH_RANGE_TABS)[number];
+
+function getGraphDateRange(tab: GraphRangeTab) {
+  const end = dayjs().endOf("day");
+  let start = end;
+
+  switch (tab) {
+    case "7-days":
+      start = end.subtract(7, "day").startOf("day");
+      break;
+    case "30-days":
+      start = end.subtract(30, "day").startOf("day");
+      break;
+    case "3-months":
+      start = end.subtract(3, "month").startOf("day");
+      break;
+    case "6-months":
+      start = end.subtract(6, "month").startOf("day");
+      break;
+    default:
+      start = end.subtract(30, "day").startOf("day");
+  }
+
+  return {
+    startDate: start.format("YYYY-MM-DD"),
+    endDate: end.format("YYYY-MM-DD"),
+  };
+}
 
 type ChartData = {
   month: string;
@@ -75,12 +106,16 @@ const formatYTick = (v: number) => {
 export default function Graph() {
   const gradientId = React.useId().replace(/:/g, "");
   const { id } = useParams();
+  const [rangeTab, setRangeTab] = useState<GraphRangeTab>("30-days");
+
+  const { startDate, endDate } = useMemo(() => getGraphDateRange(rangeTab), [rangeTab]);
+
   const {
     data: graphEvents,
     isFetching,
     isLoading,
   } = useGetSpyOfferByIdGraphQuery(
-    { id: id as string, type: "GRAPH", startDate: "2026-01-01", endDate: "2026-03-31" },
+    { id: id as string, type: "GRAPH", startDate, endDate },
     { skip: !id },
   );
 
@@ -113,12 +148,21 @@ export default function Graph() {
           <h3 className="text-xl font-semibold text-foreground">Histórico semanal</h3>
           <p className="text-sm text-gray-500">Evolução semanal da quantidade registrada</p>
           </div>
-          <Tabs size="sm" variant="solid" color="primary" radius="lg">
+          <Tabs
+            color="primary"
+            radius="lg"
+            selectedKey={rangeTab}
+            size="sm"
+            variant="solid"
+            onSelectionChange={(key) => {
+              const k = String(key) as GraphRangeTab;
+              if (GRAPH_RANGE_TABS.includes(k)) setRangeTab(k);
+            }}
+          >
             <Tab key="6-months" title="6 meses" />
             <Tab key="3-months" title="3 meses" />
             <Tab key="30-days" title="30 dias" />
             <Tab key="7-days" title="7 dias" />
-
           </Tabs>
         </div>
 
