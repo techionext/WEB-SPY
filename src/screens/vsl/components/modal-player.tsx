@@ -4,18 +4,31 @@ import { ILabsVsl } from "@/types/labs/vsls/labs-vsls.type";
 import { VideoPlayer } from "@/components/videoplayer/video-player";
 import dayjs from "@/utils/dayjs-config";
 
+import { useFileSignedUrlMutation } from "@/services/file/file.service";
+
 interface ModalPlayerProps {
   vsl: ILabsVsl;
   isOpen: boolean;
   onOpenChange: () => void;
 }
-
+ 
 export const ModalPlayer = ({ vsl, isOpen, onOpenChange }: ModalPlayerProps) => {
   const isCompleted = vsl.processStatus === "COMPLETED";
-
+  const [fileSignedUrl, { isLoading: isDownloading }] = useFileSignedUrlMutation();
+ 
   const handleDownloadTranscription = () => {
     if (vsl.transcriptionVsl?.url) {
       window.open(vsl.transcriptionVsl.url, "_blank");
+    }
+  };
+ 
+  const handleDownloadVideo = async () => {
+    if (vsl.video?.id) {
+      await fileSignedUrl({ id: vsl.video.id })
+        .unwrap()
+        .then(({ url }) => {
+          window.open(url, "_blank");
+        });
     }
   };
 
@@ -97,18 +110,33 @@ export const ModalPlayer = ({ vsl, isOpen, onOpenChange }: ModalPlayerProps) => 
                       <Icon icon="solar:document-text-bold" width={20} />
                       <h3 className="font-bold tracking-wide uppercase text-xs">Transcrição</h3>
                     </div>
-                    {vsl.transcriptionVsl && (
-                      <Button
-                        size="sm"
-                        color="primary"
-                        variant="flat"
-                        className="font-bold"
-                        onPress={handleDownloadTranscription}
-                        startContent={<Icon icon="solar:download-bold" />}
-                      >
-                        Baixar
-                      </Button>
-                    )}
+                    <div className="flex items-center gap-2">
+                      {vsl.video?.id && isCompleted && (
+                        <Button
+                          size="sm"
+                          color="primary"
+                          variant="flat"
+                          className="font-bold"
+                          isLoading={isDownloading}
+                          onPress={handleDownloadVideo}
+                          startContent={<Icon icon="solar:videocamera-record-bold" />}
+                        >
+                          Baixar Vídeo
+                        </Button>
+                      )}
+                      {vsl.transcriptionVsl && (
+                        <Button
+                          size="sm"
+                          color="primary"
+                          variant="flat"
+                          className="font-bold"
+                          onPress={handleDownloadTranscription}
+                          startContent={<Icon icon="solar:download-bold" />}
+                        >
+                          Baixar Transcrição
+                        </Button>
+                      )}
+                    </div>
                   </div>
 
                   <div className="bg-content2/30 rounded-xl p-5 border-1 border-white/5">

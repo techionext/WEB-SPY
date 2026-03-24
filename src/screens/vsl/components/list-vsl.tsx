@@ -6,13 +6,14 @@ import {
 } from "@/services/labs/vsls/labs-vsls.service";
 import { useSearchParams } from "next/navigation";
 import { Pagination } from "@/components/pagination";
-import { Empty } from "@/components/empty/empty";
 import { SkeletonVsl } from "./skeleton-vsl";
 import { VslCard } from "./vsl-card";
 import { ILabsVsl } from "@/types/labs/vsls/labs-vsls.type";
 import { ModalPlayer } from "./modal-player";
 import { ModalRemove } from "@/components/modal-remove/modal-remove";
 import { EditVSL } from "./edit-modal/edit-modal";
+import { EmptyContent } from "@/components/empty/empty-content";
+import { CreateVSL } from "./create-modal/create-modal";
 
 export const ListVsl = () => {
   const params = useSearchParams();
@@ -41,8 +42,13 @@ export const ListVsl = () => {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4">
           {data?.data.length === 0 ? (
-            <div className="col-span-12">
-              <Empty description="Não existem VSLs disponíveis" isLoading={isLoading} />
+            <div className="col-span-12 py-10">
+              <EmptyContent
+                title="Nenhum VSL encontrado"
+                description="Você ainda não possui VSLs cadastrados. Comece criando o seu primeiro VSL."
+                icon="solar:videocamera-record-bold-duotone"
+                onAction={<CreateVSL />}
+              />
             </div>
           ) : (
             data?.data.map((vsl: ILabsVsl) => (

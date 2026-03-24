@@ -9,15 +9,7 @@ import { Pagination } from "@/components/pagination";
 import { CardOfferLabsSkeleton } from "./card-skeleton-offer";
 import { ModalRemove } from "@/components/modal-remove/modal-remove";
 import { ISpyOffer } from "@/types/spy/spy-offers.type";
-
-export const formatCurrencyUSD = (valueInCents?: number): string => {
-  const valueInDollars = (valueInCents ?? 0) / 100;
-
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-  }).format(valueInDollars);
-};
+import { Filter } from "./filter";
 
 export const OfferList = () => {
   const { data, isLoading, defaultPageSize } = useOfferList();
@@ -37,27 +29,28 @@ export const OfferList = () => {
   };
 
   return (
-    <>
-      {!isLoading ? (
-        <span className="text-sm text-default-500">{data?.meta?.total} ofertas encontradas</span>
-      ) : null}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-        {isLoading
-          ? Array.from({ length: 9 }).map((_, index) => <CardOfferLabsSkeleton key={index} />)
-          : data?.data?.map((item: ISpyOffer) => (
-              <CardOfferLabs
-                key={item.id}
-                data={item}
-                onFavorite={handleFavorite}
-                isFavoriting={favoritingId === item.id}
-                onRemove={() => setRemoveOfferId(item.id)}
-              />
-            ))}
+    <div className="flex flex-col md:flex-row gap-6 items-start">
+      <div className="flex-1 flex flex-col gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {isLoading
+            ? Array.from({ length: 12 }).map((_, index) => <CardOfferLabsSkeleton key={index} />)
+            : data?.data?.map((item: ISpyOffer) => (
+                <CardOfferLabs
+                  key={item.id}
+                  data={item}
+                  onFavorite={handleFavorite}
+                  isFavoriting={favoritingId === item.id}
+                  onRemove={() => setRemoveOfferId(item.id)}
+                />
+              ))}
+        </div>
+        <Pagination
+          total={data?.meta?.totalPages ?? 0}
+          defaultPageSize={defaultPageSize.toString()}
+        />
       </div>
-      <Pagination
-        total={data?.meta?.totalPages ?? 0}
-        defaultPageSize={defaultPageSize.toString()}
-      />
+      <Filter />
+
       {removeOfferId && (
         <ModalRemove
           title="Excluir oferta"
@@ -74,6 +67,6 @@ export const OfferList = () => {
           textButtonConfirm="Excluir"
         />
       )}
-    </>
+    </div>
   );
 };

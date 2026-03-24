@@ -56,7 +56,7 @@ export const labsPageServices = api.injectEndpoints({
     }),
     archivePage: builder.mutation<
       { codeIntern: string; message: string },
-      { id: string; archiveReason: string }
+      { id: string; archiveReason?: string }
     >({
       query: ({ id, archiveReason }) => ({
         url: `${prefix}/${id}/archive`,

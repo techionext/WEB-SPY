@@ -6,7 +6,7 @@ export const CreativesTab = () => {
   const { data, isLoading, defaultPageSize, groupedData, isFetching } = useSpyCreatives();
   return (
     <div className="flex flex-col gap-4 grow">
-      <SpyFilters data={groupedData} />
+      <SpyFilters data={groupedData as any} />
       <div className="grid grid-cols-5 gap-4 grow">
         {isLoading || isFetching
           ? Array.from({ length: 10 }).map((_, index) => <CreativeCardLoading key={index} />)

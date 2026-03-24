@@ -45,6 +45,11 @@ export namespace ISpyCreativesDTO {
     categoryTitles?: string[];
     isClimbing?: boolean;
     isCloaker?: boolean;
+    salesAngle?: string[];
+    minAdQuantity?: number;
+    maxAdQuantity?: number;
+    minViewsQuantity?: number;
+    maxViewsQuantity?: number;
     startDate?: string;
     endDate?: string;
     hasVideo?: boolean;
@@ -67,34 +72,16 @@ export namespace ISpyCreativesDTO {
 }
 
 export type ISpyCreativeGrouped = {
-  language: [
-    {
-      type: string;
-      quantity: number;
-    },
-  ];
-  trafficNetwork: [
-    {
-      type: string;
-      quantity: number;
-    },
-  ];
-  categoryTitles: [
-    {
-      type: string;
-      quantity: number;
-    },
-  ];
-  salesAngle: [
-    {
-      type: string;
-      quantity: number;
-    },
-  ];
+  language: Record<string, number>;
+  trafficNetwork: Record<string, number>;
+  category: Record<string, number>;
+  salesAngle: Record<string, number>;
+  offer: Record<string, number>;
 };
+
 export namespace ISpyCreativeGroupedDTO {
   export type Args = {
-    categoryTitles?: string[];
+    category?: string[];
   };
   export type Result = ISpyCreativeGrouped;
 }
