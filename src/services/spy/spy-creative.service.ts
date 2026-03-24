@@ -5,7 +5,7 @@ import {
   ISpyCreativeTranscriptionDTO,
 } from "@/types/spy/spy-creative.type";
 
-const prefix = "spy/creative";
+const prefix = "/creative";
 export const spyCreativeServices = api.injectEndpoints({
   endpoints: (builder) => ({
     getSpyCreatives: builder.query<ISpyCreativesDTO.Result, ISpyCreativesDTO.Args>({

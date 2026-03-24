@@ -6,6 +6,7 @@ import {
   ISpyOfferFavoriteDTO,
   ISpyOffersDTO,
   ISpyOfferUpdateDTO,
+  ISpyOfferGroupedDTO,
 } from "@/types/spy/spy-offers.type";
 import { convertToFormData } from "@/utils/converteToFormData";
 
@@ -28,6 +29,14 @@ export const spyOffersServices = api.injectEndpoints({
         params: args,
       }),
       providesTags: [{ type: "spyOffers", id: "list" }],
+    }),
+    getSpyOfferGrouped: builder.query<ISpyOfferGroupedDTO.Result, ISpyOfferGroupedDTO.Args>({
+      query: (args) => ({
+        url: `${prefix}/grouped`,
+        method: "GET",
+        params: args,
+      }),
+      providesTags: [{ type: "spyOffers", id: "grouped" }],
     }),
     removeSpyOffer: builder.mutation<{ codeIntern: string; message: string }, { id: string }>({
       query: ({ id }) => ({
@@ -79,4 +88,5 @@ export const {
   useGetSpyOfferByIdHistoryQuery,
   useRemoveSpyOfferMutation,
   useUpdateSpyOfferMutation,
+  useGetSpyOfferGroupedQuery,
 } = spyOffersServices;

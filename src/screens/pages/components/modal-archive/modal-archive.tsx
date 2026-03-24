@@ -9,6 +9,7 @@ import {
   Textarea,
 } from "@heroui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { SchemaArchiveInput, SchemaArchiveOutput, schemaArchive } from "./schema-archive";
 import { ILabsPage } from "@/types/labs/page/labs-page.type";
@@ -49,6 +50,14 @@ export const ModalArchive = ({ page, isOpen, onOpenChange, onClose }: ModalArchi
     onClose();
   };
 
+  useEffect(() => {
+    if (!isOpen) {
+      reset({
+        archiveReason: "",
+      });
+    }
+  }, [isOpen, reset]);
+
   return (
     <Modal size="lg" isOpen={isOpen} onOpenChange={onOpenChange} scrollBehavior="inside">
       <ModalContent as="form" onSubmit={handleSubmit(onSubmit)}>
@@ -59,7 +68,7 @@ export const ModalArchive = ({ page, isOpen, onOpenChange, onClose }: ModalArchi
                 <Icon icon="solar:archive-bold" className="text-warning text-2xl" />
               </div>
               <div className="flex flex-col">
-                <h2 className="text-xl font-bold  leading-tight">Arquivar Página</h2>
+                <h2 className="text-xl font-bold leading-tight">Arquivar Página</h2>
                 <p className="text-sm text-default-400 font-medium">
                   Confirme o motivo do arquivamento
                 </p>
@@ -104,7 +113,7 @@ export const ModalArchive = ({ page, isOpen, onOpenChange, onClose }: ModalArchi
                 color="warning"
                 type="submit"
                 isLoading={isLoading}
-                className=" font-bold"
+                className="font-bold"
               >
                 <Icon icon="solar:archive-bold" className="text-lg" />
                 Arquivar agora

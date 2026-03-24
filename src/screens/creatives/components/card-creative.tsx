@@ -18,21 +18,26 @@ import { trafficNetworkValues } from "@/types/offer/offer.type";
 import dayjs from "@/utils/dayjs-config";
 
 import { VideoPlayer } from "@/components/videoplayer/video-player";
+import { formatViews } from "@/utils/formatViews";
 
 interface CardCreativeProps {
   creative: ILabsCreative;
   onEdit: (tab?: "edit" | "history") => void;
   onDelete: () => void;
+  onView: () => void;
 }
 
-export const CardCreative = ({ creative, onEdit, onDelete }: CardCreativeProps) => {
+export const CardCreative = ({ creative, onEdit, onDelete, onView }: CardCreativeProps) => {
   const [playing, setPlaying] = useState(false);
   const trafficConfig = trafficNetworkValues[creative.trafficNetwork];
 
   return (
     <Card
+      isPressable
+      onPress={onView}
       className="card hover:border-primary/50 border-1 border-transparent transition-all duration-300 hover:scale-[1.01] cursor-pointer"
       shadow="sm"
+      as="div"
       onMouseEnter={() => setPlaying(true)}
       onMouseLeave={() => setPlaying(false)}
     >
@@ -81,9 +86,22 @@ export const CardCreative = ({ creative, onEdit, onDelete }: CardCreativeProps) 
               <span className="font-bold text-[10px] tracking-wide">Escalando</span>
             </Chip>
           )}
+
+          {creative?.creationType && (
+            <Chip
+              size="sm"
+              variant="flat"
+              className="bg-secondary/20 text-secondary border-secondary/30 border-1 h-7 backdrop-blur-md"
+              startContent={<Icon icon="solar:settings-bold" className="ml-1.5" width={14} />}
+            >
+              <span className="font-bold text-[10px] tracking-wide">
+                {creative.creationType === "AUTOMATIC" ? "Automático" : "Manual"}
+              </span>
+            </Chip>
+          )}
         </div>
 
-        <div className="absolute top-3 right-3 z-10">
+        <div className="absolute top-3 right-3 z-10" onClick={(e) => e.stopPropagation()}>
           <Dropdown placement="bottom-end">
             <DropdownTrigger>
               <Button
@@ -98,6 +116,13 @@ export const CardCreative = ({ creative, onEdit, onDelete }: CardCreativeProps) 
             <DropdownMenu aria-label="Ações do criativo">
               <DropdownItem
                 key="view"
+                onPress={onView}
+                startContent={<Icon icon="solar:eye-bold" />}
+              >
+                Visualizar
+              </DropdownItem>
+              <DropdownItem
+                key="history"
                 onPress={() => onEdit("history")}
                 startContent={<Icon icon="solar:history-bold" />}
               >
@@ -153,22 +178,26 @@ export const CardCreative = ({ creative, onEdit, onDelete }: CardCreativeProps) 
             <Icon icon="solar:global-bold" width={14} />
             <span className="text-xs font-medium uppercase">{creative.language}</span>
           </div>
-          <div className="flex items-center gap-1.5 text-default-400">
-            <Icon icon="solar:target-bold" width={14} />
-            <span className="text-xs font-medium whitespace-nowrap">{creative.salesAngle}</span>
-          </div>
-          <div className="flex items-center gap-1.5 text-default-400">
-            <Icon icon="solar:settings-bold" width={14} />
-            <span className="text-xs font-medium whitespace-nowrap">
-              {creative.creationType === "AUTOMATIC" ? "Automático" : "Manual"}
-            </span>
-          </div>
+          {creative.salesAngle && (
+            <div className="flex items-center gap-1.5 text-default-400">
+              <Icon icon="solar:target-bold" width={14} />
+              <span className="text-xs font-medium whitespace-nowrap">{creative.salesAngle}</span>
+            </div>
+          )}
+          {creative.category && (
+            <div className="flex items-center gap-1.5 text-default-400">
+              <Icon icon="solar:document-text-bold" width={14} />
+              <span className="text-xs font-medium whitespace-nowrap">
+                {creative.category.title}
+              </span>
+            </div>
+          )}
         </div>
 
         <div className="grid grid-cols-2 gap-3">
           <div className="flex flex-col items-center justify-center p-3 rounded-xl bg-[#1c1c1e] border-1 border-divider">
             <span className="text-xl font-bold text-foreground leading-none">
-              {creative.adQuantity}
+              {formatViews(creative.adQuantity || 0)}
             </span>
             <span className="text-[9px] font-bold text-default-400 mt-1 uppercase tracking-wider">
               Anúncios
@@ -176,7 +205,7 @@ export const CardCreative = ({ creative, onEdit, onDelete }: CardCreativeProps) 
           </div>
           <div className="flex flex-col items-center justify-center p-3 rounded-xl bg-[#1c1c1e] border-1 border-divider">
             <span className="text-xl font-bold text-foreground leading-none">
-              {creative.viewsQuantity}
+              {formatViews(creative.viewsQuantity || 0)}
             </span>
             <span className="text-[9px] font-bold text-default-400 mt-1 uppercase tracking-wider">
               Visualizações
@@ -184,15 +213,17 @@ export const CardCreative = ({ creative, onEdit, onDelete }: CardCreativeProps) 
           </div>
         </div>
 
-        <Button
-          fullWidth
-          variant="flat"
-          className="bg-content2 text-default-500 font-semibold h-11 rounded-xl"
-          startContent={<Icon icon="solar:history-bold" width={18} />}
-          onPress={() => onEdit("history")}
-        >
-          Visualizar Histórico
-        </Button>
+        <div onClick={(e) => e.stopPropagation()}>
+          <Button
+            fullWidth
+            variant="flat"
+            className="bg-content2 text-default-500 font-semibold h-11 rounded-xl"
+            startContent={<Icon icon="solar:history-bold" width={18} />}
+            onPress={() => onEdit("history")}
+          >
+            Visualizar Histórico
+          </Button>
+        </div>
       </CardBody>
     </Card>
   );

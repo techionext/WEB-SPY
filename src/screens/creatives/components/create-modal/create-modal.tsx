@@ -57,7 +57,6 @@ export const CreateModal = () => {
     defaultValues: {
       isClimbing: false,
       valueToday: 0,
-      creationType: "MANUAL",
       offerId: offerIdParam || "",
       pageId: "",
     },
@@ -79,7 +78,6 @@ export const CreateModal = () => {
       reset({
         isClimbing: false,
         valueToday: 0,
-        creationType: "MANUAL",
         title: "",
         description: "",
         salesAngle: "",
@@ -309,32 +307,28 @@ export const CreateModal = () => {
 
                 <Controller
                   control={control}
-                  name="creationType"
+                  name="valueToday"
                   render={({ field, fieldState: { invalid, error } }) => (
-                    <Select
+                    <Field
                       {...field}
+                      value={field.value?.toString() ?? ""}
+                      type="number"
                       label={
                         <div className="flex items-center gap-2 text-default-400">
-                          <Icon icon="solar:magic-stick-linear" width={16} />
-                          <span className="text-xs font-bold tracking-widest uppercase">
-                            Tipo de criação
+                          <Icon icon="solar:dollar-minimalistic-linear" width={16} />
+                          <span className="text-xs font-bold tracking-widest uppercase whitespace-nowrap overflow-hidden text-ellipsis">
+                            {trafficNetworkValue === TrafficNetwork.YOUTUBE
+                              ? "Visualizações hoje"
+                              : "Quantidades hoje"}
                           </span>
                         </div>
                       }
                       labelPlacement="outside"
-                      placeholder="Selecione"
+                      placeholder="0"
                       isInvalid={invalid}
                       errorMessage={error?.message}
-                      selectedKeys={[field.value ?? ""]}
-                      onSelectionChange={(v) => field.onChange(v.currentKey)}
-                    >
-                      <SelectItem key="AUTOMATIC" textValue="Automático">
-                        <span className="text-sm font-medium">Automático</span>
-                      </SelectItem>
-                      <SelectItem key="MANUAL" textValue="Manual">
-                        <span className="text-sm font-medium">Manual</span>
-                      </SelectItem>
-                    </Select>
+                      onChange={(e) => field.onChange(Number(e.target.value))}
+                    />
                   )}
                 />
               </div>
@@ -373,33 +367,6 @@ export const CreateModal = () => {
                   )}
                 />
               )}
-
-              <Controller
-                control={control}
-                name="valueToday"
-                render={({ field, fieldState: { invalid, error } }) => (
-                  <Field
-                    {...field}
-                    value={field.value?.toString() ?? ""}
-                    type="number"
-                    label={
-                      <div className="flex items-center gap-2 text-default-400">
-                        <Icon icon="solar:dollar-minimalistic-linear" width={16} />
-                        <span className="text-xs font-bold tracking-widest uppercase whitespace-nowrap overflow-hidden text-ellipsis">
-                          {trafficNetworkValue === TrafficNetwork.YOUTUBE
-                            ? "Visualizações hoje"
-                            : "Quantidades hoje"}
-                        </span>
-                      </div>
-                    }
-                    labelPlacement="outside"
-                    placeholder="0"
-                    isInvalid={invalid}
-                    errorMessage={error?.message}
-                    onChange={(e) => field.onChange(Number(e.target.value))}
-                  />
-                )}
-              />
 
               <Controller
                 control={control}
