@@ -79,6 +79,13 @@ export type ILabsCreative = {
     createdAt: string;
     updatedAt: string;
   };
+  category: {
+    id: string;
+    title: string;
+    icon: string;
+    createdAt: string;
+    updatedAt: string;
+  };
   image: {
     id: string;
     createdAt: string;
