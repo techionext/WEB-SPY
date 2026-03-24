@@ -79,6 +79,13 @@ export type ILabsCreative = {
     createdAt: string;
     updatedAt: string;
   };
+  category: {
+    id: string;
+    title: string;
+    icon: string;
+    createdAt: string;
+    updatedAt: string;
+  };
   image: {
     id: string;
     createdAt: string;
@@ -102,6 +109,7 @@ export type ILabsCreative = {
   };
   adQuantity: number;
   viewsQuantity: number;
+  page: { id: string; title: string } | null;
   createdAt: string;
   updatedAt: string;
 };

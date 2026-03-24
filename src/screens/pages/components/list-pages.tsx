@@ -2,7 +2,6 @@
 import {
   useGetLabsPagesQuery,
   useDeleteLabsPageMutation,
-  useUpdateLabsPageMutation,
 } from "@/services/labs/page/labs-page.service";
 import { useState } from "react";
 import { SkeletonPages } from "./skeleton-pages";
@@ -13,6 +12,9 @@ import { Pagination } from "@/components/pagination";
 import { useSearchParams } from "next/navigation";
 import { ModalRemove } from "@/components/modal-remove/modal-remove";
 import { ModalArchive } from "./modal-archive/modal-archive";
+import { EmptyContent } from "@/components/empty/empty-content";
+import { CreatePage } from "./modal-create/modal-create";
+import { ModalUnarchive } from "./modal-unarchive/modal-unarchive";
 
 export const ListPages = () => {
   const params = useSearchParams();
@@ -25,9 +27,9 @@ export const ListPages = () => {
   const [editPage, setEditPage] = useState<ILabsPage | null>(null);
   const [removePageId, setRemovePageId] = useState<string>("");
   const [archivePage, setArchivePage] = useState<ILabsPage | null>(null);
+  const [unarchivePage, setUnarchivePage] = useState<ILabsPage | null>(null);
 
   const [deletePage, { isLoading: isDeleting }] = useDeleteLabsPageMutation();
-  const [updatePage] = useUpdateLabsPageMutation();
 
   return (
     <div className="flex flex-col gap-2 justify-between h-full">
@@ -39,27 +41,51 @@ export const ListPages = () => {
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4">
-          {data?.data.map((page: ILabsPage) => (
-            <PagesCard
-              key={page.id}
-              page={page}
-              onEdit={() => setEditPage(page)}
-              onArchive={() => setArchivePage(page)}
-              onUnarchive={() => {
-                updatePage({
-                  id: page.id,
-                  type: page.type,
-                  offerId: page.offer,
-                  archive: false,
-                });
-              }}
-              onDelete={() => setRemovePageId(page.id)}
-            />
-          ))}
+          {data?.data.length === 0 ? (
+            <div className="col-span-12 py-10">
+              <EmptyContent
+                title="Nenhuma página encontrada"
+                description="Você ainda não possui páginas cadastradas. Comece criando a sua primeira página."
+                icon="solar:globus-bold-duotone"
+                onAction={<CreatePage />}
+              />
+            </div>
+          ) : (
+            data?.data.map((page: ILabsPage) => (
+              <PagesCard
+                key={page.id}
+                page={page}
+                onEdit={() => setEditPage(page)}
+                onArchive={() => setArchivePage(page)}
+                onUnarchive={() => setUnarchivePage(page)}
+                onDelete={() => setRemovePageId(page.id)}
+              />
+            ))
+          )}
         </div>
       )}
-      <Pagination defaultPageSize={"6"} total={data?.meta?.totalPages} />
+
+      <Pagination defaultPageSize={"6"} total={data?.meta?.totalPages || 0} />
       {editPage && <EditPage page={editPage} setEditPage={setEditPage} />}
+
+      {!!archivePage && (
+        <ModalArchive
+          page={archivePage}
+          isOpen={!!archivePage}
+          onOpenChange={() => setArchivePage(null)}
+          onClose={() => setArchivePage(null)}
+        />
+      )}
+
+      {!!unarchivePage && (
+        <ModalUnarchive
+          page={unarchivePage}
+          isOpen={!!unarchivePage}
+          onOpenChange={() => setUnarchivePage(null)}
+          onClose={() => setUnarchivePage(null)}
+        />
+      )}
+
       {!!removePageId && (
         <ModalRemove
           isOpen={!!removePageId}
@@ -69,20 +95,11 @@ export const ListPages = () => {
               .unwrap()
               .then(() => setRemovePageId(""));
           }}
-          title="Excluir página"
+          title="Excluir Página"
           text="Tem certeza que deseja excluir esta página?"
           textButtonCancel="Cancelar"
           textButtonConfirm="Excluir"
           isLoading={isDeleting}
-        />
-      )}
-
-      {!!archivePage && (
-        <ModalArchive
-          page={archivePage}
-          isOpen={!!archivePage}
-          onOpenChange={() => setArchivePage(null)}
-          onClose={() => setArchivePage(null)}
         />
       )}
     </div>

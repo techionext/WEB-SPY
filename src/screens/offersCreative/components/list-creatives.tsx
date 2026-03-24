@@ -10,8 +10,13 @@ import { EditModal } from "@/screens/creatives/components/edit-modal/edit-modal"
 import { useDeleteLabsCreativeMutation } from "@/services/creative/creative.service";
 import { ModalRemove } from "@/components/modal-remove/modal-remove";
 
+import { ModalView } from "@/screens/creatives/components/modal-view";
+
 export const ListCreatives = () => {
   const [selectedCreative, setSelectedCreative] = useState<ILabsCreative | null>(null);
+  const [selectedCreativeForView, setSelectedCreativeForView] = useState<ILabsCreative | null>(
+    null,
+  );
   const [selectedTab, setSelectedTab] = useState<"edit" | "history">("edit");
   const [removeCreativeId, setRemoveCreativeId] = useState<string>("");
 
@@ -46,6 +51,7 @@ export const ListCreatives = () => {
                   setSelectedCreative(item);
                   if (tab) setSelectedTab(tab);
                 }}
+                onView={() => setSelectedCreativeForView(item)}
                 onDelete={() => setRemoveCreativeId(item.id)}
               />
             </div>
@@ -61,6 +67,12 @@ export const ListCreatives = () => {
           initialTab={selectedTab}
         />
       )}
+
+      <ModalView
+        creative={selectedCreativeForView}
+        isOpen={!!selectedCreativeForView}
+        onOpenChange={() => setSelectedCreativeForView(null)}
+      />
 
       {!!removeCreativeId && (
         <ModalRemove

@@ -71,7 +71,6 @@ export const EditCreative = ({ creative, setEditCreative }: EditCreativeProps) =
         isClimbing: creative.isClimbing,
         trafficNetwork: creative.trafficNetwork,
         salesAngle: creative.salesAngle,
-        creationType: creative.creationType,
         image: undefined,
       });
     }
@@ -259,26 +258,6 @@ export const EditCreative = ({ creative, setEditCreative }: EditCreativeProps) =
                     )}
                   />
                 </div>
-
-                <Controller
-                  control={control}
-                  name="creationType"
-                  render={({ field, fieldState: { invalid, error } }) => (
-                    <Select
-                      {...field}
-                      label="Tipo de criação"
-                      placeholder="Selecione o tipo de criação"
-                      labelPlacement="outside"
-                      isInvalid={invalid}
-                      errorMessage={error?.message}
-                      selectedKeys={[field.value ?? ""]}
-                      onSelectionChange={(v) => field.onChange(v.currentKey)}
-                    >
-                      <SelectItem key="AUTOMATIC">AUTOMATIC</SelectItem>
-                      <SelectItem key="MANUAL">MANUAL</SelectItem>
-                    </Select>
-                  )}
-                />
 
                 <Controller
                   control={control}
