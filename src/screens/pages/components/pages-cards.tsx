@@ -35,8 +35,13 @@ export const PagesCard = ({ page, onEdit, onArchive, onUnarchive, onDelete }: Pa
 
   return (
     <Card
-      className="card hover:border-primary/50 border-1 border-transparent transition-all duration-300 hover:scale-[1.01] cursor-pointer h-full"
+      className={`card hover:border-primary/50 border-1 border-transparent transition-all duration-300 ${
+        page.url ? "hover:scale-[1.01] cursor-pointer" : "cursor-default"
+      } h-full`}
       shadow="sm"
+      as="div"
+      isPressable={!!page.url}
+      onPress={() => page.url && window.open(page.url, "_blank")}
     >
       <CardHeader className="p-0 relative h-[200px] rounded-b-none overflow-hidden bg-content1">
         {page.image?.url ? (
@@ -111,6 +116,7 @@ export const PagesCard = ({ page, onEdit, onArchive, onUnarchive, onDelete }: Pa
                 size="sm"
                 variant="flat"
                 className="bg-content2 hover:bg-content2/60 min-w-8 w-8 h-8 rounded-full backdrop-blur-md"
+                onClick={(e) => e.stopPropagation()}
               >
                 <Icon icon="solar:menu-dots-bold" className="rotate-90" width={18} />
               </Button>
@@ -177,15 +183,18 @@ export const PagesCard = ({ page, onEdit, onArchive, onUnarchive, onDelete }: Pa
             <Icon icon="solar:globus-outline" width={14} />
             <span className="text-xs font-medium whitespace-nowrap">{page.type}</span>
           </div>
-          <Link
-            href={page.url}
-            isExternal
-            showAnchorIcon
-            anchorIcon={<Icon icon="solar:link-outline" className="ml-1" />}
-            className="text-xs font-medium text-primary hover:underline ml-auto"
-          >
-            <p className="truncate max-w-[300px]">{page.url}</p>
-          </Link>
+          {page.url && (
+            <Link
+              href={page.url}
+              isExternal
+              showAnchorIcon
+              anchorIcon={<Icon icon="solar:link-outline" className="ml-1" />}
+              className="text-xs font-medium text-primary hover:underline ml-auto"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <p className="truncate max-w-[300px]">{page.url}</p>
+            </Link>
+          )}
         </div>
 
         <Button
@@ -200,6 +209,7 @@ export const PagesCard = ({ page, onEdit, onArchive, onUnarchive, onDelete }: Pa
           }
           isDisabled={!page.file}
           onPress={handleDownload}
+          onClick={(e) => e.stopPropagation()}
         >
           {page.file ? "Baixar arquivo" : "Sem arquivo"}
         </Button>
