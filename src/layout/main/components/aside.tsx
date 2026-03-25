@@ -81,6 +81,16 @@ export const Aside = () => {
     },
   ];
 
+  const insiderItems = [
+    {
+      key: "insider-solicitations",
+      icon: "solar:list-bold",
+      label: "Solicitações",
+      href: "/insider/solicitations",
+      isActive: onlyPathname === "/insider/solicitations",
+    },
+  ];
+
   return (
     <Card
       radius="none"
@@ -130,7 +140,7 @@ export const Aside = () => {
               ))}
           </div>
         )}
-        <div className=" flex flex-col gap-1" key="menu">
+        <div className=" flex flex-col gap-1" key="main-menu">
           <p className="text-sm  text-foreground-500">Menu</p>
           {menuItems.map((item) => (
             <Fragment key={`${item.key}-menu`}>
@@ -177,6 +187,30 @@ export const Aside = () => {
                   })}
                 </div>
               )}
+            </Fragment>
+          ))}
+        </div>
+        <div className=" flex flex-col gap-1" key="insider-menu">
+          <p className="text-sm text-foreground-500">Insider</p>
+          {insiderItems.map((item) => (
+            <Fragment key={`${item.key}-insider`}>
+              <Button
+                key={item.key}
+                as={item.href ? Link : "button"}
+                disableAnimation
+                href={item.href}
+                radius="lg"
+                className={cn(
+                  item.isActive ? "bg-content1/60" : "text-default-600 !bg-transparent",
+                )}
+                variant={item.isActive ? "light" : "light"}
+                fullWidth
+              >
+                <div className={cn("flex items-center  gap-2 flex-1 ")}>
+                  <Icon width={20} icon={item.icon} />
+                  {item.label}
+                </div>
+              </Button>
             </Fragment>
           ))}
         </div>
