@@ -5,10 +5,10 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useGetSettingsQuery } from "@/services/settings/settings.service";
 import { ListCreatives } from "../creatives/components/list-creatives";
-import { ListPages } from "../pages/components/list-pages";
 import { CardOffer } from "./components/card-offer";
 import Graph from "./components/graph";
 import { VslCard } from "./components/vsl-card";
+import { ListPagesOffers } from "@/components/list-pages-offers/list-pages-offers";
 
 export const ScreenOfferView = () => {
   const params = useParams();
@@ -49,14 +49,14 @@ export const ScreenOfferView = () => {
               <Tab key={label} title={label} />
             ))}
           </Tabs>
-          <ListPages
+          <ListPagesOffers
             offerId={offerId}
             noEmpty
             type={activePageType ? [activePageType] : undefined}
           />
         </>
       ) : (
-        <ListPages offerId={offerId} noEmpty />
+        <ListPagesOffers offerId={offerId} noEmpty />
       )}
     </div>
   );
