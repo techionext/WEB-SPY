@@ -1,14 +1,12 @@
 "use client";
 
-import React from "react";
-import { Button, Divider, Input, Link } from "@heroui/react";
+import { Button, Input, Link } from "@heroui/react";
 
 import { InputPassword } from "@/components/input-password";
 import { Controller, useForm } from "react-hook-form";
 import { schemaSignIn, TSchemaSignIn } from "./schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuthLoginMutation } from "@/services/user.service";
-import { Icon } from "@iconify/react";
 import { CardAuth } from "@/components/card-auth";
 
 export const ScreenAuthSignIn = () => {
@@ -80,21 +78,6 @@ export const ScreenAuthSignIn = () => {
             <Button color="primary" type="submit" isLoading={isLoading}>
               Entrar
             </Button>
-          </div>
-          <div className="flex flex-col gap-2">
-            <div className="flex items-center gap-4">
-              <Divider className="flex-1" />
-              <p className="text-small text-center">Acessar comunidade</p>
-              <Divider className="flex-1" />
-            </div>
-            <div className="flex gap-2">
-              <Button variant="flat" fullWidth>
-                <Icon icon="logos:discord-icon" width={20} />
-              </Button>
-              <Button variant="flat" fullWidth>
-                <Icon icon="logos:whatsapp-icon" width={20} />
-              </Button>
-            </div>
           </div>
         </form>
       </CardAuth>

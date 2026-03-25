@@ -38,11 +38,13 @@ export const ListPages = ({ offerId: offerIdProp, type: typeProp, noEmpty }: Lis
   const queryParams = Object.fromEntries(params.entries());
   const isOfferView = Boolean(offerIdProp);
   const fallbackPageSize = isOfferView ? OFFER_VIEW_PAGE_SIZE : DEFAULT_PAGE_SIZE;
-  const pageSize = Number(queryParams.pageSize) || fallbackPageSize;
+  const pageKey = isOfferView ? "pagesPage" : "page";
+  const pageSizeKey = isOfferView ? "pagesPageSize" : "pageSize";
+  const pageSize = Number(queryParams[pageSizeKey]) || fallbackPageSize;
 
   const { data, isLoading } = useGetLabsPagesQuery({
     ...queryParams,
-    page: Number(queryParams.page) || 1,
+    page: Number(queryParams[pageKey]) || 1,
     pageSize,
     ...(offerIdProp ? { offerId: offerIdProp } : {}),
     ...(typeProp?.length ? { type: typeProp } : {}),
@@ -72,13 +74,13 @@ export const ListPages = ({ offerId: offerIdProp, type: typeProp, noEmpty }: Lis
           ))}
         </div>
       ) : showNoEmpty ? (
-        <div className="flex min-h-[140px] items-center justify-center rounded-lg border border-dashed border-default-300 bg-content2/30 px-4 py-10 text-center text-small text-default-500">
+        <div className="flex min-h-[140px] items-center justify-center  px-4 py-10 text-center text-small text-default-500">
           {noEmpty === true ? (
-            <p>
-              {typeProp?.length
-                ? "Nenhuma página deste tipo para esta oferta."
-                : "Nenhuma página cadastrada para esta oferta."}
-            </p>
+            <EmptyContent
+              title="Nenhuma página encontrada"
+              description="Você ainda não possui páginas cadastradas. Comece criando a sua primeira página."
+              icon="solar:gallery-minimalistic-bold"
+            />
           ) : (
             noEmpty
           )}
@@ -108,7 +110,12 @@ export const ListPages = ({ offerId: offerIdProp, type: typeProp, noEmpty }: Lis
           ))}
         </div>
       )}
-      <Pagination defaultPageSize={String(fallbackPageSize)} total={data?.meta?.totalPages} />
+      <Pagination
+        defaultPageSize={String(fallbackPageSize)}
+        total={data?.meta?.totalPages}
+        hash={pageKey}
+        hashSize={pageSizeKey}
+      />
       {editPage && <EditPage page={editPage} setEditPage={setEditPage} />}
 
       {!!archivePage && (

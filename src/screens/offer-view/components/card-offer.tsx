@@ -1,4 +1,3 @@
-
 import { useGetSpyOfferByIdQuery } from "@/services/spy/spy-offers.service";
 import { TrafficNetwork, trafficNetworkLabelsPt } from "@/types/offer/offer.type";
 import { Avatar, Card, CardBody, CardHeader, Chip } from "@heroui/react";
@@ -42,7 +41,7 @@ export const CardOffer = () => {
           }}
           radius="lg"
           size="lg"
-          src={data.data?.image.url}
+          src={data.data?.image?.url ?? "https://placehold.co/54x54"}
         />
         <div className="flex min-w-0 flex-1 flex-col gap-1">
           <h1 className="text-lg font-bold truncate">{data.data?.title}</h1>
