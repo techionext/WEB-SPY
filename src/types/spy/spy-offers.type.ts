@@ -175,6 +175,7 @@ export type ISpyOfferGrouped = {
   typeProduct: Record<string, number>;
   category: Record<string, number>;
   structure: Record<string, number>;
+  offer: Record<string, number>;
 };
 export namespace ISpyOfferGroupedDTO {
   export type Args = {

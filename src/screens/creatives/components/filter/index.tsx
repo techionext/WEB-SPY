@@ -3,11 +3,11 @@ import { useFilterCreative } from "./use-filter-creative";
 import { FilterItem } from "@/components/filters/filter-item";
 import { FilterRangeSlider } from "@/components/filters/filter-range-slider";
 import { FilterSwitch } from "@/components/filters/filter-switch";
-import { OfferSelector } from "./offer-selector";
 import { trafficNetworkValues, TrafficNetwork } from "@/types/offer/offer.type";
 import { languages } from "@/components/select-language/countries";
 import { formatViews } from "@/utils/formatViews";
 import { useCreativeList } from "../../use-creative-list";
+import { OfferSelector } from "@/components/offer-selector/offer-selector";
 
 export const FilterCreative = () => {
   const {
@@ -31,7 +31,7 @@ export const FilterCreative = () => {
   const renderSectionContent = (section: FilterSection) => {
     switch (section.type) {
       case "custom":
-        if (section.id === "offer") return <OfferSelector />;
+        if (section.id === "offer") return <OfferSelector groupedData={groupedData?.offer} />;
         return null;
 
       case "list": {
