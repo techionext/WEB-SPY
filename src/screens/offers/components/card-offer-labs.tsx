@@ -25,9 +25,10 @@ type Props = {
   onFavorite: (id: string) => void;
   isFavoriting?: boolean;
   onRemove: (id: string) => void;
+  onRequestAnalysis?: (id: string) => void;
 };
 
-export const CardOfferLabs = ({ data, onFavorite, onRemove }: Props) => {
+export const CardOfferLabs = ({ data, onFavorite, onRemove, onRequestAnalysis }: Props) => {
   const router = useRouter();
   const { user } = useSession();
   const canEdit = user?.platformRole === "ROOT" || user?.platformRole === "ADMIN";
@@ -117,6 +118,16 @@ export const CardOfferLabs = ({ data, onFavorite, onRemove }: Props) => {
                 startContent={<Icon icon="solar:trash-bin-trash-bold" />}
               >
                 Excluir
+              </DropdownItem>
+              <DropdownItem
+                key="request-analysis"
+                isDisabled={!canEdit}
+                color="primary"
+                className="text-primary"
+                onPress={() => onRequestAnalysis?.(data.id)}
+                startContent={<Icon icon="solar:file-bold" />}
+              >
+                Pedir análise
               </DropdownItem>
             </DropdownMenu>
           </Dropdown>

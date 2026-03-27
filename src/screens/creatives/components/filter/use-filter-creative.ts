@@ -1,9 +1,8 @@
 "use client";
 
+import { useState } from "react";
+import { useFilterBase } from "@/hooks/use-filter-base";
 import { useGetSpyCreativeGroupedQuery } from "@/services/spy/spy-creative.service";
-import type { ISpyCreativeGrouped } from "@/types/spy/spy-creative.type";
-import { useState, useMemo } from "react";
-import { useRouter, useSearchParams, usePathname } from "next/navigation";
 
 export type RangeValue = [number, number];
 
@@ -25,14 +24,17 @@ export interface FilterSection {
 }
 
 export const useFilterCreative = () => {
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const { data: rawGroupedData } = useGetSpyCreativeGroupedQuery({});
+  const {
+    searchParams,
+    toggleFilter,
+    updateParam,
+    updateParams,
+    clearFilters,
+    isSelected,
+    capitalize,
+  } = useFilterBase();
 
-  const groupedData = useMemo<ISpyCreativeGrouped | null>(() => {
-    return rawGroupedData ?? null;
-  }, [rawGroupedData]);
+  const { data: groupedData } = useGetSpyCreativeGroupedQuery({});
 
   const sections: FilterSection[] = [
     {
@@ -97,57 +99,6 @@ export const useFilterCreative = () => {
       Number(searchParams.get("maxViewsQuantity")) || 10000000,
     ] as RangeValue,
   });
-
-  const toggleFilter = (key: string, value: string) => {
-    const params = new URLSearchParams(searchParams.toString());
-    const currentValues = params.get(key)?.split(",") || [];
-
-    if (currentValues.includes(value)) {
-      const newValues = currentValues.filter((v) => v !== value);
-      if (newValues.length > 0) {
-        params.set(key, newValues.join(","));
-      } else {
-        params.delete(key);
-      }
-    } else {
-      params.set(key, [...currentValues, value].join(","));
-    }
-
-    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
-  };
-
-  const updateParams = (updates: Record<string, any>) => {
-    const params = new URLSearchParams(searchParams.toString());
-
-    Object.entries(updates).forEach(([key, value]) => {
-      const isValueValid =
-        value === true || typeof value === "number" || (typeof value === "string" && value !== "");
-
-      if (isValueValid) {
-        params.set(key, String(value));
-      } else {
-        params.delete(key);
-      }
-    });
-
-    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
-  };
-
-  const updateParam = (key: string, value: any) => {
-    updateParams({ [key]: value });
-  };
-
-  const capitalize = (str: string) => {
-    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-  };
-
-  const clearFilters = () => {
-    router.replace(pathname, { scroll: false });
-  };
-
-  const isSelected = (key: string, value: string) => {
-    return searchParams.get(key)?.split(",")?.includes(value) ?? false;
-  };
 
   const activeFiltersCount = [
     searchParams.get("isClimbing") === "true",

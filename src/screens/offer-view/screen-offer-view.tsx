@@ -5,15 +5,21 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useGetSettingsQuery } from "@/services/settings/settings.service";
 import { ListCreatives } from "../creatives/components/list-creatives";
-import { ListPages } from "../pages/components/list-pages";
 import { CardOffer } from "./components/card-offer";
 import Graph from "./components/graph";
 import { VslCard } from "./components/vsl-card";
+import { ListPagesOffers } from "@/components/list-pages-offers/list-pages-offers";
+import { CardInsider } from "./components/card-insider";
+import { useGetSpyOfferByIdQuery } from "@/services/spy/spy-offers.service";
 
 export const ScreenOfferView = () => {
   const params = useParams();
   const rawId = params?.id;
   const offerId = Array.isArray(rawId) ? rawId[0] : rawId;
+  const { data: offerData } = useGetSpyOfferByIdQuery(
+    { id: offerId as string },
+    { skip: !offerId },
+  );
 
   const { data: settings } = useGetSettingsQuery({});
   const typePages = settings?.typePages ?? [];
@@ -35,6 +41,12 @@ export const ScreenOfferView = () => {
         <Graph />
       </div>
       <VslCard />
+      {offerData?.analysisRequest ? (
+        <>
+          <p className="text-sm font-semibold text-foreground">Análise Insider</p>
+          <CardInsider analysisRequestId={offerData.analysisRequest.id} />
+        </>
+      ) : null}
       <p className="text-sm font-semibold text-foreground">Criativos</p>
       <ListCreatives offerId={offerId} />
       <p className="text-sm font-semibold text-foreground">Páginas</p>
@@ -49,14 +61,14 @@ export const ScreenOfferView = () => {
               <Tab key={label} title={label} />
             ))}
           </Tabs>
-          <ListPages
+          <ListPagesOffers
             offerId={offerId}
             noEmpty
             type={activePageType ? [activePageType] : undefined}
           />
         </>
       ) : (
-        <ListPages offerId={offerId} noEmpty />
+        <ListPagesOffers offerId={offerId} noEmpty />
       )}
     </div>
   );

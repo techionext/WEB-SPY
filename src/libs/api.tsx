@@ -37,6 +37,8 @@ export const api = createApi({
     "community-video-comment",
     "community-video-group",
     "creatives-history",
+    "analysis-requests",
+    "analysis-requests-files",
   ],
 });
 

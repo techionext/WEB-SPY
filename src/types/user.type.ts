@@ -10,7 +10,7 @@ export interface IUser {
   };
   status: "ACTIVE" | "INACTIVE" | "BANNED";
   emailStatus: "VERIFIED" | "NOT_VERIFIED";
-  platformRole: "USER" | "ROOT" | "ADMIN";
+  platformRole: "USER" | "ROOT" | "ADMIN" | "INSIDER" | "BENCHMARK";
   createdAt: string;
   updatedAt: string;
   nextBoard: {

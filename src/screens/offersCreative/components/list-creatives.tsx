@@ -26,9 +26,10 @@ export const ListCreatives = () => {
   const { id } = useParams<{ id: string }>();
   const { data, isLoading } = useGetLabsCreativeQuery(
     {
-      offerId: id as string,
-      pageSize: Number(params.pageSize || "6"),
       ...params,
+      page: Number(params.page) || 1,
+      pageSize: Number(params.pageSize || "6"),
+      offerId: id ? [String(id)] : undefined,
     },
     { skip: !id },
   );

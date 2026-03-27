@@ -1,5 +1,4 @@
-import { Accordion, AccordionItem, Button } from "@heroui/react";
-import { Icon } from "@iconify/react";
+import { SidebarFilter, FilterSection } from "@/components/filters/sidebar-filter";
 import { FilterItem } from "@/components/filters/filter-item";
 import { FilterSwitch } from "@/components/filters/filter-switch";
 import { FilterRangeSlider } from "@/components/filters/filter-range-slider";
@@ -7,7 +6,6 @@ import { formatViews } from "@/utils/formatViews";
 import { useFilter, type FilterStatus, type FilterQuantity } from "./use-filter";
 import { type TrafficNetwork, trafficNetworkValues } from "@/types/offer/offer.type";
 import { languages } from "@/components/select-language/countries";
-import { SearchBar } from "@/components/searchbar";
 import { useOfferList } from "../../use-offer-list";
 
 export const Filter = () => {
@@ -29,7 +27,7 @@ export const Filter = () => {
 
   const { data: offerData, isLoading: isLoadingOffers } = useOfferList();
 
-  const renderSectionContent = (section: any) => {
+  const renderSectionContent = (section: FilterSection) => {
     switch (section.type) {
       case "list": {
         const data = groupedData?.[section.dataKey as keyof typeof groupedData] || {};
@@ -152,52 +150,14 @@ export const Filter = () => {
   };
 
   return (
-    <div className="flex flex-col gap-4 card p-4 rounded-2xl w-[330px] sticky top-1">
-      <div className="flex flex-col gap-1 px-2">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Icon icon="solar:filter-bold-duotone" className="text-primary" width={22} />
-            <h2 className="text-lg font-bold">Filtros</h2>
-            {activeFiltersCount > 0 && (
-              <span className="flex items-center justify-center bg-primary text-primary-foreground text-[10px] font-bold h-4 min-w-[16px] px-1 rounded-full">
-                {activeFiltersCount}
-              </span>
-            )}
-          </div>
-          <Button
-            variant="light"
-            size="sm"
-            onPress={clearFilters}
-            className="text-default-400 hover:text-danger font-bold text-xs h-7 min-w-0 px-2"
-          >
-            Limpar
-          </Button>
-        </div>
-        {!isLoadingOffers && (
-          <span className="text-[11px] text-default-400 font-medium">
-            {offerData?.meta?.total || 0} ofertas encontradas
-          </span>
-        )}
-      </div>
-
-      <SearchBar className="px-1" />
-
-      <Accordion selectionMode="multiple" defaultExpandedKeys={["quantity"]}>
-        {sections.map((section) => (
-          <AccordionItem
-            key={section.id}
-            aria-label={section.label}
-            title={
-              <div className="flex items-center gap-2">
-                <Icon icon={section.icon} className="text-default-400" width={18} />
-                <span className="text-sm font-bold text-foreground">{section.label}</span>
-              </div>
-            }
-          >
-            {renderSectionContent(section)}
-          </AccordionItem>
-        ))}
-      </Accordion>
-    </div>
+    <SidebarFilter
+      totalItems={offerData?.meta?.total}
+      totalItemsLabel="ofertas encontradas"
+      isLoadingTotal={isLoadingOffers}
+      activeFiltersCount={activeFiltersCount}
+      sections={sections as FilterSection[]}
+      onClearFilters={clearFilters}
+      renderSectionContent={renderSectionContent}
+    />
   );
 };
