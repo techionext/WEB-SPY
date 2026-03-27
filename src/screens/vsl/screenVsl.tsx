@@ -5,7 +5,7 @@ import { CreateVSL } from "./components/create-modal/create-modal";
 
 export const ScreenVsl = () => {
   return (
-    <div className="flex flex-col gap-6 h-full">
+    <div className="flex flex-col gap-4 h-full">
       <div className="flex items-center justify-between">
         <Header title="VSL" description="Veja as VSLs que você está participando." />
         <div className="flex gap-2">

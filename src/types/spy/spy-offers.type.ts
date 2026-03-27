@@ -133,6 +133,11 @@ export type ISpyOfferById = {
     createdAt: string;
     updatedAt: string;
   };
+  analysisRequest?: {
+    id: string;
+    status: "PENDING" | "PROCESSING" | "COMPLETED" | "FAILED" | "CANCELLED";
+  };
+
   adQuantity: number;
   viewsQuantity: number;
   pitch: string;
@@ -175,6 +180,7 @@ export type ISpyOfferGrouped = {
   typeProduct: Record<string, number>;
   category: Record<string, number>;
   structure: Record<string, number>;
+  offer: Record<string, number>;
 };
 export namespace ISpyOfferGroupedDTO {
   export type Args = {

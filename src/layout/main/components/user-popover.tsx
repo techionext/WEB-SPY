@@ -5,8 +5,7 @@ import { Icon } from "@iconify/react";
 import { useSession } from "@/providers/session-provider";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
-import { IApp, useGetAppsQuery } from "@/services/apps/apps.service";
-import Image from "next/image";
+import { IApp } from "@/services/apps/apps.service";
 
 export const UserPopover = () => {
   const { user } = useSession();
@@ -14,24 +13,6 @@ export const UserPopover = () => {
   const [mounted, setMounted] = useState(false);
   const { onSignOut } = useSession();
 
-  const defaultApps: IApp[] = [
-    {
-      id: "gomarke",
-      title: "Gomarke",
-      description: "Gomarke tenha total controle sobre suas ofertas, criativos e páginas.",
-      category: ["Tracker"],
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      thumbnail: "https://app.gomarke.com/dark/favicon-32x32.png",
-      organization: {
-        isAppUse: true,
-      },
-      isAppMain: false,
-    },
-  ];
-
-  const { data: appsApi } = useGetAppsQuery({ page: 1, pageSize: 10 });
-  const apps = [...defaultApps, ...(appsApi?.data ?? [])];
 
   useEffect(() => {
     setMounted(true);
@@ -79,23 +60,6 @@ export const UserPopover = () => {
             >
               <Icon icon={mounted && theme === "dark" ? "solar:moon-bold" : "solar:sun-bold"} />
             </Button>
-          </div>
-          <Divider />
-          <div className="flex flex-col gap-2">
-            <p className="px-3 text-sm text-default-500">Apps</p>
-            {apps?.map((app) => (
-              <Button
-                key={app.id}
-                size="sm"
-                color="default"
-                variant="light"
-                fullWidth
-                className="justify-start"
-                startContent={<Image src={app.thumbnail} alt={app.title} width={20} height={20} />}
-              >
-                {app.title}
-              </Button>
-            ))}
           </div>
           <Divider />
           <Button

@@ -81,7 +81,12 @@ export const ListCreatives = ({ offerId: offerIdProp }: ListCreativesProps) => {
   );
 
   const pagination = (
-    <Pagination defaultPageSize={String(fallbackPageSize)} total={data?.meta.totalPages || 0} />
+    <Pagination
+      defaultPageSize={String(fallbackPageSize)}
+      total={data?.meta.totalPages || 0}
+      hash={isOfferView ? "creativesPage" : "page"}
+      hashSize={isOfferView ? "creativesPageSize" : "pageSize"}
+    />
   );
 
   if (isOfferView) {

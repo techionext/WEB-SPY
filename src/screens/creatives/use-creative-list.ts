@@ -8,7 +8,6 @@ const OFFER_VIEW_DEFAULT_PAGE_SIZE = 3;
 const DEFAULT_PAGE_SIZE = 6;
 
 export type UseCreativeListOptions = {
-  /** Sobrescreve `offerId` da URL (ex.: página interna da oferta). */
   offerId?: string;
 };
 
@@ -19,9 +18,12 @@ export const useCreativeList = (options?: UseCreativeListOptions) => {
 
   const queryParams = useMemo(() => {
     const pageSizeDefault = isOfferContext ? OFFER_VIEW_DEFAULT_PAGE_SIZE : DEFAULT_PAGE_SIZE;
+    const pageKey = isOfferContext ? "creativesPage" : "page";
+    const pageSizeKey = isOfferContext ? "creativesPageSize" : "pageSize";
+
     const params: Record<string, unknown> = {
-      page: Number(searchParams.get("page")) || 1,
-      pageSize: Number(searchParams.get("pageSize")) || pageSizeDefault,
+      page: Number(searchParams.get(pageKey)) || 1,
+      pageSize: Number(searchParams.get(pageSizeKey)) || pageSizeDefault,
       filter: searchParams.get("filter") || undefined,
       offerId: offerIdProp || searchParams.get("offerId") || undefined,
       isClimbing: searchParams.get("isClimbing") === "true" || undefined,
@@ -43,7 +45,6 @@ export const useCreativeList = (options?: UseCreativeListOptions) => {
         : undefined,
     };
 
-    // Remove undefined keys
     return Object.fromEntries(Object.entries(params).filter(([_, v]) => v !== undefined));
   }, [searchParams, offerIdProp, isOfferContext]);
 
