@@ -1,4 +1,3 @@
-import { EmptyContent } from "@/components/empty/empty-content";
 import {
   IAnalysisRequest,
   useGetAnalysisRequestQuery,
@@ -6,6 +5,7 @@ import {
 import { Avatar, Card, CardBody, Chip, Tooltip } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import dayjs from "dayjs";
+import { EmptyContent } from "@/components/empty/empty-content";
 
 const STATUS_LABEL = {
   PENDING: "Pendente",
@@ -17,7 +17,7 @@ const STATUS_LABEL = {
 
 export const ItemCard = ({ handleOpen }: { handleOpen: (id: string) => void }) => {
   const { data, isLoading } = useGetAnalysisRequestQuery({
-    viewType: "INSIDER",
+    viewType: "BENCHMARK",
     page: 1,
     pageSize: 100,
   });
@@ -61,7 +61,7 @@ export const ItemCard = ({ handleOpen }: { handleOpen: (id: string) => void }) =
                 {getStatusLabel(order.status)}
               </Chip>
               <Chip size="sm" variant="flat" color="success">
-                {order.type === "ADVANCED" ? "Avançado" : "Simples"}
+                Em análise
               </Chip>
             </div>
             <div className="flex gap-4">

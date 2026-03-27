@@ -5,7 +5,7 @@ import { Icon } from "@iconify/react";
 import { useSession } from "@/providers/session-provider";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
-import { IApp, useGetAppsQuery } from "@/services/apps/apps.service";
+import { IApp } from "@/services/apps/apps.service";
 
 export const UserPopover = () => {
   const { user } = useSession();
@@ -13,21 +13,6 @@ export const UserPopover = () => {
   const [mounted, setMounted] = useState(false);
   const { onSignOut } = useSession();
 
-  const defaultApps: IApp[] = [
-    {
-      id: "gomarke",
-      title: "Gomarke",
-      description: "Gomarke tenha total controle sobre suas ofertas, criativos e páginas.",
-      category: ["Tracker"],
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      thumbnail: "https://app.gomarke.com/dark/favicon-32x32.png",
-      organization: {
-        isAppUse: true,
-      },
-      isAppMain: false,
-    },
-  ];
 
   useEffect(() => {
     setMounted(true);

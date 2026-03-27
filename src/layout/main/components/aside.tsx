@@ -58,6 +58,17 @@ export const Aside = () => {
     },
   ];
 
+  const cloakerItems: MenuItem[] = [
+    {
+      key: "requests",
+      icon: "solar:users-group-rounded-bold",
+      label: "Solicitações",
+      href: "/requests",
+      isActive: onlyPathname === "/requests",
+      endContent: undefined,
+    },
+  ];
+
   const allowedRolesForUsers = ["ROOT", "ADMIN"] as const;
   const canSeeUsersItem =
     user?.platformRole != null &&
@@ -85,9 +96,16 @@ export const Aside = () => {
     {
       key: "insider-solicitations",
       icon: "solar:list-bold",
-      label: "Solicitações",
+      label: "Solicitações Recebidas",
       href: "/insider/solicitations",
       isActive: onlyPathname === "/insider/solicitations",
+    },
+    {
+      key: "insider-my-solicitations",
+      icon: "solar:user-bold",
+      label: "Minhas solicitações",
+      href: "/insider/my-solicitations",
+      isActive: onlyPathname === "/insider/my-solicitations",
     },
   ];
 
@@ -141,78 +159,132 @@ export const Aside = () => {
           </div>
         )}
         <div className=" flex flex-col gap-1" key="main-menu">
-          <p className="text-sm  text-foreground-500">Menu</p>
-          {menuItems.map((item) => (
-            <Fragment key={`${item.key}-menu`}>
-              <Button
-                key={item.key}
-                as={item.href ? Link : "button"}
-                disableAnimation
-                href={item.href}
-                radius="lg"
-                className={cn(
-                  item.isActive ? "bg-content1/60" : "text-default-600 !bg-transparent",
-                )}
-                variant={item.isActive ? "light" : "light"}
-                fullWidth
-              >
-                <div className={cn("flex items-center  gap-2 flex-1 ")}>
-                  <Icon width={20} icon={item.icon} />
-                  {item.label}
-                </div>
-                {item.endContent}
-              </Button>
-              {item.items && (
-                <div
-                  className="flex flex-col gap-1 ml-5 pl-1 border-l border-default-200"
-                  key={`${item.key}-items`}
+          <div className=" flex flex-col gap-1" key="menu">
+            <p className="text-sm  text-foreground-500">Menu</p>
+            {menuItems.map((item) => (
+              <Fragment key={`${item.key}-menu`}>
+                <Button
+                  key={item.key}
+                  as={item.href ? Link : "button"}
+                  disableAnimation
+                  href={item.href}
+                  radius="lg"
+                  className={cn(
+                    item.isActive ? "bg-content1/60" : "text-default-600 !bg-transparent",
+                  )}
+                  variant={item.isActive ? "light" : "light"}
+                  fullWidth
                 >
-                  {item.items.map((sub) => {
-                    return (
-                      <Button
-                        key={sub.key}
-                        as={sub.href ? Link : "button"}
-                        href={sub.href}
-                        className={cn(sub.isActive ? "bg-content1/60" : "text-default-600")}
-                        variant={sub.isActive ? "light" : "light"}
-                        radius="lg"
-                        endContent={sub.endContent}
-                      >
-                        <div className="flex items-center gap-2 flex-1">
-                          <Icon width={20} icon={sub.icon} />
-                          {sub.label}
-                        </div>
-                      </Button>
-                    );
-                  })}
-                </div>
-              )}
-            </Fragment>
-          ))}
-        </div>
-        <div className=" flex flex-col gap-1" key="insider-menu">
-          <p className="text-sm text-foreground-500">Insider</p>
-          {insiderItems.map((item) => (
-            <Fragment key={`${item.key}-insider`}>
-              <Button
-                key={item.key}
-                as={item.href ? Link : "button"}
-                disableAnimation
-                href={item.href}
-                radius="lg"
-                className={cn(
-                  item.isActive ? "bg-content1/60" : "text-default-600 !bg-transparent",
+                  <div className={cn("flex items-center  gap-2 flex-1 ")}>
+                    <Icon width={20} icon={item.icon} />
+                    {item.label}
+                  </div>
+                  {item.endContent}
+                </Button>
+                {item.items && (
+                  <div
+                    className="flex flex-col gap-1 ml-5 pl-1 border-l border-default-200"
+                    key={`${item.key}-items`}
+                  >
+                    {item.items.map((sub) => {
+                      return (
+                        <Button
+                          key={sub.key}
+                          as={sub.href ? Link : "button"}
+                          href={sub.href}
+                          className={cn(sub.isActive ? "bg-content1/60" : "text-default-600")}
+                          variant={sub.isActive ? "light" : "light"}
+                          radius="lg"
+                          endContent={sub.endContent}
+                        >
+                          <div className="flex items-center gap-2 flex-1">
+                            <Icon width={20} icon={sub.icon} />
+                            {sub.label}
+                          </div>
+                        </Button>
+                      );
+                    })}
+                  </div>
                 )}
-                variant={item.isActive ? "light" : "light"}
-                fullWidth
-              >
-                <div className={cn("flex items-center  gap-2 flex-1 ")}>
-                  <Icon width={20} icon={item.icon} />
-                  {item.label}
-                </div>
-              </Button>
-            </Fragment>
-          ))}
+              </Fragment>
+            ))}
+          </div>
+
+          <div className=" flex flex-col gap-1" key="insider-menu">
+            <p className="text-sm text-foreground-500">Insider</p>
+            {insiderItems.map((item) => (
+              <Fragment key={`${item.key}-insider`}>
+                <Button
+                  key={item.key}
+                  as={item.href ? Link : "button"}
+                  disableAnimation
+                  href={item.href}
+                  radius="lg"
+                  className={cn(
+                    item.isActive ? "bg-content1/60" : "text-default-600 !bg-transparent",
+                  )}
+                  variant={item.isActive ? "light" : "light"}
+                  fullWidth
+                >
+                  <div className={cn("flex items-center  gap-2 flex-1 ")}>
+                    <Icon width={20} icon={item.icon} />
+                    {item.label}
+                  </div>
+                </Button>
+              </Fragment>
+            ))}
+          </div>
+
+          <div className=" flex flex-col gap-1" key="cloaker">
+            <p className="text-sm  text-foreground-500">Cloaker</p>
+            {cloakerItems.map((item) => (
+              <Fragment key={`${item.key}-cloaker`}>
+                <Button
+                  key={item.key}
+                  as={item.href ? Link : "button"}
+                  disableAnimation
+                  href={item.href}
+                  radius="lg"
+                  className={cn(
+                    item.isActive ? "bg-content1/60" : "text-default-600 !bg-transparent",
+                  )}
+                  variant={item.isActive ? "light" : "light"}
+                  fullWidth
+                >
+                  <div className={cn("flex items-center  gap-2 flex-1 ")}>
+                    <Icon width={20} icon={item.icon} />
+                    {item.label}
+                  </div>
+                  {item.endContent}
+                </Button>
+                {item.items && (
+                  <div
+                    className="flex flex-col gap-1 ml-5 pl-1 border-l border-default-200"
+                    key={`${item.key}-items`}
+                  >
+                    {item.items.map((sub) => {
+                      return (
+                        <Button
+                          key={sub.key}
+                          as={sub.href ? Link : "button"}
+                          href={sub.href}
+                          className={cn(sub.isActive ? "bg-content1/60" : "text-default-600")}
+                          variant={sub.isActive ? "light" : "light"}
+                          radius="lg"
+                          endContent={sub.endContent}
+                        >
+                          <div className="flex items-center gap-2 flex-1">
+                            <Icon width={20} icon={sub.icon} />
+                            {sub.label}
+                          </div>
+                        </Button>
+                      );
+                    })}
+                  </div>
+                )}
+              </Fragment>
+            ))}
+          </div>
         </div>
       </ScrollShadow>
       <UserPopover />

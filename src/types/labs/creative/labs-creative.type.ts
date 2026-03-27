@@ -141,8 +141,16 @@ export namespace ILabsCreativesDTO {
     page?: number;
     pageSize?: number;
     filter?: string;
-    offerId?: string;
+    offerId?: string[];
+    categories?: string[];
     trafficNetwork?: TrafficNetwork[];
+    isClimbing?: boolean;
+    salesAngle?: string[];
+    language?: string[];
+    maxAdQuantity?: number;
+    minAdQuantity?: number;
+    maxViewsQuantity?: number;
+    minViewsQuantity?: number;
   };
   export type Result = {
     data: ILabsCreative[];

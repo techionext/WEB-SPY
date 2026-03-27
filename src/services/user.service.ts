@@ -43,6 +43,16 @@ export namespace IRefreshDTO {
   };
 }
 
+export namespace IGetUserInsiderDTO {
+  export type Args = {
+    page?: number;
+    pageSize?: number;
+    filter?: string;
+    role?: "INSIDER" | "ADMIN";
+  };
+  export type Result = IGetUsersDTO.Result;
+}
+
 export namespace IUpdateUserDTO {
   export type Args = {
     name: string;
@@ -309,6 +319,14 @@ export const userSessionServices = api.injectEndpoints({
       }),
       providesTags: [{ type: "users", id: "list" }],
     }),
+    getUserInsider: builder.query<IGetUserInsiderDTO.Result, IGetUserInsiderDTO.Args>({
+      query: (args) => ({
+        url: `users`,
+        method: "GET",
+        params: args,
+      }),
+      providesTags: [{ type: "users", id: "list" }],
+    }),
   }),
   overrideExisting: true,
 });
@@ -331,4 +349,5 @@ export const {
   usePostUserInviteMutation,
   usePutUserMutation,
   useGetUserByIdQuery,
+  useGetUserInsiderQuery,
 } = userSessionServices;

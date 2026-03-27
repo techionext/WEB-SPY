@@ -10,11 +10,13 @@ import { CardOfferLabsSkeleton } from "./card-skeleton-offer";
 import { ModalRemove } from "@/components/modal-remove/modal-remove";
 import { ISpyOffer } from "@/types/spy/spy-offers.type";
 import { Filter } from "./filter";
+import { ModalAdd } from "@/screens/insider/my-solicitations/components/modal-add";
 
 export const OfferList = () => {
   const { data, isLoading, defaultPageSize } = useOfferList();
   const [removeOfferId, setRemoveOfferId] = useState<string>("");
   const [favoritingId, setFavoritingId] = useState<string | null>(null);
+  const [isAnalysisModalOpen, setIsAnalysisModalOpen] = useState(false);
   const [removeOffer, { isLoading: isRemovingOffer }] = useRemoveSpyOfferMutation();
   const [favoriteOffer] = usePostSpyOfferFavoriteMutation();
 
@@ -28,8 +30,14 @@ export const OfferList = () => {
     }
   };
 
+  const handleRequestAnalysis = (offerId: string) => {
+    // No momento, o modal não precisa do id; mas mantemos o handler para encaixar a lógica depois.
+    void offerId;
+    setIsAnalysisModalOpen(true);
+  };
+
   return (
-    <div className="flex flex-col md:flex-row gap-6 items-start">
+    <div className="flex items-start gap-4">
       <div className="flex-1 flex flex-col gap-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {isLoading
@@ -41,6 +49,7 @@ export const OfferList = () => {
                   onFavorite={handleFavorite}
                   isFavoriting={favoritingId === item.id}
                   onRemove={() => setRemoveOfferId(item.id)}
+                  onRequestAnalysis={handleRequestAnalysis}
                 />
               ))}
         </div>
@@ -67,6 +76,12 @@ export const OfferList = () => {
           textButtonConfirm="Excluir"
         />
       )}
+
+      <ModalAdd
+        isOpen={isAnalysisModalOpen}
+        onOpenChange={setIsAnalysisModalOpen}
+        showTrigger={false}
+      />
     </div>
   );
 };

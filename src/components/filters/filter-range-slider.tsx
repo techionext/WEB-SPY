@@ -28,10 +28,10 @@ function scaleValue(
   return (value - fromMin) * scale + toMin;
 }
 
-const FilterRangeSliderPip: React.FC<{ isInRange: boolean }> = ({ isInRange }) => {
-  const rand = React.useMemo(() => Math.floor(Math.random() * 100), []);
-  const height = clampValue(rand, 30, 100) + "%";
-
+const FilterRangeSliderPip: React.FC<{ isInRange: boolean; height: string }> = ({
+  isInRange,
+  height,
+}) => {
   return (
     <span
       className="relative h-12 w-1 rounded-full bg-default-100 after:absolute after:bottom-0 after:h-0 after:w-full after:rounded-full after:bg-primary after:transition-all after:!duration-500 after:content-[''] data-[in-range=true]:after:h-full"
@@ -40,6 +40,11 @@ const FilterRangeSliderPip: React.FC<{ isInRange: boolean }> = ({ isInRange }) =
     />
   );
 };
+
+function getDeterministicPipHeight(index: number, minValue: number, maxValue: number) {
+  const deterministic = (index * 37 + minValue * 13 + maxValue * 7) % 71;
+  return clampValue(30 + deterministic, 30, 100) + "%";
+}
 
 export const FilterRangeSlider = React.forwardRef<HTMLDivElement, FilterRangeSliderProps>(
   (
@@ -59,7 +64,8 @@ export const FilterRangeSlider = React.forwardRef<HTMLDivElement, FilterRangeSli
       return Array.from({ length: 32 }).map((_, index) => {
         const pipValue = scaleValue(index, [0, 31], [Number(minValue), Number(maxValue)]);
         const isInRange = pipValue >= value[0] && pipValue <= value[1];
-        return <FilterRangeSliderPip key={index} isInRange={isInRange} />;
+        const height = getDeterministicPipHeight(index, Number(minValue), Number(maxValue));
+        return <FilterRangeSliderPip key={index} isInRange={isInRange} height={height} />;
       });
     }, [value, minValue, maxValue]);
 

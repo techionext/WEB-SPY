@@ -3,20 +3,17 @@
 import { Input, Checkbox } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { useState } from "react";
-import type { ISpyCreativeGrouped } from "@/types/spy/spy-creative.type";
-import { useFilterCreative } from "./use-filter-creative";
+import { useFilterBase } from "@/hooks/use-filter-base";
 
-/** Resposta `/creative/grouped`: contagens por título de oferta (API + tipo alinhados). */
-type GroupedCreativeWithOffers = ISpyCreativeGrouped & {
-  offer: Record<string, number>;
-};
+interface OfferSelectorProps {
+  groupedData?: Record<string, number>;
+}
 
-export const OfferSelector = () => {
-  const { toggleFilter, isSelected, groupedData } = useFilterCreative();
+export const OfferSelector = ({ groupedData }: OfferSelectorProps) => {
+  const { toggleFilter, isSelected } = useFilterBase();
   const [search, setSearch] = useState("");
 
-  const offerBuckets: Record<string, number> =
-    (groupedData as GroupedCreativeWithOffers | null)?.offer ?? {};
+  const offerBuckets: Record<string, number> = groupedData ?? {};
   const offers = Object.entries(offerBuckets)
     .filter(([title]) => title.toLowerCase().includes(search.toLowerCase()))
     .map(([title, count]) => ({ title, count }));

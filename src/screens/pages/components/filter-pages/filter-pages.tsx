@@ -3,12 +3,11 @@ import { FilterItem } from "@/components/filters/filter-item";
 import { FilterSwitch } from "@/components/filters/filter-switch";
 import { FilterRangeSlider } from "@/components/filters/filter-range-slider";
 import { formatViews } from "@/utils/formatViews";
-import { useFilter, type FilterStatus, type FilterQuantity } from "./use-filter";
-import { type TrafficNetwork, trafficNetworkValues } from "@/types/offer/offer.type";
-import { languages } from "@/components/select-language/countries";
-import { useOfferList } from "../../use-offer-list";
+import { useOfferList } from "@/screens/offers/use-offer-list";
+import { FilterQuantity, FilterStatus, useFilterPages } from "./use-filter";
+import { OfferSelector } from "@/components/offer-selector/offer-selector";
 
-export const Filter = () => {
+export const FilterPages = () => {
   const {
     sections,
     groupedData,
@@ -23,62 +22,30 @@ export const Filter = () => {
     isSelected,
     capitalize,
     activeFiltersCount,
-  } = useFilter();
+  } = useFilterPages();
 
   const { data: offerData, isLoading: isLoadingOffers } = useOfferList();
 
   const renderSectionContent = (section: FilterSection) => {
     switch (section.type) {
+      case "custom":
+        if (section.id === "offer") return <OfferSelector groupedData={groupedData?.offer} />;
+        return null;
+
       case "list": {
         const data = groupedData?.[section.dataKey as keyof typeof groupedData] || {};
         return (
           <div className="flex flex-col gap-1">
-            {Object.entries(data).map(([key, count]) => {
-              if (section.id === "trafficNetwork") {
-                const config = trafficNetworkValues[key as TrafficNetwork];
-                return (
-                  <FilterItem
-                    key={key}
-                    label={config?.label || key}
-                    icon={config?.icon}
-                    value={key}
-                    count={count as number}
-                    isSelected={isSelected(section.id, key)}
-                    onSelect={() => toggleFilter(section.id, key)}
-                  />
-                );
-              }
-
-              if (section.id === "language") {
-                const langConfig = languages.find(
-                  (l) => l.value.toLowerCase() === key.toLowerCase(),
-                );
-                return (
-                  <FilterItem
-                    key={key}
-                    label={key.toLowerCase()}
-                    image={langConfig?.flag}
-                    icon={!langConfig?.flag ? "solar:global-bold" : undefined}
-                    value={key}
-                    count={count as number}
-                    isSelected={isSelected(section.id, key)}
-                    onSelect={() => toggleFilter(section.id, key)}
-                  />
-                );
-              }
-
-              const paramKey = section.id === "category" ? "categories" : section.id;
-              return (
-                <FilterItem
-                  key={key}
-                  label={capitalize(key)}
-                  value={key}
-                  count={count as number}
-                  isSelected={isSelected(paramKey, key)}
-                  onSelect={() => toggleFilter(paramKey, key)}
-                />
-              );
-            })}
+            {Object.entries(data).map(([key, count]) => (
+              <FilterItem
+                key={key}
+                label={capitalize(key)}
+                value={key}
+                count={count as number}
+                isSelected={isSelected(section.id, key)}
+                onSelect={() => toggleFilter(section.id, key)}
+              />
+            ))}
           </div>
         );
       }
@@ -86,7 +53,7 @@ export const Filter = () => {
         return (
           <div className="flex flex-col gap-1">
             <FilterSwitch
-              label="Escalando"
+              label="Com URL"
               isSelected={status.isClimbing}
               onSelect={(val: boolean) => {
                 setStatus((prev: FilterStatus) => ({ ...prev, isClimbing: val }));
@@ -94,19 +61,11 @@ export const Filter = () => {
               }}
             />
             <FilterSwitch
-              label="Cloaker"
+              label="Com Arquivo"
               isSelected={status.isCloaker}
               onSelect={(val: boolean) => {
                 setStatus((prev: FilterStatus) => ({ ...prev, isCloaker: val }));
                 updateParam("isCloaker", val);
-              }}
-            />
-            <FilterSwitch
-              label="Favoritos"
-              isSelected={status.isFavorite}
-              onSelect={(val: boolean) => {
-                setStatus((prev: FilterStatus) => ({ ...prev, isFavorite: val }));
-                updateParam("isFavorite", val);
               }}
             />
           </div>

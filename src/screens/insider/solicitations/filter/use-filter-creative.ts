@@ -1,13 +1,13 @@
-import { useGetSpyOfferGroupedQuery } from "@/services/spy/spy-offers.service";
+"use client";
+
 import { useState } from "react";
 import { useFilterBase } from "@/hooks/use-filter-base";
+import { useGetAnalysisRequestGroupedQuery } from "@/services/analysis-request/analysis-request.service";
 
 export type RangeValue = [number, number];
 
 export interface FilterStatus {
   isClimbing: boolean;
-  isCloaker: boolean;
-  isFavorite: boolean;
 }
 
 export interface FilterQuantity {
@@ -19,11 +19,11 @@ export interface FilterSection {
   id: string;
   label: string;
   icon: string;
-  type: "list" | "status" | "quantity";
+  type: "list" | "status" | "quantity" | "custom";
   dataKey?: string;
 }
 
-export const useFilter = () => {
+export const useFilterCreative = () => {
   const {
     searchParams,
     toggleFilter,
@@ -34,62 +34,41 @@ export const useFilter = () => {
     capitalize,
   } = useFilterBase();
 
-  const { data: groupedData } = useGetSpyOfferGroupedQuery({});
+  const { data: groupedData } = useGetAnalysisRequestGroupedQuery({});
 
   const sections: FilterSection[] = [
     {
-      id: "trafficNetwork",
-      label: "Rede de Tráfego",
+      id: "offers",
+      label: "Ofertas",
       icon: "solar:globus-linear",
       type: "list",
-      dataKey: "trafficNetwork",
-    },
-    {
-      id: "typeProduct",
-      label: "Tipo de Produto",
-      icon: "solar:tag-linear",
-      type: "list",
-      dataKey: "typeProduct",
-    },
-    {
-      id: "language",
-      label: "Idioma",
-      icon: "solar:translation-linear",
-      type: "list",
-      dataKey: "language",
-    },
-    {
-      id: "structure",
-      label: "Estrutura",
-      icon: "solar:layers-linear",
-      type: "list",
-      dataKey: "structure",
-    },
-    {
-      id: "category",
-      label: "Categoria",
-      icon: "solar:folder-linear",
-      type: "list",
-      dataKey: "category",
+      dataKey: "offer",
     },
     {
       id: "status",
       label: "Status",
       icon: "solar:chart-square-linear",
-      type: "status",
+      type: "list",
+      dataKey: "status",
     },
     {
-      id: "quantity",
-      label: "Quantidade",
-      icon: "solar:sort-from-top-to-bottom-linear",
-      type: "quantity",
+      id: "type",
+      label: "Tipo",
+      icon: "solar:target-bold",
+      type: "list",
+      dataKey: "type",
+    },
+    {
+      id: "users",
+      label: "Usuários",
+      icon: "solar:users-group-rounded-bold",
+      type: "list",
+      dataKey: "user",
     },
   ];
 
   const [status, setStatus] = useState<FilterStatus>({
     isClimbing: searchParams.get("isClimbing") === "true",
-    isCloaker: searchParams.get("isCloaker") === "true",
-    isFavorite: searchParams.get("isFavorite") === "true",
   });
 
   const [quantity, setQuantity] = useState<FilterQuantity>({
@@ -105,17 +84,14 @@ export const useFilter = () => {
 
   const activeFiltersCount = [
     searchParams.get("isClimbing") === "true",
-    searchParams.get("isCloaker") === "true",
-    searchParams.get("isFavorite") === "true",
     (Number(searchParams.get("minAdQuantity")) || 0) > 0,
     (Number(searchParams.get("maxAdQuantity")) || 100000) < 100000,
     (Number(searchParams.get("minViewsQuantity")) || 0) > 0,
     (Number(searchParams.get("maxViewsQuantity")) || 10000000) < 10000000,
-    searchParams.get("trafficNetwork"),
-    searchParams.get("structure"),
-    searchParams.get("language"),
-    searchParams.get("typeProduct"),
-    searchParams.get("categories"),
+    searchParams.get("offers"),
+    searchParams.get("status"),
+    searchParams.get("type"),
+    searchParams.get("users"),
     searchParams.get("filter"),
   ].filter(Boolean).length;
 

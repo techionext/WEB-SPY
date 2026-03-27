@@ -1,36 +1,23 @@
 "use client";
 
 import { Card, CardBody } from "@heroui/react";
+import {
+  useGetAnalysisMetricsQuery,
+  type IAnalysisMetricsDTO,
+} from "@/services/analysis-request/analysis-request.service";
 
-const cards = [
-  {
-    title: "Pendentes",
-    value: 10,
-    icon: "solar:list-bold",
-    total: 10,
-    color: "primary",
-  },
-  {
-    title: "Em análise",
-    value: 5,
-    icon: "solar:list-bold",
-    total: 10,
-    color: "warning",
-  },
-  {
-    title: "Recusado",
-    value: 10,
-    icon: "solar:list-bold",
-    total: 10,
-    color: "success",
-  },
-  {
-    title: "Finalizado",
-    value: 2,
-    icon: "solar:list-bold",
-    total: 10,
-    color: "warning",
-  },
+type MetricKey = keyof IAnalysisMetricsDTO.Result;
+
+const baseCards: Array<{
+  title: string;
+  metricKey: MetricKey;
+  icon: string;
+  color: "primary" | "warning" | "success" | "danger";
+}> = [
+  { title: "Pendentes", metricKey: "PENDING", icon: "solar:list-bold", color: "primary" },
+  { title: "Em análise", metricKey: "PROCESSING", icon: "solar:list-bold", color: "warning" },
+  { title: "Recusado", metricKey: "FAILED", icon: "solar:list-bold", color: "danger" },
+  { title: "Finalizado", metricKey: "COMPLETED", icon: "solar:list-bold", color: "success" },
 ];
 
 type CircularRingProps = {
@@ -58,12 +45,7 @@ function CircularRing({
       className="relative flex shrink-0 items-center justify-center"
       style={{ width: size, height: size }}
     >
-      <svg
-        width={size}
-        height={size}
-        className="-rotate-90"
-        aria-hidden
-      >
+      <svg width={size} height={size} className="-rotate-90" aria-hidden>
         <circle
           cx={size / 2}
           cy={size / 2}
@@ -90,6 +72,19 @@ function CircularRing({
 }
 
 export const HeaderCards = () => {
+  const { data: analysisMetrics, isLoading } = useGetAnalysisMetricsQuery({
+    viewType: "INSIDER",
+  });
+
+  const metricsTotal = analysisMetrics
+    ? Object.values(analysisMetrics).reduce((sum, v) => sum + v, 0)
+    : 0;
+
+  const cards = baseCards.map((card) => ({
+    ...card,
+    value: analysisMetrics?.[card.metricKey] ?? 0,
+  }));
+
   const total = cards.reduce((sum, c) => sum + c.value, 0);
 
   return (
@@ -105,7 +100,9 @@ export const HeaderCards = () => {
               />
               <div className="flex flex-col">
                 <h3 className=" font-bold">{card.title}</h3>
-                <p className="text-xs text-default-400">{card.value} de {card.total}</p>
+                <p className="text-xs text-default-400">
+                  {isLoading ? 0 : card.value} de {metricsTotal}
+                </p>
               </div>
             </div>
           </CardBody>
