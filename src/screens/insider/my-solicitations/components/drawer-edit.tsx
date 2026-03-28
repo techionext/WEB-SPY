@@ -62,10 +62,6 @@ export const DrawerEdit = ({
     "https://placehold.co/54x54";
 
   const isCancelled = analysisRequest?.status === "CANCELLED";
-  const insiderNameForObservation = analysisRequest?.userBenchmark?.name?.trim() || "Insider";
-  const observationDisplayValue = `O ${insiderNameForObservation} disse:\n\n${
-    analysisRequest?.observation?.trim() || "Sem observação"
-  }`;
 
   const handleConfirmApprove = () => {
     if (!analysisRequest?.id) return;
@@ -321,11 +317,11 @@ export const DrawerEdit = ({
               </div>
 
               <div className="flex flex-col gap-2">
-                <p className="text-sm font-medium text-foreground">Observação</p>
+                <p className="text-sm font-medium text-foreground">Observação: ({analysisRequest?.userBenchmark?.name || "-"} disse:)</p>
                 <Textarea
                   className="text-sm text-default-400"
                   isReadOnly
-                  value={observationDisplayValue}
+                  value={analysisRequest?.observation || "Sem observação"}
                 />
               </div>
             </section>

@@ -5,14 +5,14 @@ import { Icon } from "@iconify/react";
 import { useSession } from "@/providers/session-provider";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
-import { IApp } from "@/services/apps/apps.service";
+import { useProfileSettingsModal } from "@/providers/profile-settings-modal-provider";
 
 export const UserPopover = () => {
   const { user } = useSession();
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const { onSignOut } = useSession();
-
+  const { openProfileSettings } = useProfileSettingsModal();
 
   useEffect(() => {
     setMounted(true);
@@ -69,6 +69,7 @@ export const UserPopover = () => {
             variant="light"
             fullWidth
             className="justify-start"
+            onPress={() => openProfileSettings()}
           >
             Configurações
           </Button>

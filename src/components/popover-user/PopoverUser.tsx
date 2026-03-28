@@ -11,11 +11,11 @@ import {
 } from "@heroui/react";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { ToggleChangeViewRoot } from "@/components/toggle-change-view-root/ToggleChangeViewRoot";
-import { useRouter } from "next/navigation";
+import { useProfileSettingsModal } from "@/providers/profile-settings-modal-provider";
 
 export const PopoverUser = () => {
   const { onSignOut, user } = useSession();
-  const router = useRouter();
+  const { openProfileSettings } = useProfileSettingsModal();
   return (
     <Dropdown
       className=""
@@ -59,7 +59,7 @@ export const PopoverUser = () => {
           </DropdownItem>
           <DropdownItem
             startContent={<Icon width={20} icon={"solar:settings-bold-duotone"} />}
-            onPress={() => router.push("/settings")}
+            onPress={() => openProfileSettings()}
             key="settings"
             className="pt-[4px] text-default-500"
           >

@@ -25,7 +25,7 @@ type Props = {
   onFavorite: (id: string) => void;
   isFavoriting?: boolean;
   onRemove: (id: string) => void;
-  onRequestAnalysis?: (id: string) => void;
+  onRequestAnalysis?: (offer: ISpyOffer) => void;
 };
 
 export const CardOfferLabs = ({ data, onFavorite, onRemove, onRequestAnalysis }: Props) => {
@@ -124,7 +124,7 @@ export const CardOfferLabs = ({ data, onFavorite, onRemove, onRequestAnalysis }:
                 isDisabled={!canEdit}
                 color="primary"
                 className="text-primary"
-                onPress={() => onRequestAnalysis?.(data.id)}
+                onPress={() => onRequestAnalysis?.(data)}
                 startContent={<Icon icon="solar:file-bold" />}
               >
                 Pedir análise

@@ -18,7 +18,7 @@ import {
   useDisclosure,
 } from "@heroui/react";
 import { Icon } from "@iconify/react";
-import { Fragment, useEffect, useState, type ReactNode } from "react";
+import { Fragment, useEffect, useMemo, useState, type ReactNode } from "react";
 import { useGetSpyOffersQuery } from "@/services/spy/spy-offers.service";
 import { useGetLabsPagesQuery } from "@/services/labs/page/labs-page.service";
 import { usePostAnalysisRequestMutation } from "@/services/analysis-request/analysis-request.service";
@@ -30,6 +30,7 @@ import {
   TSchemaCreateSolicitationOutput,
 } from "./schema-create-solicitation";
 import { useGetUserInsiderQuery } from "@/services/user.service";
+import type { ISpyOffer } from "@/types/spy/spy-offers.type";
 
 const USER_INSIDER_AUTO_KEY = "__auto__";
 
@@ -47,6 +48,8 @@ export type ModalAddProps = {
   onOpenChange?: (open: boolean) => void;
   showTrigger?: boolean;
   trigger?: ReactNode;
+  /** Ao abrir (ex.: a partir do card de oferta), já liga “Vincular oferta” e seleciona esta oferta. */
+  initialOffer?: ISpyOffer;
 };
 
 export const ModalAdd = ({
@@ -54,6 +57,7 @@ export const ModalAdd = ({
   onOpenChange,
   showTrigger = true,
   trigger,
+  initialOffer,
 }: ModalAddProps) => {
   const [postAnalysisRequest, { isLoading: isPostingAnalysisRequest }] =
     usePostAnalysisRequestMutation();
@@ -75,16 +79,25 @@ export const ModalAdd = ({
 
   useEffect(() => {
     if (!isOpen) return;
-    reset({ ...FORM_DEFAULTS });
-    setLinkOffer(false);
+    const presetId = initialOffer?.id?.trim();
+    const hasPresetOffer = Boolean(presetId);
+    reset({ ...FORM_DEFAULTS, offerId: hasPresetOffer ? presetId! : "" });
+    setLinkOffer(hasPresetOffer);
     setFilterOffer("");
-    setOfferId("");
-  }, [isOpen, reset]);
+    setOfferId(hasPresetOffer ? presetId! : "");
+  }, [isOpen, initialOffer, reset]);
 
   const { data: offersData, isLoading: isLoadingOffers } = useGetSpyOffersQuery(
     { filter: filterOffer, pageSize: 50 },
     { skip: !isOpen || !linkOffer },
   );
+
+  const offersForAutocomplete = useMemo(() => {
+    const list = offersData?.data ?? [];
+    if (!initialOffer?.id) return list;
+    if (list.some((o) => o.id === initialOffer.id)) return list;
+    return [initialOffer, ...list];
+  }, [offersData?.data, initialOffer]);
   const { data: pagesData, isLoading: isLoadingPages } = useGetLabsPagesQuery(
     { offerId, pageSize: 100 },
     { skip: !isOpen || !linkOffer || !offerId },
@@ -231,7 +244,7 @@ export const ModalAdd = ({
                         }
                         labelPlacement="outside"
                         placeholder="Selecione uma oferta"
-                        defaultItems={offersData?.data ?? []}
+                        defaultItems={offersForAutocomplete}
                         isLoading={isLoadingOffers}
                         onInputChange={setFilterOffer}
                         selectedKey={field.value || offerId || undefined}
