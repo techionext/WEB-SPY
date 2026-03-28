@@ -22,6 +22,22 @@ export namespace ILoginDTO {
   };
 }
 
+export namespace IUpdateUserProfileDTO {
+  export type Args = {
+    id: string;
+    name: string;
+    phone?: {
+      country?: string;
+      ddd?: string;
+      number?: string;
+    };
+  };
+  export type Result = {
+    codeIntern: string;
+    message: string;
+  };
+}
+
 export namespace ILoginEmailDTO {
   export type Args = {
     id: string;
@@ -51,6 +67,17 @@ export namespace IGetUserInsiderDTO {
     role?: "INSIDER" | "ADMIN";
   };
   export type Result = IGetUsersDTO.Result;
+}
+
+export namespace IUpdateAvatarUserDTO {
+  export type Args = {
+    id: string;
+    image: File;
+  };
+  export type Result = {
+    codeIntern: string;
+    message: string;
+  };
 }
 
 export namespace IUpdateUserDTO {
@@ -327,6 +354,22 @@ export const userSessionServices = api.injectEndpoints({
       }),
       providesTags: [{ type: "users", id: "list" }],
     }),
+    updateUserProfile: builder.mutation<IUpdateUserProfileDTO.Result, IUpdateUserProfileDTO.Args>({
+      query: ({ id, ...body }) => ({
+        url: `users/${id}`,
+        method: "PUT",
+        body,
+      }),
+      invalidatesTags: [{ type: "session", id: "current" }],
+    }),
+    updateAvatarUser: builder.mutation<IUpdateAvatarUserDTO.Result, IUpdateAvatarUserDTO.Args>({
+      query: (args) => ({
+        url: `users/${args.id}/image`,
+        method: "PUT",
+        body: convertToFormData(args),
+      }),
+      invalidatesTags: [{ type: "session", id: "current" }],
+    }),
   }),
   overrideExisting: true,
 });
@@ -350,4 +393,6 @@ export const {
   usePutUserMutation,
   useGetUserByIdQuery,
   useGetUserInsiderQuery,
+  useUpdateUserProfileMutation,
+  useUpdateAvatarUserMutation,
 } = userSessionServices;

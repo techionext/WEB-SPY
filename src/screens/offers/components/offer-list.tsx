@@ -17,6 +17,7 @@ export const OfferList = () => {
   const [removeOfferId, setRemoveOfferId] = useState<string>("");
   const [favoritingId, setFavoritingId] = useState<string | null>(null);
   const [isAnalysisModalOpen, setIsAnalysisModalOpen] = useState(false);
+  const [analysisModalInitialOffer, setAnalysisModalInitialOffer] = useState<ISpyOffer | undefined>();
   const [removeOffer, { isLoading: isRemovingOffer }] = useRemoveSpyOfferMutation();
   const [favoriteOffer] = usePostSpyOfferFavoriteMutation();
 
@@ -30,10 +31,14 @@ export const OfferList = () => {
     }
   };
 
-  const handleRequestAnalysis = (offerId: string) => {
-    // No momento, o modal não precisa do id; mas mantemos o handler para encaixar a lógica depois.
-    void offerId;
+  const handleRequestAnalysis = (offer: ISpyOffer) => {
+    setAnalysisModalInitialOffer(offer);
     setIsAnalysisModalOpen(true);
+  };
+
+  const handleAnalysisModalOpenChange = (open: boolean) => {
+    setIsAnalysisModalOpen(open);
+    if (!open) setAnalysisModalInitialOffer(undefined);
   };
 
   return (
@@ -79,8 +84,9 @@ export const OfferList = () => {
 
       <ModalAdd
         isOpen={isAnalysisModalOpen}
-        onOpenChange={setIsAnalysisModalOpen}
+        onOpenChange={handleAnalysisModalOpenChange}
         showTrigger={false}
+        initialOffer={analysisModalInitialOffer}
       />
     </div>
   );
